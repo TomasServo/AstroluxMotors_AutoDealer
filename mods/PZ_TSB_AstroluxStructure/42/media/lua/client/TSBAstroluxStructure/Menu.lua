@@ -50,6 +50,16 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
             context:addOption('Astrolux Motors lab: apply bordered gray tile floor',player,function()
                 report(player,function() return TSBAstroluxFlooring.apply(player) end)
             end)
+            context:addOption('Astrolux Motors lab: record showroom furnishings',player,function()
+                report(player,function()
+                    local capture=TSBAstroluxDecorCapture
+                    if not capture then capture=require 'TSBAstroluxStructure/DecorCapture' end
+                    local profile,reason=capture.capture()
+                    if not profile then return nil,reason end
+                    player:Say('Recorded '..#profile.objects..' showroom furnishings as the default layout.')
+                    return true
+                end)
+            end)
             break
         end
     end

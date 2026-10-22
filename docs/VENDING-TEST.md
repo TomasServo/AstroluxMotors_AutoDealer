@@ -34,3 +34,8 @@ Configure a two-corner area and prices, pick up the kiosk using the furniture **
 
 A queued, paid, dispatching or held delivery blocks pickup, including completion of a pickup action started before the purchase. Finish delivery (or resolve its hold) first. Vanilla placement collision and inventory capacity rules still apply; kiosk moves have no random breakage and dismantling is disabled. Live single-player and multiplayer furniture acceptance remain pending.
 
+
+
+## Verified furnishing default and sink
+
+The final capture contains 19 furnishings, including the user-accepted chrome sink opposite the coffee maker. See [showroom default](SHOWROOM-DEFAULT.md). The lab right-click record showroom furnishings action exports to TSBAstroluxShowroomDefault.txt; .lua output is rejected by the native writer. Saving the default does not implement pasting. Native sink appearance is accepted; water/plumbing after shutoff and multiplayer remain unverified.

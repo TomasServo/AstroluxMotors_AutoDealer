@@ -62,3 +62,8 @@ The user confirmed native E interaction, mouse opening/closing and the quieter s
 
 Version 0.5.2 adds the previous kiosk and sales program with a new Lua-only two-corner spawn-area system and a named kiosk item using vanilla furniture controls. On October 22, 2026, the user confirmed the kiosk item is present and a test purchase delivered a vehicle in the selected cardinal direction with its key. Remote delivery pauses until loaded ground is clear, then resumes automatically with the buyer online. Remote delivery, moving a configured kiosk, pickup blocking and multiplayer still need in-game acceptance. See [vending test instructions](docs/VENDING-TEST.md). The accepted 0.4.1 floor, tower and door behavior is retained.
 
+
+
+## Saved showroom furnishings and sink
+
+The user verified the 19-object showroom capture and accepted the native chrome sink opposite the coffee maker on October 22, 2026. Version 0.5.5 includes the saved relative furnishing default, one-time native sink placement, and a furnishing capture/export action. See [showroom default](docs/SHOWROOM-DEFAULT.md). Pasting the complete furnishing layout remains to be implemented. The separate coffee restock and entrance signs remain local test candidates.

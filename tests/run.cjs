@@ -36,3 +36,6 @@ run(['tests/vending/server-areas.lua'], 'PASS: server remote/huge area configura
 run(['tests/vending/client-startup.lua'], 'PASS: client modules load before native handlers');
 run(['tests/vending/sales-flow.lua'], 'PASS: kiosk quote/cash purchase queues remotely');
 run(['tests/vending/furniture.lua'], 'PASS: native furniture hooks retain kiosk identity/setup');
+
+run(['tests/decor-capture.lua'], 'PASS: decoration survey records relative furniture layout');
+run(['tests/showroom-sink.lua'], 'PASS: native sink on opposite counter');
