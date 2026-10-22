@@ -2,7 +2,7 @@
 
 Glass tower rebuild for Project Zomboid Build 42. Structure first; dealership features will follow structural acceptance.
 
-This repository currently contains **Structure Lab 0.2.0**, an isolated prototype using native glass, doors and floors. It does not replace or migrate the previous `PZ_TSB_AutoVend` mod. Existing vehicles, paid orders, balances and saved data must be preserved when dealership features are added later.
+This repository currently contains **Structure Lab 0.2.1**, an isolated prototype using native glass, doors and floors. It does not replace or migrate the previous `PZ_TSB_AutoVend` mod. Existing vehicles, paid orders, balances and saved data must be preserved when dealership features are added later.
 
 ## Current structure
 
@@ -32,6 +32,8 @@ See [structural acceptance](docs/STRUCTURE-ACCEPTANCE.md) before adding detail.
 Offline Lua checks pass for perimeter continuity, floor layout, four doors, lab isolation, obstruction rejection, placement revalidation, duplicate prevention, cleanup and simulated construction/rollback failures. Engine doubles exercise persistence of ownership across a Lua module reload.
 
 **The user accepted the in-game appearance on October 22, 2026.** Comprehensive door/collision, weather enclosure, room recognition, roof cutaway, pathfinding, cleanup and save/reload checks remain pending. Multiplayer is unsupported by this prototype.
+
+The user also confirmed the window/roof triangle fix in-game on October 22, 2026. Version 0.2.1 supplies explicit native depth coverage for all 404 display slices, keeping the approved artwork and placement unchanged. See [depth coverage](docs/DEPTH-COVERAGE.md).
 
 ## Run checks
 
