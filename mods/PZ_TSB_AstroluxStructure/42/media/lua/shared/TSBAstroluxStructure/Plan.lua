@@ -1,10 +1,10 @@
-local P={size=8,levels=5,revision=1}
+local P={size=8,levels=1,maxZ=9,revision=2}
 function P.plan(x,y)
     local p={x=x,y=y,size=P.size,levels=P.levels,objects={}}
     local function add(kind,dx,dy,z,sprite,north)
         p.objects[#p.objects+1]={kind=kind,x=x+dx,y=y+dy,z=z,sprite=sprite,north=north}
     end
-    -- Keep the existing ground floor. Every upper deck and roof is a real floor.
+    -- Keep the existing ground floor. Retain a real ceiling above the ground floor.
     for z=1,P.levels do for dx=0,7 do for dy=0,7 do
         add('floor',dx,dy,z,'floors_interior_tilesandwood_01_0')
     end end end
@@ -21,6 +21,9 @@ function P.plan(x,y)
             end
         end
         add('corner',8,8,z,'walls_commercial_01_2')
+    end
+    for _,piece in ipairs(require 'TSBAstroluxStructure/DisplayPlan') do
+        add('art',piece.x,piece.y,piece.z,piece.sprite)
     end
     return p
 end

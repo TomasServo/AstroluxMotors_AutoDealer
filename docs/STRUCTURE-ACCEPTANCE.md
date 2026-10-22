@@ -1,11 +1,11 @@
 # Structural acceptance
 
-Status: offline checks passed; in-game acceptance pending. Use a disposable `AstroluxStructureLab` single-player debug save. This checklist is a test plan, not a report of completed in-game testing.
+Status: offline checks passed; the user accepted the in-game appearance on October 22, 2026. The full checklist below remains a test plan, not a claim that every check passed. Use a disposable `AstroluxStructureLab` single-player debug save.
 
 1. Walk the perimeter. Closed doors and glass must block their correct tile edges.
 2. Open and close all four doors. Enter and exit each without invisible barriers.
 3. Move around and inside at several zoom levels. Inspect glass transparency, native cutaway, corners and roof hiding for flicker, triangles or missing faces.
-4. Use debug movement to inspect z=1–4 and roof z=5. Each deck must support the player without gaps. Inspect all four sides and the southeast corner. Check weather cover.
+4. Verify the native ground floor, doors and ceiling remain. Confirm native upper stories are removed and the car-display artwork aligns above the base. Check the approved roof and corners. The upper display has no walkable decks.
 5. Save, exit and reload. Confirm decks, windows, doors and collision persist.
 6. Clear the whole area, including upper floors and roof. Stand outside the 11 × 11 clearance area. Right-click ground, choose **Astrolux Motors lab: remove prototype**, and confirm. Only tagged lab objects should disappear; original ground must remain. Save and reload.
 7. Place again. Check for duplicate structures, leftover collision or orphaned glass.

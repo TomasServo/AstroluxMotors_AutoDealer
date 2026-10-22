@@ -2,17 +2,18 @@
 
 Glass tower rebuild for Project Zomboid Build 42. Structure first; dealership features will follow structural acceptance.
 
-This repository currently contains **Structure Lab 0.1.0**, an isolated prototype using native glass, doors and floors. It does not replace or migrate the previous `PZ_TSB_AutoVend` mod. Existing vehicles, paid orders, balances and saved data must be preserved when dealership features are added later.
+This repository currently contains **Structure Lab 0.2.0**, an isolated prototype using native glass, doors and floors. It does not replace or migrate the previous `PZ_TSB_AutoVend` mod. Existing vehicles, paid orders, balances and saved data must be preserved when dealership features are added later.
 
 ## Current structure
 
-- 8 × 8 interior, five levels at z=0–4 and a solid roof at z=5.
-- Native full-height commercial glass on every level.
-- Four native single glass doors and matching frames on the ground floor.
-- Original ground preserved; 320 upper-floor/roof tiles.
-- No giant artwork overlay, custom depth maps, forced transparency or external runtime dependencies.
+- Native 8 x 8 ground floor with four glass doors and an intact ceiling at z=1.
+- Previous approved-roof Astrolux car-display artwork above that base.
+- Upper native stories removed; 404 decorative slices preserve the previous image and anchors.
+- Original ground preserved. No external runtime dependency or dealership code.
 
-No stairs yet: inspect upper levels using debug movement. Cars, kiosks, signs, lighting and sales are deferred. Native glass is the first test material, not the final visual design.
+The upper display is artwork, not walkable floors or actual vehicles. Kiosks, lighting and sales remain deferred. The approved left AC remains; the removed roof structures stay removed.
+
+Existing lab prototypes convert once on the next debug lab load if the site is clear and player is nearby, outside the footprint. The conversion preserves the ground-floor objects and ceiling, rejects foreign objects or occupants and rolls back construction failures. Use the context-menu conversion option if the automatic attempt is deferred. The user accepted the resulting in-game appearance on October 22, 2026.
 
 ## Test installation
 
@@ -30,7 +31,7 @@ See [structural acceptance](docs/STRUCTURE-ACCEPTANCE.md) before adding detail.
 
 Offline Lua checks pass for perimeter continuity, floor layout, four doors, lab isolation, obstruction rejection, placement revalidation, duplicate prevention, cleanup and simulated construction/rollback failures. Engine doubles exercise persistence of ownership across a Lua module reload.
 
-**In-game acceptance is pending.** These checks do not establish actual collision, rendering, weather enclosure, room recognition, roof cutaway, pathfinding or save/reload behavior. Multiplayer is unsupported by this prototype.
+**The user accepted the in-game appearance on October 22, 2026.** Comprehensive door/collision, weather enclosure, room recognition, roof cutaway, pathfinding, cleanup and save/reload checks remain pending. Multiplayer is unsupported by this prototype.
 
 ## Run checks
 
