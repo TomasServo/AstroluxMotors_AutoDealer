@@ -50,10 +50,15 @@ Fengari is a development dependency only; it is not part of the game mod. A Lua 
 
 ## Provenance
 
-The previous mod was set aside before this rebuild. Its verified published reference was [`62449fc`](https://github.com/TomasServo/PZ_TSB_AutoVend/commit/62449fc011b82ab0e61ba18c1230c703df34b107). This repository publishes only the new structural prototype, its tests and documentation. Only the approved tower artwork and reused project glass assets are included with the structural prototype; backups, saves, logs, credentials and development dependencies are excluded.
+The previous mod was set aside before this rebuild. Its verified published reference was [`62449fc`](https://github.com/TomasServo/PZ_TSB_AutoVend/commit/62449fc011b82ab0e61ba18c1230c703df34b107). This repository publishes the rebuilt structure and vending system, its tests and documentation. Approved tower artwork and reused project glass, door and kiosk assets are included; backups, saves, logs, credentials and development dependencies are excluded.
 
 See [native implementation evidence](docs/NATIVE-EVIDENCE.md).
 
 The user accepted the transparent glass, gray floor with dark border, and complete tower/ceiling cutaway in-game on October 22, 2026. Version 0.3.8 hides the decorative tower and its native ceiling together within a four-tile entrance buffer, restoring beyond five tiles to avoid boundary flicker. This deliberately hides the tower before footprint entry. Multiplayer, weather enclosure and the full acceptance checklist remain unverified. The 0.2.1 triangle fix remains confirmed.
 
 The user confirmed native E interaction, mouse opening/closing and the quieter sound in-game on October 22, 2026 (0.4.1). Doors install once after all eight entrance tiles are loaded and clear. Existing objects are never replaced; failed insertion rolls back. Damaged or removed installed doors are not automatically recreated. Center-click integration attaches after native single-player Lua has loaded.
+
+## Kiosk and vehicle vending
+
+Version 0.5.2 adds the previous kiosk and sales program with a new Lua-only two-corner spawn-area system and a named kiosk item using vanilla furniture controls. On October 22, 2026, the user confirmed the kiosk item is present and a test purchase delivered a vehicle in the selected cardinal direction with its key. Remote delivery pauses until loaded ground is clear, then resumes automatically with the buyer online. Remote delivery, moving a configured kiosk, pickup blocking and multiplayer still need in-game acceptance. See [vending test instructions](docs/VENDING-TEST.md). The accepted 0.4.1 floor, tower and door behavior is retained.
+
