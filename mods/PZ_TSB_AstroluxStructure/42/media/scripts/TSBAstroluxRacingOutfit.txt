@@ -1,0 +1,38 @@
+module TSBAstrolux
+{
+    item AstroluxRacingJacket
+    {
+        DisplayName = Astrolux Motors Racing Jacket,
+        DisplayCategory = Clothing,
+        ItemType = base:clothing,
+        Weight = 1.0,
+        Icon = TSB_AstroluxRacingJacket,
+        BloodLocation = Jumper,
+        BodyLocation = base:jacket_bulky,
+        ClothingItem = AstroluxRacingJacket,
+        Insulation = 0.45,
+        ScratchDefense = 5,
+        WindResistance = 0.4,
+        WorldStaticModel = Jacket_Shellsuit_Ground,
+        Tags = base:isfirefuel;base:isfiretinder,
+    
+    }
+
+    item AstroluxRacingJacketWhite
+    {
+        DisplayName = Astrolux Motors Racing Jacket - White,
+        DisplayCategory = Clothing,
+        ItemType = base:clothing,
+        Weight = 1.0,
+        Icon = TSB_AstroluxRacingJacketWhite,
+        BloodLocation = Jumper,
+        BodyLocation = base:jacket_bulky,
+        ClothingItem = AstroluxRacingJacketWhite,
+        Insulation = 0.45,
+        ScratchDefense = 5,
+        WindResistance = 0.4,
+        WorldStaticModel = Jacket_Shellsuit_Ground,
+        Tags = base:canbedyed;base:isfirefuel;base:isfiretinder,
+    
+    }
+}
