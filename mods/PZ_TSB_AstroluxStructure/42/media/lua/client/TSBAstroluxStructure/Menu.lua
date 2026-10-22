@@ -22,7 +22,7 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
                     local plan,reason=builder.preview(player,x,y)
                     if not plan then return nil,reason end
                     local text='Build the structure prototype at '..x..', '..y..'? <LINE> '..
-                        '8 x 8 native ground floor and ceiling, with the preserved car-display tower above. Four native doors. <LINE> '..
+                        '8 x 8 native ground floor and ceiling, with the preserved car-display tower above. Two-tile openings centered on all four sides; sliding doors deferred. <LINE> '..
                         'Stand outside the 9 x 9 tower footprint. Keep the 11 x 11 site clear. Ground is preserved. <LINE> '..
                         'Upper tower is display artwork only. No upper walkable floors or dealership systems. <LINE> '..
                         'Disposable lab save only. Native cutaway and roof behavior still require testing.'
@@ -43,6 +43,12 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
             end)
             context:addOption('Astrolux Motors lab: apply car-display tower above ground floor',player,function()
                 report(player,function() return builder.convert(player) end)
+            end)
+            context:addOption('Astrolux Motors lab: apply transparent walls and open entrances',player,function()
+                report(player,function() return TSBAstroluxClearWalls.apply(player) end)
+            end)
+            context:addOption('Astrolux Motors lab: apply bordered gray tile floor',player,function()
+                report(player,function() return TSBAstroluxFlooring.apply(player) end)
             end)
             break
         end

@@ -1,3 +1,4 @@
+FBORenderChunk={DIRTY_REDRAW=1}
 local root='mods/PZ_TSB_AstroluxStructure/42/media/lua/'
 package.path=root..'shared/?.lua;'..root..'server/?.lua;'..package.path
 local P=require 'TSBAstroluxStructure/Plan'
@@ -12,10 +13,11 @@ for _,o in ipairs(p.objects) do
         assert(not edges[key],'Duplicate physical edge');edges[key]=true
     end
 end
-assert(counts.floor==64 and counts.window==28 and counts.door==4 and counts.frame==4 and counts.corner==1 and counts.art==404)
+assert(counts.floor==64 and counts.window==24 and (counts.door or 0)==0 and (counts.frame or 0)==0 and counts.corner==1 and counts.art==404)
 for z=0,0 do for n=0,7 do
     for _,e in ipairs({{100+n,200,true},{100+n,208,true},{100,200+n,false},{108,200+n,false}}) do
-        assert(edges[e[1]..':'..e[2]..':'..z..':'..tostring(e[3])],'Gap in physical perimeter')
+        local edge=edges[e[1]..':'..e[2]..':'..z..':'..tostring(e[3])]
+        if n==3 or n==4 then assert(not edge,'Centered entrance must remain open') else assert(edge,'Unplanned perimeter gap') end
     end
 end end
 
@@ -36,7 +38,8 @@ local function object(sprite)
     if failAt==createCount then error('injected constructor failure') end
     local md={}
     return {getModData=function() return md end,getContainer=function() return nil end,
-        setPermaLocked=function() end,sprite=sprite}
+        getSprite=function() return getSprite(sprite) end,setSprite=function(_,s) sprite=s:getName() end,
+        setPermaLocked=function() end,invalidateRenderChunkLevel=function() end,sprite=sprite}
 end
 local function key(x,y,z) return x..':'..y..':'..z end
 local function square(x,y,z)
@@ -84,7 +87,7 @@ end
 local B=require 'TSBAstroluxStructure/Builder'
 local function rejects(fn) local ok,result,reason=pcall(fn);assert(not ok or (result==nil and type(reason)=='string'),'Expected rejection') end
 local function preview() return B.preview(player,100,200) end
-reset();assert(#preview().objects==505)
+reset();assert(#preview().objects==493)
 for _,mode in ipairs({'main','client','server','debug'}) do
     save='AstroluxStructureLab_Test';client=false;server=false;debug=true
     if mode=='main' then save='The Space Bar' elseif mode=='client' then client=true
@@ -102,7 +105,7 @@ reset();world[key(100,200,0)].static[1]={};rejects(preview)
 reset();square(103,203,3).objects[1]=object('foreign');rejects(preview)
 reset();world[key(99,199,0)]=nil;rejects(preview)
 reset();vehicles[1]={getX=function() return 105 end,getY=function() return 205 end};rejects(preview)
-reset();sprites.walls_commercial_01_0=false;rejects(preview)
+reset();sprites.TSBAstroluxClearGlass_0=false;rejects(preview)
 reset();preview();world[key(100,200,0)].loose[1]={}
 rejects(function() return B.place(player,100,200) end);assert(not db.tower)
 
@@ -139,7 +142,7 @@ end
 reset();failAt=350;removeFail=true
 rejects(function() return B.place(player,100,200) end);assert(db.tower.status=='hold')
 removeFail=false;failAt=nil;B.remove(player);assert(not db.tower)
-print('PASS: perimeter, floors, four doors, lab isolation, obstruction checks, revalidation, duplicate prevention, cleanup and injected failures')
+print('PASS: perimeter, floors, centered openings, lab isolation, obstruction checks, revalidation, duplicate prevention, cleanup and injected failures')
 
 -- Ordinary site rejection must not throw (Kahlua logs thrown errors even under pcall).
 reset();world[key(100,200,0)].loose[1]={}

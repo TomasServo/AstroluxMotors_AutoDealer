@@ -2,14 +2,16 @@
 
 Glass tower rebuild for Project Zomboid Build 42. Structure first; dealership features will follow structural acceptance.
 
-This repository currently contains **Structure Lab 0.2.1**, an isolated prototype using native glass, doors and floors. It does not replace or migrate the previous `PZ_TSB_AutoVend` mod. Existing vehicles, paid orders, balances and saved data must be preserved when dealership features are added later.
+This repository currently contains **Structure Lab 0.3.8**, an isolated prototype using native glass, doors and floors. It does not replace or migrate the previous `PZ_TSB_AutoVend` mod. Existing vehicles, paid orders, balances and saved data must be preserved when dealership features are added later.
 
 ## Current structure
 
-- Native 8 x 8 ground floor with four glass doors and an intact ceiling at z=1.
+- Transparent 8 x 8 ground floor with two-tile openings centered on all four sides and an intact ceiling at z=1.
 - Previous approved-roof Astrolux car-display artwork above that base.
 - Upper native stories removed; 404 decorative slices preserve the previous image and anchors.
-- Original ground preserved. No external runtime dependency or dealership code.
+- Native gray square-tile floor with a dark gray border. Original floor state is retained for lab cleanup. No external runtime dependency or dealership code.
+
+The base reuses the previous project transparent glass under isolated sprite names. Sliding doors are deferred; all eight centered entrance tiles are intentionally open. Existing tagged intact panes convert on the next lab load without repairing altered panes.
 
 The upper display is artwork, not walkable floors or actual vehicles. Kiosks, lighting and sales remain deferred. The approved left AC remains; the removed roof structures stay removed.
 
@@ -48,6 +50,8 @@ Fengari is a development dependency only; it is not part of the game mod. A Lua 
 
 ## Provenance
 
-The previous mod was set aside before this rebuild. Its verified published reference was [`62449fc`](https://github.com/TomasServo/PZ_TSB_AutoVend/commit/62449fc011b82ab0e61ba18c1230c703df34b107). This repository publishes only the new structural prototype, its tests and documentation. No old tower artwork, backups, saves, logs, credentials or development dependencies are included.
+The previous mod was set aside before this rebuild. Its verified published reference was [`62449fc`](https://github.com/TomasServo/PZ_TSB_AutoVend/commit/62449fc011b82ab0e61ba18c1230c703df34b107). This repository publishes only the new structural prototype, its tests and documentation. Only the approved tower artwork and reused project glass assets are included with the structural prototype; backups, saves, logs, credentials and development dependencies are excluded.
 
 See [native implementation evidence](docs/NATIVE-EVIDENCE.md).
+
+The user accepted the transparent glass, gray floor with dark border, and complete tower/ceiling cutaway in-game on October 22, 2026. Version 0.3.8 hides the decorative tower and its native ceiling together within a four-tile entrance buffer, restoring beyond five tiles to avoid boundary flicker. This deliberately hides the tower before footprint entry. Sliding doors, multiplayer, weather enclosure and the full acceptance checklist remain unverified. The 0.2.1 triangle fix remains confirmed.

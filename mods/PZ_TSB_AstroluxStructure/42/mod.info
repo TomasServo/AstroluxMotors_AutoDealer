@@ -1,9 +1,12 @@
 name=Astrolux Motors - Structure Lab
 id=PZ_TSB_AstroluxStructure
 author=TomasServo
-modversion=0.2.1-depth-coverage
+modversion=0.3.8-ceiling-cutaway
 versionMin=42.21.0
 description=Isolated structural prototype. Native glass, doors and floors only. Single-player debug lab; no dealership or legacy tower changes.
 
 pack=TSBAstroluxDisplay
 tiledef=TSBAstroluxDisplay 7981
+
+pack=TSBAstroluxClearGlass
+tiledef=TSBAstroluxClearGlass 7982

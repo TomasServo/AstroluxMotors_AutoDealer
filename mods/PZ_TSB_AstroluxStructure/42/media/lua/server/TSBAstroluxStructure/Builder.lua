@@ -1,5 +1,6 @@
 -- Isolated lab: ground-floor conversion only; no commerce or legacy mod hooks.
 local P=require 'TSBAstroluxStructure/Plan'
+local Flooring=require 'TSBAstroluxStructure/Flooring'
 local B={}
 TSBAstroluxStructure=B
 local tag='TSBAstroluxStructure'
@@ -102,10 +103,12 @@ function B.place(player,x,y)
             elseif item.kind~='floor' then sq:AddTileObject(obj) end
             sq:RecalcAllWithNeighbours(true)
         end
+        local painted,reason=Flooring.paint(record)
+        if not painted then error(reason,0) end
         record.status='ready'
     end)
     if not ok then
-        local clean=true
+        local clean=record.status~='hold'
         for i=#made,1,-1 do
             local entry=made[i]
             if not pcall(removeObject,entry.obj,entry.sq) then clean=false end
@@ -121,6 +124,8 @@ function B.remove(player)
     if not record or not nearby(player,record.x,record.y) then return nil,'Stand near the lab on the ground, outside the tower footprint.' end
     local clear,reason=scan(record.x,record.y,record,player)
     if not clear then return nil,reason end
+    local restored,reason=Flooring.restore(record)
+    if not restored then return nil,reason end
     -- Reverse height order keeps floors until the glass above has been removed.
     for z=P.maxZ,0,-1 do for sx=record.x-1,record.x+11 do for sy=record.y-1,record.y+11 do
         local sq=getCell():getGridSquare(sx,sy,z)

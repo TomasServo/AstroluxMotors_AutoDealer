@@ -16,5 +16,8 @@ function run(args, marker) {
 }
 const files = walk('mods/PZ_TSB_AstroluxStructure').filter(file => file.endsWith('.lua'));
 run(['-e', files.map(file => `assert(loadfile(${JSON.stringify(file.replaceAll('\\', '/'))}))`).join('\n') + "\nprint('PASS: runtime Lua syntax')"], 'PASS: runtime Lua syntax');
-run(['tests/structure.lua'], 'PASS: perimeter, floors, four doors');
+run(['tests/structure.lua'], 'PASS: perimeter, floors, centered openings');
 run(['tests/menu.lua'], 'PASS: right-click menu');
+run(['tests/clear-walls.lua'], 'PASS: 24 transparent panes');
+run(['tests/visibility.lua'], 'PASS: all 404 slices');
+run(['tests/flooring.lua'], 'PASS: 28 dark border tiles');

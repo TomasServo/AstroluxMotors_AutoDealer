@@ -19,7 +19,7 @@ TSBAstroluxStructure={preview=function() if blocked then return nil,'Dropped ite
     remove=function() return nil,'Body blocks the site at 102, 202, 0' end}
 dofile('mods/PZ_TSB_AstroluxStructure/42/media/lua/client/TSBAstroluxStructure/Menu.lua')
 callback(0,context,{{getSquare=function() return square end}},false)
-assert(#options==3,'Ground context must contain preview and removal')
+assert(#options==5,'Ground context must contain preview and removal')
 options[1].handler();assert(#dialogs==1 and not dialogs[1].yesno and dialogs[1].text:find('Dropped item'))
 blocked=false;options[1].handler();assert(dialogs[2].yesno)
 dialogs[2].handler(nil,{internal='YES'});assert(not dialogs[3].yesno and dialogs[3].text:find('101, 201, 0'))
