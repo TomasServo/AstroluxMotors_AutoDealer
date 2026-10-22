@@ -44,7 +44,8 @@ function D.write(profile)
 end
 function D.capture()
     if isClient() or isServer() or not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return nil,'Capture is restricted to the Astrolux single-player lab.' end
-    local lab=ModData.getOrCreate('TSBAstroluxStructure.Lab.v1');local record=lab.tower
+    local p=getSpecificPlayer(0)
+    local record=p and require('TSBAstroluxStructure/Records').near(p:getX(),p:getY()) or ModData.getOrCreate('TSBAstroluxStructure.Lab.v1').tower
     if not record or record.status~='ready' then return nil,'No ready showroom record is available.' end
     local defaults=ModData.getOrCreate('TSBAstroluxStructure.DecorDefaults.v1')
     local profile,why=defaults.profile,nil

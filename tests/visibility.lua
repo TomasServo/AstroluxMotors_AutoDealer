@@ -96,3 +96,10 @@ for _,o in ipairs({floor(104,204,0),floor(108,204,1),floor(104,204,2),floor(104,
 end
 print('PASS: all 64 owned ceiling tiles follow shell visibility; ground floors, foreign objects and altered tiles untouched')
 print('PASS: all 404 slices hide/restore together, full doorway tiles, native-reset recovery, exterior culling, viewer isolation and glass untouched')
+local other={id='second-showroom',x=140,y=200};local viewer=player(104,204,0)
+assert(V.shouldHide(viewer,record));assert(not V.shouldHide(viewer,other))
+viewer.x=113
+assert(V.shouldHide(viewer,record),'Second showroom must not reset first showroom entrance hysteresis')
+assert(not V.shouldHide(viewer,other))
+viewer.x=144;assert(V.shouldHide(viewer,other));assert(not V.shouldHide(viewer,record))
+print('PASS: separate showroom cutaway states retain independent entrance hysteresis')

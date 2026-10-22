@@ -19,10 +19,15 @@ TSBAstroluxStructure={preview=function() if blocked then return nil,'Dropped ite
     remove=function() return nil,'Body blocks the site at 102, 202, 0' end}
 dofile('mods/PZ_TSB_AstroluxStructure/42/media/lua/client/TSBAstroluxStructure/Menu.lua')
 callback(0,context,{{getSquare=function() return square end}},false)
-assert(#options==6,'Ground context must contain preview, removal and furniture capture')
+assert(#options==7,'Ground context must contain preview, removal and furniture capture')
 options[1].handler();assert(#dialogs==1 and not dialogs[1].yesno and dialogs[1].text:find('Dropped item'))
 blocked=false;options[1].handler();assert(dialogs[2].yesno)
 dialogs[2].handler(nil,{internal='YES'});assert(not dialogs[3].yesno and dialogs[3].text:find('101, 201, 0'))
 options[2].handler();dialogs[4].handler(nil,{internal='YES'})
 assert(not dialogs[5].yesno and dialogs[5].text:find('102, 202, 0'))
+local pasted=0
+TSBAstroluxStructure.paste=function(p,x,y)assert(p==player and x==100 and y==200);pasted=pasted+1;return {furnishingCount=19}end
+assert(options[7].label:find('paste furnished showroom'))
+options[7].handler();assert(dialogs[6].yesno and dialogs[6].text:find('19 saved furnishings'))
+dialogs[6].handler(nil,{internal='YES'});assert(pasted==1)
 print('PASS: right-click menu, readable rejection dialogs and placement revalidation feedback')

@@ -89,10 +89,11 @@ local last=0
 Events.OnTick.Add(function()
     if not getDebug() or not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return end
     local now=getTimestampMs();if now-last<1000 then return end;last=now
-    local r=ModData.getOrCreate('TSBAstroluxStructure.Lab.v1').tower
+    for _,r in ipairs(require('TSBAstroluxStructure/Records').all())do
     if r and not r.slidingDoorsRevision then
         local ok,reason=I.apply(r)
         if ok then print('[Astrolux doors] Eight sliding leaves installed in four entrances.') end
+    end
     end
 end)
 return I

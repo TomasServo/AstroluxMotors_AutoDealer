@@ -58,10 +58,13 @@ local function removeObject(obj,sq)
     sq:RemoveTileObject(obj)
     sq:RecalcAllWithNeighbours(true)
 end
-function B.preview(player,x,y)
+function B.preview(player,x,y,multiple)
     if not allowed(player) then return nil,'Use a single-player debug save named AstroluxStructureLab (optional suffix).' end
     if not integer(x) or not integer(y) or not nearby(player,x,y) then return nil,'Choose ground within 30 tiles.' end
-    if state().tower then return nil,'One lab tower at a time. Clean up the existing prototype first.' end
+    if state().tower and not multiple then return nil,'One lab tower at a time. Use paste furnished showroom here for a separate copy.' end
+    if multiple then for _,r in ipairs(require('TSBAstroluxStructure/Records').all())do
+        if r.x==x and r.y==y then return nil,'This showroom origin is already registered. Nothing replaced.' end
+    end end
     local clear,reason=scan(x,y,nil,player)
     if not clear then return nil,reason end
     local plan=P.plan(x,y)
@@ -71,8 +74,10 @@ function B.preview(player,x,y)
     end
     return plan
 end
-function B.place(player,x,y)
-    local plan,reason=B.preview(player,x,y) -- Revalidate immediately before any mutation.
+function B.place(player,x,y,options)
+    options=options or {}
+    local previous=state().tower
+    local plan,reason=B.preview(player,x,y,options.multiple) -- Revalidate immediately before any mutation.
     if not plan then return nil,reason end
     local record={id='structure:'..x..':'..y,x=x,y=y,revision=P.revision,status='placing'}
     state().tower=record
@@ -106,21 +111,48 @@ function B.place(player,x,y)
         local painted,reason=Flooring.paint(record)
         if not painted then error(reason,0) end
         record.status='ready'
+        if options.furnished then
+            record.clearWallsRevision=1
+            local installed,why=require('TSBAstroluxStructure/SlidingInstall').apply(record)
+            if not installed then error(why,0) end
+            local furnished,why=require('TSBAstroluxStructure/Furnishings').apply(record,player)
+            if not furnished then error(why,0) end
+        end
     end)
     if not ok then
         local clean=record.status~='hold'
+        if clean and record.flooring then
+            local ok,restored=pcall(Flooring.restore,record);if not ok or not restored then clean=false end
+        end
         for i=#made,1,-1 do
             local entry=made[i]
-            if not pcall(removeObject,entry.obj,entry.sq) then clean=false end
+            if clean and not pcall(removeObject,entry.obj,entry.sq) then clean=false end
         end
-        if clean then state().tower=nil else record.status='hold' end
+        -- Door installation adds native objects outside the structural constructor list.
+        if clean and options.furnished then
+            for _,pair in ipairs(require('TSBAstroluxStructure/Entrances').plan(record))do for _,leaf in ipairs(pair.leaves)do
+                local sq=getCell():getGridSquare(leaf.x,leaf.y,0);local list=sq and sq:getObjects()
+                if list then for i=list:size()-1,0,-1 do local obj=list:get(i)
+                    if obj:getModData()[tag]==record.id and not pcall(removeObject,obj,sq) then clean=false end
+                end end
+            end end
+        end
+        if clean then state().tower=previous else
+            record.status='hold'
+            if previous then state().showrooms=state().showrooms or {};state().showrooms[record.id]=record;state().tower=previous end
+        end
         error(tostring(err)..(clean and ' Prototype objects rolled back.' or ' Partial structure held; inspect before cleanup.'),0)
+    end
+    if options.multiple then
+        state().showrooms=state().showrooms or {};state().showrooms[record.id]=record
+        state().tower=previous or record
     end
     return record
 end
-function B.remove(player)
+function B.paste(player,x,y)return B.place(player,x,y,{multiple=true,furnished=true})end
+function B.remove(player,x,y)
     if not allowed(player) then return nil,'Cleanup is restricted to the single-player debug lab.' end
-    local record=state().tower
+    local record=x and y and require('TSBAstroluxStructure/Records').near(x,y) or state().tower
     if not record or not nearby(player,record.x,record.y) then return nil,'Stand near the lab on the ground, outside the tower footprint.' end
     local clear,reason=scan(record.x,record.y,record,player)
     if not clear then return nil,reason end
@@ -137,7 +169,8 @@ function B.remove(player)
             end
         end
     end end end
-    state().tower=nil
+    if state().tower==record then state().tower=nil end
+    if state().showrooms then state().showrooms[record.id]=nil end
     return true
 end
 function B.convert(player)

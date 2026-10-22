@@ -42,7 +42,8 @@ local last=0
 Events.OnTick.Add(function()
     local now=getTimestampMs();if now-last<2000 then return end;last=now
     if not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return end
-    local r=ModData.getOrCreate('TSBAstroluxStructure.Lab.v1').tower
+    for _,r in ipairs(require('TSBAstroluxStructure/Records').all())do
     if r and not r.showroomSinkRevision and not r.showroomSinkHold then S.apply(r,getSpecificPlayer(0)) end
+    end
 end)
 return S

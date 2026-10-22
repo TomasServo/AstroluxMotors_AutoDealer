@@ -149,6 +149,21 @@ function S.kioskPacked(id)
     init();local t=db.terminals[id]
     if t then t.packed=true;service.quotes={} end
 end
+function S.kioskCheckpoint()
+    init();local ids={};for id in pairs(db.terminals)do ids[id]=true end;return ids
+end
+function S.kioskRollbackTo(ids,locations)
+    init()
+    local function owned(id,t)return not ids[id] and locations[t.x..':'..t.y..':'..t.z] end
+    for id,t in pairs(db.terminals)do if owned(id,t) then
+        for _,order in pairs(db.orders)do if order.terminal==id then return false end end
+        local sq=getCell():getGridSquare(t.x,t.y,t.z);local list=sq and sq:getObjects()
+        if not list then return false end
+        for i=0,list:size()-1 do if list:get(i):getModData().TSBAstroluxVend==id then return false end end
+    end end
+    for id,t in pairs(db.terminals)do if owned(id,t) then db.terminals[id]=nil end end
+    service.quotes={};return true
+end
 function S.kioskPreplace(item,sq)
     init()
     if sq:getZ()~=0 or not sq:TreatAsSolidFloor() then fail('Place the sales kiosk on ground-floor flooring.') end

@@ -37,7 +37,7 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
                 local modal=ISModalRichText:new(100,100,520,230,
                     'Remove only this lab prototype? <LINE> Clear all people and loose items first. Original ground is retained.',
                     true,nil,function(_,button)
-                        if button.internal=='YES' then report(player,function() local removed,reason=builder.remove(player); if removed then player:Say('Astrolux Motors prototype removed.') end; return removed,reason end) end
+                        if button.internal=='YES' then report(player,function() local removed,reason=builder.remove(player,x,y); if removed then player:Say('Astrolux Motors prototype removed.') end; return removed,reason end) end
                     end,playerNum)
                 modal:initialise();modal:addToUIManager()
             end)
@@ -58,6 +58,23 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
                     if not profile then return nil,reason end
                     player:Say('Recorded '..#profile.objects..' showroom furnishings as the default layout.')
                     return true
+                end)
+            end)
+            context:addOption('Astrolux Motors lab: paste furnished showroom here',player,function()
+                report(player,function()
+                    local plan,why=builder.preview(player,x,y,true);if not plan then return nil,why end
+                    local text='Paste a complete Astrolux Motors showroom here? <LINE> '..
+                        'Includes the glass tower, gray bordered floor, eight sliding door leaves and all 19 saved furnishings, including the sink. <LINE> '..
+                        'Both kiosks receive fresh identities and need new vehicle delivery areas. Existing showrooms and their purchases are retained. <LINE> '..
+                        'Stand outside the footprint and clear the site first.'
+                    local modal=ISModalRichText:new(100,100,620,310,text,true,nil,function(_,button)
+                        if button.internal=='YES' then report(player,function()
+                            local record,reason=builder.paste(player,x,y)
+                            if record then player:Say('Astrolux showroom pasted with all 19 furnishings. Configure its new kiosks.') end
+                            return record,reason
+                        end) end
+                    end,playerNum)
+                    modal:initialise();modal:addToUIManager();return true
                 end)
             end)
             break

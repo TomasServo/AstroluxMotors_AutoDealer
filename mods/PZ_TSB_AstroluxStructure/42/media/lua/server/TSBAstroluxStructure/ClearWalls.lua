@@ -13,7 +13,7 @@ end
 function M.apply(player)
     if isClient() or isServer() or not getDebug() or not player or player:isDead()
         or not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return nil,'Single-player debug lab only.' end
-    local r=ModData.getOrCreate('TSBAstroluxStructure.Lab.v1').tower
+    local r=require('TSBAstroluxStructure/Records').near(player:getX(),player:getY())
     if not r or r.status~='ready' or (r.revision or 1)<2 then return nil,'Convert the tower display first.' end
     if player:getZ()~=0 or (player:getX()-r.x)^2+(player:getY()-r.y)^2>900 then return nil,'Stand near the tower on the ground.' end
     local cell=getCell();local changes,removals,corners={},{},{};local deferred=0

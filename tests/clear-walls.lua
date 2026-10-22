@@ -1,3 +1,4 @@
+package.path='mods/PZ_TSB_AstroluxStructure/42/media/lua/shared/?.lua;'..package.path
 local db,world,save,addCalls,failAddAt={}, {},'AstroluxStructureLab',0,nil
 function isClient() return false end
 function isServer() return false end

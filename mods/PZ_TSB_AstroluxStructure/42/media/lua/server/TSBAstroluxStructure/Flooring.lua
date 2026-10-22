@@ -99,7 +99,7 @@ end
 function F.apply(player)
     if isClient() or isServer() or not getDebug() or not player or player:isDead()
         or not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return nil,'Single-player debug lab only.' end
-    local r=ModData.getOrCreate('TSBAstroluxStructure.Lab.v1').tower
+    local r=require('TSBAstroluxStructure/Records').near(player:getX(),player:getY())
     if not r or r.status~='ready' then return nil,'A ready lab tower is required.' end
     if player:getZ()~=0 or (player:getX()-r.x)^2+(player:getY()-r.y)^2>900 then return nil,'Stand near the tower on the ground.' end
     return F.paint(r)

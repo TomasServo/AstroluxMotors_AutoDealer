@@ -190,3 +190,33 @@ assert(not converted and why:find('restored') and db.tower.revision==1 and world
 legacy();local dropSquare=world[key(100,200,3)] or square(100,200,3);dropSquare.loose[1]={}
 converted,why=B.convert(player);assert(not converted and why:find('Dropped item') and db.tower.revision==1)
 print('PASS: conversion preserves ground and ceiling, removes native upper stories, adds 404 pieces once, rejects occupied sites and rolls back failures')
+
+-- Additional furnished copies retain the legacy record and independently roll back.
+reset();local original=B.place(player,100,200)
+for x=119,149 do for y=199,209 do square(x,y,0)end end
+package.loaded['TSBAstroluxStructure/SlidingInstall']={apply=function(r)
+    for _,pair in ipairs(require('TSBAstroluxStructure/Entrances').plan(r))do for _,leaf in ipairs(pair.leaves)do
+        local door=object('test-door');door:getModData().TSBAstroluxStructure=r.id
+        cell:getGridSquare(leaf.x,leaf.y,0):AddSpecialObject(door)
+    end end
+    r.slidingDoorsRevision=1;return true
+end}
+local failFurniture=false
+package.loaded['TSBAstroluxStructure/Furnishings']={apply=function(r)
+    if failFurniture then return nil,'injected furnishing failure' end
+    r.furnishingCount=19;r.furnishingsRevision=1;return true
+end}
+local p2={isDead=function()return false end,getZ=function()return 0 end,getX=function()return 115 end,getY=function()return 195 end}
+local copy=assert(B.paste(p2,120,200))
+assert(db.tower==original and db.showrooms[copy.id]==copy and copy.furnishingCount==19)
+local Records=require 'TSBAstroluxStructure/Records'
+assert(#Records.all()==2 and Records.near(104,204)==original and Records.near(124,204)==copy)
+assert(not B.paste(p2,120,200),'Never overwrite an existing showroom')
+failFurniture=true
+local p3={isDead=function()return false end,getZ=function()return 0 end,getX=function()return 135 end,getY=function()return 195 end}
+assert(not pcall(B.paste,p3,140,200))
+assert(db.tower==original and #Records.all()==2,'Failed copy must retain all existing records')
+for x=140,148 do for y=200,208 do local sq=cell:getGridSquare(x,y,0)
+    for _,obj in ipairs(sq.objects)do assert(obj:getModData().TSBAstroluxStructure~='structure:140:200','Structure/doors must roll back after furnishing failure')end
+end end
+print('PASS: furnished paste retains original showroom, registers separate copies, rejects overlaps and rolls back failed copy including doors')

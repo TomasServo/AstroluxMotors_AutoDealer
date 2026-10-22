@@ -10,8 +10,10 @@ function V.inside(player,record)
 end
 function V.shouldHide(player,record)
     if player:getZ()~=0 then transition[player]=nil;return false end
-    local state=transition[player]
-    if not state or state.id~=record.id then state={id=record.id,hidden=false};transition[player]=state end
+    local records=transition[player]
+    if not records then records={};transition[player]=records end
+    local state=records[record.id]
+    if not state then state={id=record.id,hidden=false};records[record.id]=state end
     -- Hide before the native elevated-structure cutaway reaches the entrance.
     -- Restore farther away so small doorway movements cannot flicker the shell.
     local margin=state.hidden and 5 or 4
@@ -63,9 +65,9 @@ end
 local tracked={}
 local lastReport
 local layout=require 'TSBAstroluxStructure/DisplayPlan'
-local function record()
-    if isClient() or isServer() or not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return nil end
-    return ModData.getOrCreate('TSBAstroluxStructure.Lab.v1').tower
+local function records()
+    if isClient() or isServer() or not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return {} end
+    return require('TSBAstroluxStructure/Records').all()
 end
 local function track(square,r)
     if not square or not r then return end
@@ -78,7 +80,7 @@ local function track(square,r)
     end
 end
 local function discover()
-    local r=record();if not r then return end
+    for _,r in ipairs(records())do
     local seen={}
     for _,piece in ipairs(layout) do
         local key=piece.x..':'..piece.y..':'..piece.z
@@ -92,6 +94,7 @@ local function discover()
     for x=0,7 do for y=0,7 do
         track(getCell():getGridSquare(r.x+x,r.y+y,1),r)
     end end
+    end
     local total,hidden=0,0
     for obj in pairs(tracked) do
         if obj:getObjectIndex()>=0 then
@@ -104,7 +107,7 @@ local function discover()
 end
 if Events then
     Events.OnGameStart.Add(discover)
-    Events.LoadGridsquare.Add(function(square) track(square,record()) end)
+    Events.LoadGridsquare.Add(function(square)for _,r in ipairs(records())do track(square,r)end end)
     local last=0
     Events.OnTick.Add(function()
         local now=getTimestampMs()

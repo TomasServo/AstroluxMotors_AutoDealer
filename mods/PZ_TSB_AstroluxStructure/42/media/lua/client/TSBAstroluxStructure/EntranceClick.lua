@@ -8,7 +8,7 @@ function C.click(object,player,x,y)
     local speed=UIManager.getSpeedControls()
     if speed and speed:getCurrentGameSpeed()==0 then return false end
     if not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return false end
-    local r=ModData.getOrCreate('TSBAstroluxStructure.Lab.v1').tower
+    local r=require('TSBAstroluxStructure/Records').near(player:getX(),player:getY())
     if not r or r.status~='ready' or not r.slidingDoorsRevision then return false end
     -- Project the entire doorway plane, including its empty center at handle
     -- height. A picked floor/background object is not required to be a leaf.
