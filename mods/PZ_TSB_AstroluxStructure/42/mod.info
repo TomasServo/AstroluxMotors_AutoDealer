@@ -1,0 +1,6 @@
+name=Astrolux Motors - Structure Lab
+id=PZ_TSB_AstroluxStructure
+author=TomasServo
+modversion=0.1.0-structure-prototype
+versionMin=42.21.0
+description=Isolated structural prototype. Native glass, doors and floors only. Single-player debug lab; no dealership or legacy tower changes.
