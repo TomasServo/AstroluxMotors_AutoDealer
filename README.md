@@ -2,7 +2,7 @@
 
 Glass tower rebuild for Project Zomboid Build 42. Structure first; dealership features will follow structural acceptance.
 
-This repository currently contains **Structure Lab 0.3.8**, an isolated prototype using native glass, doors and floors. It does not replace or migrate the previous `PZ_TSB_AutoVend` mod. Existing vehicles, paid orders, balances and saved data must be preserved when dealership features are added later.
+This repository currently contains **Structure Lab 0.4.1**, an isolated prototype using native glass, doors and floors. It does not replace or migrate the previous `PZ_TSB_AutoVend` mod. Existing vehicles, paid orders, balances and saved data must be preserved when dealership features are added later.
 
 ## Current structure
 
@@ -11,7 +11,7 @@ This repository currently contains **Structure Lab 0.3.8**, an isolated prototyp
 - Upper native stories removed; 404 decorative slices preserve the previous image and anchors.
 - Native gray square-tile floor with a dark gray border. Original floor state is retained for lab cleanup. No external runtime dependency or dealership code.
 
-The base reuses the previous project transparent glass under isolated sprite names. Sliding doors are deferred; all eight centered entrance tiles are intentionally open. Existing tagged intact panes convert on the next lab load without repairing altered panes.
+The base reuses the previous project transparent glass under isolated sprite names. Four native sliding-door pairs fill the centered two-tile entrances. They reuse the prior project artwork, animation and sound under isolated names. Left-click the doorway center to open or close even when the leaves are slid aside; native leaf clicks and E remain available. A short guard prevents two rapid center clicks from immediately reversing the door. Opening and closing sound gain is reduced by 25% (0.65 to 0.4875). Existing tagged intact panes convert on the next lab load without repairing altered panes.
 
 The upper display is artwork, not walkable floors or actual vehicles. Kiosks, lighting and sales remain deferred. The approved left AC remains; the removed roof structures stay removed.
 
@@ -54,4 +54,6 @@ The previous mod was set aside before this rebuild. Its verified published refer
 
 See [native implementation evidence](docs/NATIVE-EVIDENCE.md).
 
-The user accepted the transparent glass, gray floor with dark border, and complete tower/ceiling cutaway in-game on October 22, 2026. Version 0.3.8 hides the decorative tower and its native ceiling together within a four-tile entrance buffer, restoring beyond five tiles to avoid boundary flicker. This deliberately hides the tower before footprint entry. Sliding doors, multiplayer, weather enclosure and the full acceptance checklist remain unverified. The 0.2.1 triangle fix remains confirmed.
+The user accepted the transparent glass, gray floor with dark border, and complete tower/ceiling cutaway in-game on October 22, 2026. Version 0.3.8 hides the decorative tower and its native ceiling together within a four-tile entrance buffer, restoring beyond five tiles to avoid boundary flicker. This deliberately hides the tower before footprint entry. Multiplayer, weather enclosure and the full acceptance checklist remain unverified. The 0.2.1 triangle fix remains confirmed.
+
+The user confirmed native E interaction, mouse opening/closing and the quieter sound in-game on October 22, 2026 (0.4.1). Doors install once after all eight entrance tiles are loaded and clear. Existing objects are never replaced; failed insertion rolls back. Damaged or removed installed doors are not automatically recreated. Center-click integration attaches after native single-player Lua has loaded.

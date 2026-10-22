@@ -2,8 +2,8 @@
 
 Status: offline checks passed; the user accepted the in-game appearance on October 22, 2026. The full checklist below remains a test plan, not a claim that every check passed. Use a disposable `AstroluxStructureLab` single-player debug save.
 
-1. Walk the perimeter. Glass must block its correct tile edges; the centered two-tile entrances remain open.
-2. Enter and exit all four centered openings without invisible barriers. Sliding doors are deferred.
+1. Walk the perimeter. Glass must block its correct tile edges; the centered two-tile entrances contain paired sliding doors.
+2. Enter and exit all four centered openings without invisible barriers. Open and close each pair with E, a native leaf click, and a doorway-center click while the leaves are slid aside.
 3. Move around and inside at several zoom levels. Inspect glass transparency, native cutaway, corners and roof hiding for flicker, triangles or missing faces.
 4. Verify the native ground-floor tile pattern, glass and ceiling remain. Confirm native upper stories are removed and the car-display artwork aligns above the base. Check the approved roof and corners. The upper display has no walkable decks.
 5. Save, exit and reload. Confirm floor tiles, windows, openings and collision persist.
@@ -15,3 +15,5 @@ Record game build, observations and screenshots for each failed check. Native we
 Stairs/circulation, final styling and dealership features follow structural acceptance. Do not migrate existing dealership saves as part of this test.
 
 The user accepted the transparent ground-floor glass, bordered gray floor and complete tower/ceiling hiding on October 22, 2026 (0.3.8). This is visual acceptance; broader checklist items remain to be verified. The tower hides within four tiles and restores beyond five tiles of the base to preempt native partial cutaway. No unsupported renderer cache API is used.
+
+The user confirmed doors open/close by mouse and E, and accepted the reduced sound volume on October 22, 2026 (0.4.1). Other checklist items remain unverified unless recorded above.

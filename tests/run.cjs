@@ -21,3 +21,4 @@ run(['tests/menu.lua'], 'PASS: right-click menu');
 run(['tests/clear-walls.lua'], 'PASS: 24 transparent panes');
 run(['tests/visibility.lua'], 'PASS: all 404 slices');
 run(['tests/flooring.lua'], 'PASS: 28 dark border tiles');
+run(['tests/sliding-doors.lua'], 'PASS: eight native sliding leaves');
