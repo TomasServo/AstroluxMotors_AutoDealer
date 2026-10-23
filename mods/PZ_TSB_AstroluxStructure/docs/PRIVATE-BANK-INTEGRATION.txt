@@ -1,0 +1,98 @@
+Astrolux Motors — optional banking and private admin adapters
+2026-10-23 | Registry contract v1
+
+Astrolux runs with carried cash and no banking mod. The included TSB adapter
+detects the existing PZ_TSB_Economy server bridge lazily. It does not load, enable
+or install the bank. No EZPZ or other third-party adapter is included. Private
+mods do not need Workshop publication to register their own adapter.
+
+INSTALL YOUR OWN OPTIONAL COMPATIBILITY MOD
+1. Keep your bank and adapter separate from Astrolux's runtime files.
+2. Put the registration Lua in your compatibility mod's 42/media/lua/server/.
+   Start with docs/examples/PrivateBankAdapter.lua.example; rename to .lua.
+3. Give the compatibility mod its own unique mod ID. Declare its dependencies
+   on PZ_TSB_AstroluxStructure and your private bank's actual mod ID. Astrolux
+   itself gains no dependency on your compatibility mod or your bank.
+   Example mod.info fragment (replace MyPrivateBank with the real ID):
+       name=My Community Astrolux Bank Adapter
+       id=MyCommunityAstroluxBankAdapter
+       require=PZ_TSB_AstroluxStructure,MyPrivateBank
+   The bank's code still has to be installed and enabled on the server. Follow
+   native PZ mod distribution rules for clients; do not send credentials in Lua.
+4. Replace PrivateBankServer and the example methods with your bank's trusted
+   server API. The example is an interface stub, not a ready-made bank engine.
+5. Register once per Lua runtime with a unique stable ID, e.g. mycommunity.
+   Players then see Pay from My Community Bank; payment ID bank:mycommunity.
+   Never rename/reuse the ID while saved orders refer to it. Do not replace tsb.
+6. Test in a disposable world and a two-client multiplayer server before use.
+
+REGISTRATION CONTRACT
+Banks = require 'TSBAstroluxVend/BankAdapters'
+Banks.register(id, {label=..., detect=..., balance=..., charge=...})
+IDs start with a lowercase letter and contain lowercase letters, digits, _ or -;
+maximum 40 characters. Labels are nonempty strings of at most 80 characters.
+Duplicate registrations fail. Provider options are sorted by ID, not label.
+
+detect(): return exactly true only when the complete compatible API is available.
+It must be read-only: no bank requires, account creation, network requests,
+starter funds or other mutations. Lazy detection accommodates Lua load ordering.
+Missing/broken detection and invalid/unreadable balances omit the bank from the
+menu; they must never cause Astrolux to install or enable a dependency.
+
+balance(actor): return finite, exactly representable nonnegative whole dollars.
+actor is the authenticated server player's username, not a client account field.
+Resolve it to your bank's identity on the server; throw for missing, inaccessible
+or paused accounts. Do not create an account merely to display a balance. Do not
+silently convert tokens, fractional amounts or balances from other providers.
+
+charge(actor, amount, receipt, apply): synchronously perform ONE bank-owned,
+rollback-capable transaction. Recheck permission, account and available funds;
+debit exactly amount; invoke apply(tx) exactly once; persist the bank's duplicate
+receipt protection; return exactly true only after commit. The tx table must
+provide tx:set(table,key,value). All its changes, including Astrolux's receipt
+marker, must roll back together with the debit if apply throws. Never swallow
+callback errors and commit anyway. A client command, deferred callback or raw
+withdraw followed by refund is not this transaction contract.
+
+The bank owns serialization against simultaneous requests and persistent replay
+protection. Use actor/account plus receipt as the idempotency scope; validate
+replays against their original amount. Do not expire receipts while an order can
+still refer to them. Design restart reconciliation for bank and Astrolux data
+saved at different points. Offline Lua rollback does not establish crash-atomic
+disk persistence. Reject uncertain outcomes and retain evidence for inspection.
+
+PURCHASE AND RECOVERY BEHAVIOR
+Cash remains an option. Each provider has a separate displayed balance; balances
+are not pooled. Quotes/orders retain their chosen provider. The legacy bank
+method still means TSB; the menu uses bank:tsb. New queued deliveries remain
+unpaid until ready. A bank transaction commits before native vehicle creation.
+Astrolux guards callback reuse, missing/late callbacks and receipt replay. If a
+bank call fails or has an uncertain outcome, the attempt is held; cash cannot
+bypass that actor's payment hold. A persisted processing attempt becomes hold
+when BankPayments initializes. A failed vehicle spawn after debit is also held.
+Never clear a hold or replay delivery automatically. An admin must compare the
+bank receipt/debit with the order, native vehicle and Astrolux payment record,
+then explicitly resolve the outcome with appropriate backups. Removing a bank
+does not convert outstanding orders to cash or another bank. Resolve its orders
+before disabling the adapter. No universal automatic recovery tool is supplied.
+
+ADMIN ACCEPTANCE CHECKLIST
+[ ] No bank: cash only, normal purchase, no missing-module errors.
+[ ] Private bank alone and with TSB: correct labels and separate balances.
+[ ] Missing/paused account omitted; no account/starter-fund creation.
+[ ] Only authenticated player's own permitted account can be charged.
+[ ] Exact charge, one receipt, one delivery; replay/reconnect cannot charge twice.
+[ ] Insufficient funds, invalid amounts and forged provider IDs fail safely.
+[ ] Callback failure rolls back debit AND every tx:set; no audit success entry.
+[ ] Missing/repeated/late callbacks and unknown outcomes hold, never cash retry.
+[ ] Unloaded delivery stays unpaid; missing provider cannot charge another bank.
+[ ] Two concurrent clients cannot double-spend or access each other's accounts.
+[ ] Save/reload and server restart, including interrupted/split-save scenarios,
+    reconcile conservatively; no duplicate debit or native vehicle spawn.
+[ ] Native creation failure after debit remains held for admin inspection.
+
+VALIDATION STATUS
+Installed-source offline checks passed on 2026-10-23 for optional discovery,
+no-bank cash, TSB engine transactions, rollback, queues, receipt replay and
+payment holds. Game startup, native UI/delivery, multiplayer and disk restart
+acceptance remain pending. Each private bank must pass the checklist above.

@@ -1,0 +1,26 @@
+-- Template only. Rename to .lua inside your OPTIONAL compatibility mod's
+-- 42/media/lua/server/ directory. Replace PrivateBankServer with your own API.
+-- Astrolux does not provide PrivateBankServer or implement its transaction.
+if isClient() then return end
+local Banks=require 'TSBAstroluxVend/BankAdapters'
+local function api()
+    local bank=PrivateBankServer
+    assert(type(bank)=='table' and bank.astroluxBridgeVersion==1,
+        'Private bank transaction service unavailable')
+    return bank
+end
+Banks.register('mycommunity',{
+    label='My Community Bank',
+    detect=function()
+        local bank=PrivateBankServer
+        return type(bank)=='table' and bank.astroluxBridgeVersion==1
+            and type(bank.balanceForUsername)=='function'
+            and type(bank.chargeService)=='function'
+    end,
+    balance=function(actor)
+        return api().balanceForUsername(actor)
+    end,
+    charge=function(actor,amount,receipt,apply)
+        return api().chargeService(actor,amount,receipt,apply,'vehiclePurchase')
+    end,
+})

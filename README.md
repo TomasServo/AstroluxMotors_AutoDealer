@@ -19,6 +19,11 @@ Use a backed-up disposable world first. Structure placement/cleanup tools remain
 
 See [dealership testing](docs/VENDING-TEST.md), [menu and audio](docs/DEALERSHIP-MENU-AUDIO.md), [structural acceptance](docs/STRUCTURE-ACCEPTANCE.md) and [showroom defaults](docs/SHOWROOM-DEFAULT.md).
 
+
+## Optional banking for administrators
+
+The mod package includes an [admin banking guide](mods/PZ_TSB_AstroluxStructure/docs/PRIVATE-BANK-INTEGRATION.txt) and a [private-bank adapter template](mods/PZ_TSB_AstroluxStructure/docs/examples/PrivateBankAdapter.lua.example). Start with `README-ADMIN-BANKING.txt` in the mod folder. Banking remains optional; the template is an inactive example for a separate compatibility mod.
+
 ## Development checks
 
 Run `npm ci`, then `npm test` with Node.js. Alternatively set `TSB_LUA_CLI` to an existing Fengari CLI. The suite checks Lua syntax, structure rollback/visibility, menu startup, cash safety, delivery timing/replay, eight headings, trade-in listing, variants, demand and personal audio. Native engine, listening and multiplayer acceptance still require in-game testing.
