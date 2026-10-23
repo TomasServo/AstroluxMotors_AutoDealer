@@ -67,3 +67,15 @@ Version 0.5.2 adds the previous kiosk and sales program with a new Lua-only two-
 ## Saved showroom furnishings and sink
 
 The user verified the 19-object showroom capture and accepted the native chrome sink opposite the coffee maker on October 22, 2026. Version 0.5.5 includes the saved relative furnishing default, one-time native sink placement, and a furnishing capture/export action. See [showroom default](docs/SHOWROOM-DEFAULT.md). Pasting the complete furnishing layout remains to be implemented. The separate coffee restock and entrance signs remain local test candidates.
+
+## Copyright and permissions
+
+Copyright © 2026 TomasServo. All rights reserved.
+
+Server administrators may install and use this mod on their servers.
+
+Copying, modifying, redistributing, or repackaging the mod’s code or assets is not permitted without my prior written permission. Installation copies necessary to run the mod on a server are permitted.
+
+For custom building designs, modifications, or updates needed for your server, please contact me to discuss your request.
+
+Permission to use this mod does not include permission to create or distribute modified versions.
