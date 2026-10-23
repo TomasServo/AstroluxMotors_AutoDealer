@@ -1,10 +1,10 @@
 local Stock=require 'TSBAstroluxVend/Stock'
 local StockDelivery=require 'TSBAstroluxVend/StockDelivery'
 local D={}
-function D.restore(vehicle)
+function D.restore(vehicle,camperTop,equipment)
     -- Use the native repair path: restores missing standard parts, condition,
     -- engine quality, drainable charge, fluid/air containers, rust and blood.
-    local changes=StockDelivery.prepare(vehicle)
+    local changes=StockDelivery.prepare(vehicle,camperTop,equipment)
     vehicle:repair()
     StockDelivery.apply(vehicle,changes)
     for i=0,vehicle:getPartCount()-1 do

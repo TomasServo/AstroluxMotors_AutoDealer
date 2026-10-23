@@ -1,3 +1,4 @@
+local Menus=require 'TSBAstroluxVend/ContextMenu'
 require 'ISUI/ISModalRichText'
 local C=require 'TSBAstroluxVend/Config'
 local labels={'South','East','North','West'}
@@ -21,9 +22,19 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
     local tiles=sq:getObjects()
     for n=0,tiles:size()-1 do
         local kiosk=tiles:get(n);local sprite=kiosk:getSprite();local name=sprite and sprite:getName()
+        local props=sprite and sprite:getProperties()
+        local label=props and (tostring(props:get('GroupName') or '')..' '..tostring(props:get('CustomName') or '')):lower() or ''
+        if kiosk:getContainer() and label:find('corner',1,true) and (label:find('counter',1,true) or label:find('cabinet',1,true)) then
+            local target=kiosk
+            Menus.section(context,'Administration'):addOption('Use as coffee supplies cabinet',p,function()
+                local args={x=x,y=y,index=target:getObjectIndex()}
+                if isClient() then sendClientCommand(p,C.channel,'coffeeCabinet',args)
+                elseif TSBAstroluxVendServer then TSBAstroluxVendServer.handle(p,'coffeeCabinet',args) end
+            end)
+        end
         if type(name)=='string' and name:match('^TSBAstroluxKiosk_[0-3]$') then
             local target=kiosk;local targetName=name
-            context:addOption('Astrolux Motors admin: remove sales kiosk',p,function()
+            Menus.section(context,'Administration'):addOption('Remove this sales kiosk',p,function()
                 local text='Remove this Astrolux sales kiosk? <LINE> Its registration and vehicle spawn area will be retired. <LINE> Purchase and trade-in history will be retained. Outstanding purchases must be resolved first.'
                 local modal=ISModalRichText:new(100,100,540,230,text,true,nil,function(_,button)
                     if button.internal~='YES' then return end

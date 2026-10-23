@@ -2,7 +2,7 @@
 local S={version=1}
 local hilux={['Base.88toyotaHiluxSC']=true,['Base.88toyotaHiluxXC']=true,['Base.88toyotaHiluxXCS']=true}
 function S.isHilux(name)return hilux[name]==true end
-local extraWords={'armor','armour','roofrack','roofbasket','luggagerack','bullbar','rollbar','sidesteps','mudflaps','sparetire','truckbedextras'}
+local extraWords={'armor','armour','roofrack','roofbasket','luggagerack','bullbar','rollbar','sidesteps','steprail','mudflaps','sparetire','truckbedextras','generator'}
 function S.optional(id)
     local s=string.lower(id or ''):gsub('[^%w]','')
     for _,word in ipairs(extraWords)do if s:find(word,1,true)then return true end end

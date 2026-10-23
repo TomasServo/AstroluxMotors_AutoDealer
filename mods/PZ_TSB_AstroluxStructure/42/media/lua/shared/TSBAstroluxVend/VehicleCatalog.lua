@@ -2,11 +2,13 @@ local Amount=require 'TSBAstroluxVend/Amount'
 local Pilot=require 'TSBAstroluxVend/HotelPilot'
 local C=require 'TSBAstroluxVend/Config'
 local P=require 'TSBAstroluxVend/Pricing'
+local Policy=require 'TSBAstroluxVend/CatalogPolicy'
+local Families=require 'TSBAstroluxVend/VehicleFamilies'
 local V={}
 local function finite(n)return type(n)=='number' and n==n and math.abs(n)<=1000000 end
 function V.measure(script) return require('TSBAstroluxVend/SpawnAreas').measure(script,'N') end
 function V.new(manager,settings,demandOffer)
-    local self={offers={},byID={},rejected=0,installable={},installedScripts={}}
+    local self={nativeOffers={},offers={},byID={},rejected=0,installable={},installedScripts={},scriptLabels={},adminOnly={},vehicleAvailability={}}
     local legacy={};for _,offer in ipairs(C.catalog)do legacy[offer.script]=offer end
     local scripts=manager:getAllVehicleScripts()
     for i=0,scripts:size()-1 do
@@ -16,28 +18,23 @@ function V.new(manager,settings,demandOffer)
             if type(full)~='string' or #full>200 then return nil end
             if full:find('TSBAstroluxVendPreview.',1,true)==1 then return nil end
             local lowered=full:lower()
-            -- KST is an authored fleet marker, not the 'kst' inside pzkStepVan.
-            local kst=full:find('KST',1,true) or lowered:match('kst$') or lowered:match('kstpd$')
-                or lowered:find('.kst',1,true) or lowered:find('_kst',1,true)
-            if kst or lowered:find('smashed',1,true) or lowered:find('burnt',1,true)
-                or lowered:find('wreck',1,true) or lowered=='base.carlightspolice'
-                or lowered=='base.carlightsranger' then return nil end
-
-            -- Filter native script IDs and their vanilla display names before owner enablement.
+            if lowered:find('smashed',1,true) or lowered:find('burnt',1,true) or lowered:find('wreck',1,true) then return nil end
             local nativeName=script:getName()
-            local display=getTextOrNull and getTextOrNull('IGUI_VehicleName'..nativeName) or ''
-            local fleet=(full..' '..nativeName..' '..display..' '..((legacy[full] or {}).name or '')):lower()
-            for _,marker in ipairs({'police','sheriff','sherrif','county','swat'})do
-                if fleet:find(marker,1,true) then return nil end
-            end
-
+            local display=getTextOrNull and getTextOrNull('IGUI_VehicleName'..nativeName) or nil
+            local friendly=display or (legacy[full] or {}).name or nativeName
+            local reason=Policy.reason(script,full..' '..nativeName..' '..friendly)
             local override={}
             for k,v in pairs(C.vehicleOverrides[full] or {})do override[k]=v end
+            if settings and settings.modelPrices and settings.modelPrices[full]~=nil then override.price=settings.modelPrices[full]end
             if settings and settings.vehicles and settings.vehicles[full]~=nil then override.price=settings.vehicles[full] end
-            if override.disabled then return nil end
             local rx,ry=V.measure(script)
             self.installable[full]=true;self.installedScripts[#self.installedScripts+1]=full
-            if Pilot.enabled() and not legacy[full] and not (settings and settings.enabled and settings.enabled[full]) then return nil end
+            self.adminOnly[full]=reason
+            self.scriptLabels[full]=friendly..' ['..full..']'
+            local choice=settings and settings.enabled and settings.enabled[full]
+            local enabled=choice==true or (choice==nil and not override.disabled and not reason and (not Pilot.enabled() or legacy[full]~=nil))
+            self.vehicleAvailability[full]=enabled
+            if not enabled then return nil end
             local old=legacy[full]
             local pricing=P.forScript(script,override,settings)
             local price=pricing.total
@@ -45,9 +42,15 @@ function V.new(manager,settings,demandOffer)
             return {id=old and old.id or full,script=full,name=old and old.name or script:getName(),
                 price=price,pricing=pricing,rx=rx,ry=ry,available=true}
         end)
-        if ok and offer and not self.byID[offer.id] then
+        if ok and offer then self.nativeOffers[offer.script]=offer end
+        if not ok then self.rejected=self.rejected+1 end
+    end
+    -- An offered variation remains purchasable when its base model is hidden.
+    for _,offer in pairs(self.nativeOffers)do
+        local base=Families.canonical(offer.script)
+        if base==offer.script or not self.nativeOffers[base]then
             self.offers[#self.offers+1]=offer;self.byID[offer.id]=offer
-        elseif not ok then self.rejected=self.rejected+1 end
+        end
     end
     table.sort(self.installedScripts)
     table.sort(self.offers,function(a,b)return a.script<b.script end)
@@ -56,6 +59,42 @@ function V.new(manager,settings,demandOffer)
         if not offer then error('Vehicle is not in the enabled server catalog.',0)end
         local rx,ry=V.measure(manager:getVehicle(offer.script))
         return demandOffer and demandOffer(offer) or offer
+    end
+    function self:variant(id,target)
+        local base=self:resolve(id)
+        target=target or base.script
+        if target==base.script then return base end
+        local member=Families.member(base.script,target)
+        local native=member and self.nativeOffers[target]
+        if not native then error('Vehicle configuration is unavailable in this catalog.',0)end
+        local result={};for k,v in pairs(demandOffer and demandOffer(native) or native)do result[k]=v end
+        result.id=base.id;result.catalogScript=base.script
+        if member.kind=='configuration'then
+            local p=Families.policy(settings,base.script,target)
+            if not p.enabled then error('Vehicle configuration disabled by owner.',0)end
+            result.price=Amount.add(result.price,p.price)
+            result.configurationLabel=member.label..(p.price>0 and (' +$'..p.price) or '')
+        end
+        return result
+    end
+    function self:paintVariants(offer)
+        local out={}
+        for target,d in pairs(Families.members)do
+            if d.base==offer.script and d.kind=='paint' and self.nativeOffers[target]then out[#out+1]={script=target,label=d.label}end
+        end
+        table.sort(out,function(a,b)return a.script<b.script end)
+        return out
+    end
+    function self:configurations(offer)
+        local out={}
+        for target,d in pairs(Families.members)do
+            if d.base==offer.script and d.kind=='configuration' and self.nativeOffers[target] and Families.policy(settings,offer.script,target).enabled then
+                local variant=self:variant(offer.id,target)
+                variant.label=d.label;out[#out+1]=variant
+            end
+        end
+        table.sort(out,function(a,b)return a.script<b.script end)
+        return out
     end
     function self:page(query,page)
         query=type(query)=='string' and string.lower(string.sub(query,1,80)) or ''

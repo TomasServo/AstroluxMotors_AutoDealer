@@ -41,9 +41,9 @@ local function skin(script,index)
     return cached[index]
 end
 local function fingerprint(o)
-    return table.concat({o.id,o.texture or '',o.skin or -1,o.h or '',o.s or '',o.v or '',o.surcharge},'|')
+    return table.concat({o.id,o.script or '',o.texture or '',o.skin or -1,o.h or '',o.s or '',o.v or '',o.surcharge},'|')
 end
-function P.options(script,settings)
+function P.options(script,settings,variants)
     local result={}
     local function add(o)o.key=fingerprint(o);result[#result+1]=o end
     local name=script:getFullName()
@@ -85,25 +85,40 @@ function P.options(script,settings)
     else
         add({id='factory',label='Factory appearance',surcharge=0})
     end
+    for _,variant in ipairs(variants or {})do
+        local source=getScriptManager():getVehicle(variant.script)
+        if source then
+         local choices=P.options(source,settings)
+         for _,paint in ipairs(choices)do
+            local copy={};for k,v in pairs(paint)do copy[k]=v end
+            copy.script=variant.script;copy.id='variant:'..variant.script..':'..paint.id
+            copy.label=variant.label..(#choices>1 and (' - '..paint.label) or '')
+            copy.surcharge=paint.special and paint.surcharge or default;copy.special=true
+            add(copy)
+        end end
+    end
     return result
 end
-function P.select(script,settings,id)
-    if id~=nil and (type(id)~='string' or #id>350)then error('Invalid paint selection.',0)end
-    local choices=P.options(script,settings)
+function P.select(script,settings,id,variants)
+    if id~=nil and (type(id)~='string' or #id>750)then error('Invalid paint selection.',0)end
+    local choices=P.options(script,settings,variants)
     for i,o in ipairs(choices)do if id==o.id or (id==nil and i==1)then return o end end
     error('Paint selection changed or is unavailable. Refresh the terminal.',0)
 end
-function P.offer(offer,script,settings,id)
-    local paint=P.select(script,settings,id)
+function P.attach(offer,paint)
     local total=Amount.add(offer.price,paint.surcharge)
     local result={};for k,v in pairs(offer)do result[k]=v end
     result.price=total
     result.paint=paint;result.paintKey=paint.key
     return result
 end
+function P.offer(offer,script,settings,id,variants)
+    return P.attach(offer,P.select(script,settings,id,variants))
+end
 function P.verify(paint,script)
     if not paint then return end -- Existing orders predate paint selection.
     if not script then error('Paint vehicle script is unavailable.',0)end
+    if paint.script and paint.script~=script:getFullName()then error('Paid paint requires its original native vehicle configuration.',0)end
     if paint.skin~=nil and (paint.skin<0 or paint.skin>=script:getSkinCount()
         or skin(script,paint.skin)~=paint.texture)then
         error('Paid vehicle skin changed. Administrator inspection required.',0)
