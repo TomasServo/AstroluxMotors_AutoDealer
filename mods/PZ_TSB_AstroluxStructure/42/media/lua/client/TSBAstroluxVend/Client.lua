@@ -11,6 +11,7 @@ require 'ISUI/ISTextBox'
 require 'Vehicles/ISUI/ISUI3DScene'
 
 require 'ISUI/ISScrollingListBox'
+local TradeSelection=require 'TSBAstroluxVend/TradeSelection'
 local Access=require 'TSBAstroluxVend/AdminAccess'
 local C=require 'TSBAstroluxVend/Config'
 local FixtureTargets=require 'TSBAstroluxVend/FixtureTargets'
@@ -36,6 +37,9 @@ local function request(self,command)
     a.paint=self.paintOptions and self.paintOptions[self.paint.selected] and self.paintOptions[self.paint.selected].id
     a.offer=offer and offer.id;a.token=self.quote and self.quote.token
     a.tradeToken=self.tradeQuote and self.tradeQuote.token
+    a.tradeVehicles=TradeSelection.ids(self)
+    if command=='zoneBorder'then a.deliveryBorder=self.zoneBorder:isSelected(1)end
+    if command=='tradeQuote' or command=='tradeAccept'then self.tradeAccept:setEnable(false);self.tradeDecline:setEnable(false)end
     a.search=self.query or '';a.page=self.page or 1
     a.payment=self.paymentIDs and self.paymentIDs[self.payment.selected] or 'cash'
     self.quote=nil;self.confirm:setEnable(false)
@@ -43,6 +47,7 @@ local function request(self,command)
 end
 require('TSBAstroluxVend/TabsUI').install(Panel,request,send,Client)
 function Panel:close()
+    if self.personalView then self.personalView:save()end
     if self.adminView then self.adminView:stopAudioPreviews()end
     if self.tradePanel then self.tradePanel:removeFromUIManager()end
     if self.preview then self.preview:clear() end
@@ -50,11 +55,11 @@ function Panel:close()
 end
 function Client.receive(data)
     if data.ok and data.tradeSuccess and data.tradeSuccess~=Client.lastTradeSound then
-        Client.lastTradeSound=data.tradeSuccess;require('TSBAstroluxVend/AudioSettings').playPurchase()
+        Client.lastTradeSound=data.tradeSuccess;require('TSBAstroluxVend/AudioSettings').playPurchase(panel and panel.player or requester)
     end
     if data.areaSaved then
         if panel then
-            panel.spawnArea=data.spawnArea;panel.message=data.message;panel.quote=nil;panel.confirm:setEnable(false)
+            panel.spawnArea=data.spawnArea;panel.deliveryBorder=data.deliveryBorder==true;panel.message=data.message;panel.quote=nil;panel.confirm:setEnable(false)
             panel.tradeQuote=nil;panel.tradeRows:clear();panel.tradeAccept:setEnable(false);panel.tradeDecline:setEnable(false)
             panel:updateZone()
         elseif requester then requester:Say(data.message)end
@@ -79,34 +84,25 @@ function Client.receive(data)
     panel.confirm:setEnable(data.ok and data.quote~=nil)
     if data.quote then panel.confirm:setTitle('Confirm purchase — $'..data.quote.price)
     else panel.confirm:setTitle('Confirm purchase') end
-    if not data.ok then return end
+    if not data.ok then TradeSelection.invalidate(panel);return end
     panel.adminPricing=data.adminPricing
     if not Access.allowed(panel.player)then data.adminPricing=nil end
     panel.adminButton:setVisible(data.adminPricing~=nil)
-    panel.simple=data.simple;panel.bankAvailable=data.bankAvailable;panel.bankBalance=data.bankBalance
+    panel.simple=data.simple;panel.bankAvailable=data.bankAvailable;panel.bankBalance=data.bankBalance;panel.bankBalances=data.bankBalances or {}
     local selected=panel.paymentIDs[panel.payment.selected]
     panel.paymentIDs=data.paymentMethods or {'cash'};panel.payment:clear()
     for i,id in ipairs(panel.paymentIDs)do
-        panel.payment:addOption(id=='bank' and 'Pay from server bank account' or 'Pay with carried cash')
+        panel.payment:addOption((data.paymentLabels or {})[id] or (id~='cash' and 'Pay from bank account' or 'Pay with carried cash'))
         if id==selected then panel.payment.selected=i end
     end
+    panel.bankBalance=panel.bankBalances[panel.paymentIDs[panel.payment.selected]] or panel.bankBalance
     if panel.tradePanel then panel.tradePanel:removeFromUIManager();panel.tradePanel=nil end
-    panel.tradeQuote=data.tradeQuote
-    panel.tradeEnabled=data.tradeInsEnabled==true
-    panel.tradeRules=data.tradeRules
-    panel.tradeRows:clear()
-    for _,row in ipairs(data.tradeQuote and data.tradeQuote.parts or {})do
-        panel.tradeRows:addItem(row.id..' | '..(row.missing and 'Missing' or (tostring(row.condition)..'%'))..' | $'..row.value..' / $'..row.maximum,row)
-    end
-    panel.tradeAppraise:setEnable(panel.tradeEnabled)
-    panel.tradeAccept:setEnable(data.tradeQuote~=nil and data.tradeQuote.token~=nil and data.tradeQuote.amount>0)
-    panel.tradeDecline:setEnable(data.tradeQuote~=nil)
-    if data.tradeQuote then panel:showTab('trade')end
+    TradeSelection.receive(panel,data)
     selectedTerminal=data.terminal
     panel.balance=data.balance
     panel.page=data.page or 1;panel.pages=data.pages or 1;panel.total=data.total or 0
     local area=data.spawnArea
-    panel.spawnArea=area;panel.zoneTerminal=data.terminal;panel:updateZone()
+    panel.spawnArea=area;panel.deliveryBorder=data.deliveryBorder==true;panel.zoneTerminal=data.terminal;panel:updateZone()
     panel.areaRotation=area and (area.heading=='E' or area.heading=='W') and 1 or 0
     panel.areaText=area and ('Spawn area: '..area.x1..', '..area.y1..' to '..area.x2..', '..area.y2..' | Faces '..area.heading) or 'Spawn area: not configured'
     local old=panel.offers and panel.offers[panel.selection.selected]

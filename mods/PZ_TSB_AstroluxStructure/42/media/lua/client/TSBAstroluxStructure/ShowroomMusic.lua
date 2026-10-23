@@ -13,11 +13,11 @@ function M.stop()
         M.sound=nil
     end
 end
-function M.volume()
-    -- A softer slider curve makes low ambience settings useful. Respect each
-    -- client's native Music Volume setting (0-10), including mute.
-    local level=Audio.volume('musicVolume')
-    return level*level*(getCore():getOptionMusicVolume()/10)
+function M.volume(player)
+    -- Showroom ambience has its own saved control, independent of the vanilla
+    -- soundtrack slider. Clip gain caps full menu volume at half file volume.
+    if not Audio.playbackEnabled('showroomMusic',player)then return 0 end
+    return Audio.playbackVolume('musicVolume',player)
 end
 function M.pause()
  M.paused=true;M.stop()
@@ -27,18 +27,17 @@ function M.play()
 end
 function M.update()
     if M.paused then M.stop();return end
-    local volume=M.volume()
-    if not Audio.enabled('showroomMusic') or volume<=0 then M.stop();return end
+    local volume=0
+    if not Audio.enabled('showroomMusic')then M.stop();return end
     local inside=false
     local records=Records.all()
     for i=0,getNumActivePlayers()-1 do
         local player=getSpecificPlayer(i)
         for _,record in ipairs(records)do
-            if M.inside(player,record)then inside=true;break end
+            if M.inside(player,record)then inside=true;volume=math.max(volume,M.volume(player));break end
         end
-        if inside then break end
     end
-    if not inside then M.stop();return end
+    if not inside or volume<=0 then M.stop();return end
     local manager=getSoundManager()
     if not M.sound or not manager:isPlayingUISound(M.sound)then
         local sound=manager:playUISound('TSBAstroluxShowroomMusic')

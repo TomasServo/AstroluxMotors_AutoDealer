@@ -6,6 +6,7 @@ local Paint=require 'TSBAstroluxVend/Paint'
 local SpawnDefaults=require 'TSBAstroluxVend/SpawnDefaults'
 local CamperCapacity=require 'TSBAstroluxVend/CamperCapacity'
 local Equipment=require 'TSBAstroluxVend/Equipment'
+local BorderPlan=require 'TSBAstroluxVend/DeliveryBorderPlan'
 local S={}
 function S.emptyStorage(vehicle)
     for i=0,vehicle:getPartCount()-1 do
@@ -69,7 +70,7 @@ function S.clear(db,p,own,blockers)
             or sq:getMovingObjects():size()>0 or sq:getStaticMovingObjects():size()>0
             or sq:getWorldObjects():size()>0 then return false end
         local objects=sq:getObjects()
-        for i=0,objects:size()-1 do if objects:get(i)~=sq:getFloor() then return false end end
+        for i=0,objects:size()-1 do local obj=objects:get(i);if obj~=sq:getFloor() and not BorderPlan.isMarker(obj)then return false end end
     end end
     return true
 end

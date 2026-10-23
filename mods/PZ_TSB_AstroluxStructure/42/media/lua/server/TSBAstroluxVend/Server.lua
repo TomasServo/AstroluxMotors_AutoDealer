@@ -16,6 +16,8 @@ local Areas=require 'TSBAstroluxVend/SpawnAreas'
 local Spawn=require 'TSBAstroluxVend/VehicleSpawn'
 local Kiosk=require 'TSBAstroluxVend/Kiosk'
 local TradeIn=require 'TSBAstroluxVend/TradeIn'
+local Border=require 'TSBAstroluxVend/DeliveryBorder'
+local TradeBatch=require 'TSBAstroluxVend/TradeBatch'
 local Audio=require 'TSBAstroluxVend/AudioSettings'
 local S={};TSBAstroluxVendServer=S
 local db,service,payments,catalog,trades
@@ -36,7 +38,7 @@ end
 local function init()
     if service then return end
     db=ModData.getOrCreate('TSBAstroluxVend.State.v1')
-    trades=TradeIn.new(db,{now=getTimestamp,create=instanceItem,notify=function(container,item)if isServer()then sendAddItemToContainer(container,item)end end})
+    trades=TradeBatch.new(db,{now=getTimestamp,create=instanceItem,notify=function(container,item)if isServer()then sendAddItemToContainer(container,item)end end})
     payments=Cash.new(db,{now=getTimestamp,createMoney=function() return instanceItem('Base.Money') end,
         notify=function(container,item,added)
             if isServer() then
@@ -48,15 +50,16 @@ local function init()
         authorizeDelivery=function(order)
             local attempts=order.payment=='serverBank' and db.bankPayments or db.payments
             local attempt=attempts and attempts[order.actor]
-            if not attempt or attempt.status~='committed' or attempt.receipt~='astroluxRebuild:'..order.id then
+            if not attempt or attempt.status~='committed' or attempt.receipt~='astroluxRebuild:'..order.id
+                or (order.payment=='serverBank' and (attempt.provider or 'tsb')~=((order.paymentMethod or 'bank'):match('^bank:(.+)$') or 'tsb')) then
                 order.status='hold';order.error='Payment receipt is missing or uncertain; inspect before recovery.'
                 fail(order.error)
             end
         end,
         clear=function(t,own,script) return Spawn.choose(db,t,own,script) end,
-        charge=function(actor,amount,receipt,apply,method)
+        charge=function(actor,amount,receipt,apply,method,beforeDebit)
             local p=players[actor];if not p then fail('Buyer unavailable.') end
-            return payments:charge(p,amount,receipt,apply,method)
+            return payments:charge(p,amount,receipt,apply,method,beforeDebit)
         end,
         spawn=function(order)
             local p=players[order.actor];if not p or p:isDead() then fail('Buyer unavailable.') end
@@ -79,6 +82,10 @@ local function terminal(p,args)
         or not t.sprite:match('^TSBAstroluxKiosk_[0-3]$') then fail('Registered Astrolux kiosk required.') end
     return t
 end
+local function tradeRetail(vehicle)
+    local offer=offers():tradeOffer(vehicle:getScript():getFullName())
+    return offer and offer.price
+end
 local function view(p,t,message,quote,args,tradeQuote,tradeSuccess)
     args=args or {};local list,page,pages,total=offers():page(args.search,args.page)
     local function decorate(o)
@@ -92,8 +99,9 @@ local function view(p,t,message,quote,args,tradeQuote,tradeSuccess)
         for _,variant in ipairs(offers():configurations(o))do o.configurationOptions[#o.configurationOptions+1]=decorate(variant)end
     end
     for _,o in ipairs(list) do o.camperTopAvailable=Accessories.supports(getScriptManager():getVehicle(o.script));o.camperTopPrice=Accessories.price(db.pricing);o.addonBuffs=Buffs.enabled();o.camperTopCapacityBonus=o.addonBuffs and (C.camperTopCapacityBonus or 46) or 0 end
-    local bankOK,bankBalance=false,nil
-    if payments:bankAvailable() then bankOK,bankBalance=pcall(function() return payments:balance(p,'bank') end) end
+    local paymentOptions=payments:options(p)
+    local bankOK=#paymentOptions.methods>1
+    local bankBalance=paymentOptions.balances[args and args.payment] or paymentOptions.balances[paymentOptions.methods[2]]
     local pricing=admin(p) and Prices.view(db.pricing) or nil
     if pricing then pricing.audio=Audio.settings()end
     if pricing then pricing.vehicleAvailability=offers().vehicleAvailability;pricing.scripts=offers().installedScripts;pricing.scriptLabels=offers().scriptLabels;pricing.accessoryOptions={};pricing.accessoryIssues={}
@@ -106,11 +114,11 @@ local function view(p,t,message,quote,args,tradeQuote,tradeSuccess)
         end
     end
     local order=db.orders[tostring(p:getUsername())]
-    reply(p,{ok=true,message=message or 'Select a vehicle and request a price quote.',terminal=t.id,spawnArea=t.spawnArea,
+    reply(p,{ok=true,message=message or 'Select a vehicle and request a price quote.',terminal=t.id,spawnArea=t.spawnArea,deliveryBorder=t.deliveryBorder==true,
         offers=list,page=page,pages=pages,total=total,quote=quote,
         order=order and {id=order.id,status=order.status,terminal=order.terminal},simple=true,
-        bankAvailable=bankOK,bankBalance=bankOK and bankBalance or nil,paymentMethods=bankOK and {'cash','bank'} or {'cash'},
-        tradeSuccess=tradeSuccess,tradeRules=Prices.view(db.pricing),tradeInsEnabled=TradeIn.enabled(db),tradeQuote=tradeQuote,balance=payments:balance(p),adminPricing=pricing})
+        bankAvailable=bankOK,bankBalance=bankOK and bankBalance or nil,paymentMethods=paymentOptions.methods,paymentLabels=paymentOptions.labels,bankBalances=paymentOptions.balances,
+        tradeVehicles=trades:list(p,t,tradeRetail),tradeSuccess=tradeSuccess,tradeRules=Prices.view(db.pricing),tradeInsEnabled=TradeIn.enabled(db),tradeQuote=tradeQuote,balance=payments:balance(p),adminPricing=pricing})
 end
 local function handle(p,command,args)
     init()
@@ -142,41 +150,34 @@ local function handle(p,command,args)
         -- No tower, kiosk-distance, total-size or current streaming requirement.
         area.revision=(t.spawnArea and t.spawnArea.revision or 0)+1
         t.spawnArea=area;service.quotes={};if trades then trades.quotes={} end
-        reply(p,{ok=true,areaSaved=true,terminal=t.id,spawnArea=area,message='Vehicle spawn area saved. Vehicles face '..area.heading..'.'})
+        Border.safeRefresh(db,Spawn.regions())
+        reply(p,{ok=true,areaSaved=true,terminal=t.id,spawnArea=area,deliveryBorder=t.deliveryBorder==true,message='Vehicle spawn area saved. Vehicles face '..area.heading..'.'})
         return
     end
     local t,why=terminal(p,args)
     if not t then reply(p,{ok=false,message=why});return end
+    if command=='zoneBorder'then
+        if not admin(p)then fail('Administrator access required.')end
+        if type(args.deliveryBorder)~='boolean'then fail('Choose whether to display the delivery border.')end
+        if args.deliveryBorder and not t.spawnArea then fail('Configure this kiosk delivery zone first.')end
+        t.deliveryBorder=args.deliveryBorder
+        Border.safeRefresh(db,Spawn.regions())
+        view(p,t,t.deliveryBorder and 'Yellow delivery border enabled.'or 'Yellow delivery border disabled.',nil,args);return
+    end
     if command=='open' then view(p,t,nil,nil,args);return end
     if command=='tradeDecline' then trades:decline(p);view(p,t,'Trade-in declined. Your vehicle is unchanged.',nil,args);return end
     if command=='tradeQuote' or command=='tradeAccept' then
-        if not TradeIn.enabled(db) then reply(p,{ok=false,message='Trade-ins are disabled pending testing.'});return end
-        if not t.spawnArea then reply(p,{ok=false,message='Configure a delivery area first.'});return end
-        local q=trades.quotes[actor];local vehicle=q and q.vehicle
-        if command=='tradeQuote' then
-            vehicle=nil;local all=getCell():getVehicles():iterator();local a=t.spawnArea
-            while all:hasNext()do local v=all:next()
-                if TradeIn.inArea(t,v) then
-                    if vehicle then reply(p,{ok=false,message='Leave only the vehicle to appraise in the delivery area.'});return end;vehicle=v
-                end
-            end
-        end
-        if not vehicle then
-            local a=t.spawnArea
-            reply(p,{ok=false,message='No vehicle found in this kiosk delivery area: '..a.x1..', '..a.y1..' to '..a.x2..', '..a.y2..'. Park the vehicle inside that rectangle and request an appraisal.'});return
-        end
-        local valid,reason=TradeIn.validate(p,t,vehicle,db.pricing)
-        if not valid then reply(p,{ok=false,message=reason});return end
-        local offer
-        for _,o in ipairs(offers().offers)do if o.script==vehicle:getScript():getFullName()then offer=o;break end end
-        if not offer then reply(p,{ok=false,message='Vehicle is not in the current Astrolux Motors catalog.'});return end
+        if not TradeIn.enabled(db)then fail('Vehicle buybacks are disabled.')end
+        if not t.spawnArea then fail('Configure a delivery zone first.')end
         local revision=(db.pricing or {}).revision or 0
-        if command=='tradeQuote' then
-            local appraisal=trades:quote(p,t,vehicle,offer.price,revision)
-            view(p,t,appraisal.reason or 'Review the cash appraisal. Accepting permanently removes this vehicle.',nil,args,appraisal)
+        if command=='tradeQuote'then
+            trades:decline(p)
+            local vehicles=TradeBatch.resolve(t,args.tradeVehicles)
+            local appraisal=trades:quote(p,t,vehicles,tradeRetail,revision)
+            view(p,t,'Review every selected vehicle and its cash value. Accepting removes the selected vehicles.',nil,args,appraisal)
         else
-            local amount=trades:accept(p,t,args.tradeToken,offer.price,revision)
-            view(p,t,'Trade-in complete. $'..amount..' cash added to your inventory.',nil,args,nil,args.tradeToken)
+            local amount,count=trades:accept(p,t,args.tradeToken,tradeRetail,revision)
+            view(p,t,'Traded in '..count..' vehicles. $'..amount..' cash added to your inventory.',nil,args,nil,args.tradeToken)
         end
         return
     end
@@ -189,9 +190,14 @@ local function handle(p,command,args)
         local candidate=Prices.edit(db.pricing,args,offers())
         local rebuilt=V.new(getScriptManager(),candidate,function(o) return Demand.offer(db,o,getGameTime():getWorldAgeHours()) end)
         if args.action~='availability' then for _,o in ipairs(offers().offers) do if not rebuilt.byID[o.id] then fail('Price settings would invalidate an existing offer.') end end end
+        if args.action=='demand'then Demand.settle(db,getGameTime():getWorldAgeHours())end
+        local resetCount
+        if args.action=='resetDemand'then resetCount=Demand.reset(db,args.demandClass,getScriptManager(),getGameTime():getWorldAgeHours())end
+        if args.action=='resetModelDemand'then resetCount=Demand.resetModel(db,offers(),args.script,getGameTime():getWorldAgeHours())end
         db.pricing=candidate;catalog=rebuilt;service.quotes={};if trades then trades.quotes={} end
         Buffs.publish();CamperCapacity.scan()
-        view(p,t,'Prices saved; unpaid quotes cancelled.',nil,args);return
+        local message=resetCount and ('Demand reset to base for '..resetCount..' vehicle families; unpaid quotes cancelled.')or 'Prices saved; unpaid quotes cancelled.'
+        view(p,t,message,nil,args);return
     end
     if command=='deliver' then service:deliver(actor,t);view(p,t,'Vehicle delivered; its key is in your inventory.',nil,args);return end
     if command~='quote' and command~='buy' then fail('Unsupported sales command.') end
@@ -210,7 +216,7 @@ local function handle(p,command,args)
     if command=='quote' then view(p,t,'Review the quote and confirm within 60 seconds.',service:quote(actor,t,offer,method),args)
     else
         local order=service:buy(actor,args.token,t,offer,method)
-        local message=order.status=='queued' and 'Purchase recorded. Delivery is queued until someone loads a clear space in the remote area; your key will be issued on delivery.'
+        local message=order.status=='queued' and 'Order queued; no payment taken. Keep funds available until a clear delivery space is loaded. Cash is charged after the vehicle is created; bank payment is charged immediately before creation.'
             or 'Vehicle delivered; its key is in your inventory.'
         view(p,t,message,nil,args)
     end
@@ -300,7 +306,7 @@ end
 local lastDelivery=0
 Events.OnTick.Add(function()
     local now=getTimestampMs();if now-lastDelivery<2000 then return end;lastDelivery=now
-    S.deliverQueued();S.refreshKioskLocks()
+    S.deliverQueued();S.refreshKioskLocks();Border.safeRefresh(db,Spawn.regions())
 end)
 if Events.OnDisconnect then Events.OnDisconnect.Add(function(p)
     if p then local actor=tostring(p:getUsername());players[actor]=nil;last[actor]=nil;if service then service.quotes[actor]=nil end;if trades then trades.quotes[actor]=nil end end

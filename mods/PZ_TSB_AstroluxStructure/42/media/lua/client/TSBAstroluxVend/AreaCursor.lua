@@ -47,8 +47,7 @@ function Cursor:onMouseUpOutside() return self:onMouseUp() end
 function Cursor:onRightMouseDown() self:cancel();return true end
 function Cursor:cancel() self:removeFromUIManager();if active==self then active=nil end end
 function Cursor:drawFacingArrow(a)
-    local directions={N={0,-1},E={1,0},S={0,1},W={-1,0}}
-    local d=directions[a.heading];if not d then return end
+    local d=A.vectors[a.heading];if not d then return end
     local cx,cy=(a.x1+a.x2+1)/2,(a.y1+a.y2+1)/2
     local length=math.min(3,math.min(a.x2-a.x1+1,a.y2-a.y1+1)*0.35)
     local dx,dy=d[1],d[2];local px,py=-dy,dx

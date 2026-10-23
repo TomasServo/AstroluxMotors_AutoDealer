@@ -26,7 +26,7 @@ function Cash.new(db,adapter)
     end
     local self={}
     function self:balance(player)local _,_,total=Cash.collect(player);return total end
-    function self:charge(player,amount,receipt,apply)
+    function self:charge(player,amount,receipt,apply,beforeDebit)
         if not Amount.valid(amount,1) then fail('Invalid cash amount.')end
         if type(receipt)~='string' or #receipt>100 then fail('Invalid receipt.')end
         local actor=tostring(player:getUsername());local previous=db.payments[actor]
@@ -53,6 +53,9 @@ function Cash.new(db,adapter)
         end
         local inventory=player:getInventory()
         local ok,err=pcall(function()
+            -- Validate and plan cash first; create the purchased vehicle before
+            -- the first bill is removed. Caller holds partial native effects.
+            if beforeDebit then beforeDebit()end
             for _,entry in ipairs(selected)do
                 local item,container=entry.item,entry.container
                 if item:getContainer()~=container then fail('Cash moved before payment.')end

@@ -1,3 +1,5 @@
+package.loaded['TSBAstroluxVend/DeliveryBorder']={safeRefresh=function()end}
+function getOnlinePlayers()return {size=function()return 0 end}end
 package.path='mods/PZ_TSB_AstroluxStructure/42/media/lua/shared/?.lua;mods/PZ_TSB_AstroluxStructure/42/media/lua/server/?.lua;'..package.path
 local callbacks={}
 Events=setmetatable({},{__index=function(t,k) local e={Add=function(fn) callbacks[k]=fn end};t[k]=e;return e end})
@@ -20,6 +22,7 @@ local S=require 'TSBAstroluxVend/Server'
 local p={getUsername=function() return 'alice' end,isDead=function() return false end,getAccessLevel=function() return 'admin' end}
 local args={terminal='one',ax=-50000,ay=-60000,bx=1000000,by=2000000,heading='E',confirmed=true}
 S.handle(p,'areaSet',args)
+if reply and not reply.ok then print(reply.message)end
 assert(reply.ok and reply.areaSaved and db.terminals.one.spawnArea.x2==1000000)
 assert(db.terminals.one.spawnArea.heading=='E' and not next(service.quotes))
 local original=db.terminals.one.spawnArea
@@ -28,5 +31,5 @@ S.handle(p,'areaSet',args);assert(not reply.ok and db.terminals.one.spawnArea==o
 db.orders.bob=nil
 local user={getUsername=function() return 'user' end,isDead=function() return false end,getAccessLevel=function() return 'None' end}
 S.handle(user,'areaSet',args);assert(not reply.ok and db.terminals.one.spawnArea==original)
-args.heading='NW';S.handle(p,'areaSet',args);assert(not reply.ok and db.terminals.one.spawnArea==original)
+args.heading='NNW';S.handle(p,'areaSet',args);assert(not reply.ok and db.terminals.one.spawnArea==original)
 print('PASS: server remote/huge area configuration without streaming or proximity, admin authorization, quote invalidation and paid-order protection')

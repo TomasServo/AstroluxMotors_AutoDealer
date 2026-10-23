@@ -77,6 +77,17 @@ function V.new(manager,settings,demandOffer)
         end
         return result
     end
+    -- Match every enabled native script, not only the visible parent rows.
+    -- The registry includes vanilla and loaded mod vehicles and folded variants.
+    function self:tradeOffer(scriptName)
+        local native=self.nativeOffers[scriptName]
+        if not native then return nil end
+        local direct=self.byID[native.id]
+        if direct and direct.script==scriptName then return direct end
+        local parent=self.nativeOffers[Families.canonical(scriptName)]
+        if not parent then return nil end
+        return self:variant(parent.id,scriptName)
+    end
     function self:paintVariants(offer)
         local out={}
         for target,d in pairs(Families.members)do

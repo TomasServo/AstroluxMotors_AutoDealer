@@ -26,13 +26,11 @@ function D.new(db,adapter)
         if old and old.status~='delivered' then fail('An order is already outstanding.') end
         local position=adapter.clear(terminal,nil,offer.script)
         local order={id=q.token,actor=actor,terminal=terminal.id,script=offer.script,
-            configurationLabel=q.configurationLabel,equipment=q.equipment,equipmentKey=q.equipmentKey,equipmentLabel=q.equipmentLabel,camperTop=q.camperTop,camperSurcharge=q.camperSurcharge,pricingRevision=q.pricingRevision,paint=q.paint,paintKey=q.paintKey,price=q.price,basePrice=q.basePrice,pricing=q.pricing,placement=position,condition=100,payment=q.payment=='bank' and 'serverBank' or 'vanillaCash',status='paid',created=adapter.now()}
-        adapter.charge(actor,q.price,'astroluxRebuild:'..q.token,function(tx)
-            tx:set(db.orders,actor,order)
-        end,q.payment)
-        -- Queued means no native spawn/key operation has started. It is safe
-        -- to resume after reload; dispatching/hold remain non-replayable.
-        if order.placement and order.placement.deferred then order.status='queued';return order end
+            configurationLabel=q.configurationLabel,equipment=q.equipment,equipmentKey=q.equipmentKey,equipmentLabel=q.equipmentLabel,camperTop=q.camperTop,camperSurcharge=q.camperSurcharge,pricingRevision=q.pricingRevision,paint=q.paint,paintKey=q.paintKey,price=q.price,basePrice=q.basePrice,pricing=q.pricing,placement=position,condition=100,payment=q.payment~='cash' and 'serverBank' or 'vanillaCash',paymentMethod=q.payment,status='queued',paymentTiming='onDelivery',created=adapter.now()}
+        -- Persist an unpaid queue entry before any external/native operation.
+        -- No funds are reserved: ability to pay is rechecked on delivery.
+        db.orders[actor]=order
+        if order.placement and order.placement.deferred then return order end
         return self:deliver(actor,terminal)
     end
     function self:deliver(actor,terminal)
@@ -40,15 +38,40 @@ function D.new(db,adapter)
         if not order or order.terminal~=terminal.id then fail('No order at this terminal.') end
         if order.status=='delivered' then fail('This order was already delivered.') end
         if order.status~='paid' and order.status~='queued' then fail('Delivery is on hold. Ask an administrator to inspect the area and order.') end
-        if adapter.authorizeDelivery then adapter.authorizeDelivery(order) end
+        local payOnDelivery=order.paymentTiming=='onDelivery'
+        -- Existing prepaid orders retain receipt validation and never pay twice.
+        if not payOnDelivery and adapter.authorizeDelivery then adapter.authorizeDelivery(order) end
         local position=adapter.clear(terminal,order,order.script)
         if position then order.placement=position end
-        -- Set BEFORE native effects. Never automatically replay an uncertain spawn/key operation.
+        if order.placement and order.placement.deferred then return order end
+        -- Persist before native effects; interrupted dispatch is never replayed.
         order.status='dispatching'
-        local ok,err=pcall(function()adapter.spawn(order,terminal);order.status='delivered' end)
+        local started=false
+        local function spawn()
+            started=true;order.spawnStarted=true
+            adapter.spawn(order,terminal)
+        end
+        local ok,err=pcall(function()
+            if payOnDelivery then
+                local method=order.payment=='serverBank' and (order.paymentMethod or 'bank') or 'cash'
+                -- Cash validates the exact plan, spawns, then deducts. The bank
+                -- bridge must commit its own transaction before native effects.
+                if method~='cash'then started=true end
+                adapter.charge(actor,order.price,'astroluxRebuild:'..order.id,function()end,method,method=='cash' and spawn or nil)
+                order.paymentCommitted=true
+                if adapter.authorizeDelivery then adapter.authorizeDelivery(order)end
+                if method~='cash'then spawn()end
+            else spawn()end
+            order.status='delivered';order.error=nil
+        end)
+        -- Insufficient/moved cash before native effects leaves a safe unpaid
+        -- queue. Partial spawn, debit or bank uncertainty requires inspection.
+        if not ok and payOnDelivery and not started then
+            order.status='queued';order.error=tostring(err);fail(tostring(err))
+        end
         if not ok then
             order.status='hold';order.error=tostring(err)
-            fail('Payment recorded; delivery needs administrator inspection. Do not buy again.')
+            fail('Delivery/payment needs administrator inspection. Do not buy again.')
         end
         -- Delivery succeeded. Never retry the vehicle spawn if demand accounting fails.
         if adapter.completed then

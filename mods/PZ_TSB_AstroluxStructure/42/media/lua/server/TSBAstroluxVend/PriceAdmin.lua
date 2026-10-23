@@ -3,12 +3,13 @@ local C=require 'TSBAstroluxVend/Config'
 local Equipment=require 'TSBAstroluxVend/Equipment'
 local Families=require 'TSBAstroluxVend/VehicleFamilies'
 local Groups=require 'TSBAstroluxVend/AdminVehicleGroups'
+local Demand=require 'TSBAstroluxVend/Demand'
 local A={}
 function A.view(settings)
     settings=settings or {}
     return {allowHotwiredBuybacks=settings.allowHotwiredBuybacks~=false,requireBuybackKey=settings.requireBuybackKey~=false,excludeBuybackBattery=settings.excludeBuybackBattery~=false,minimumBuybackParts=settings.minimumBuybackParts or 75,buybacksEnabled=settings.buybacksEnabled==true or (settings.buybacksEnabled==nil and C.tradeInsEnabled==true),buybackPercent=settings.buybackPercent or 50,damagePercent=settings.damagePercent or 100,accessories=settings.accessories or {},revision=settings.revision or 0,normal=settings.normal or C.vehicleClasses[1].price,
         heavy=settings.heavy or C.vehicleClasses[2].price,sports=settings.sports or C.vehicleClasses[3].price,
-        addonBuffs=settings.addonBuffs~=false,camperTop=settings.camperTop or C.camperTopPrice,dynamic=settings.dynamic~=false,siren=0,specialPaint=settings.specialPaint or C.specialPaintPrice,modelPrices=settings.modelPrices or {},vehicles=settings.vehicles or {},enabled=settings.enabled or {}}
+        demandIncrease=Demand.policy(settings).increase,demandRecovery=Demand.policy(settings).recovery,addonBuffs=settings.addonBuffs~=false,camperTop=settings.camperTop or C.camperTopPrice,dynamic=settings.dynamic~=false,siren=0,specialPaint=settings.specialPaint or C.specialPaintPrice,modelPrices=settings.modelPrices or {},vehicles=settings.vehicles or {},enabled=settings.enabled or {}}
 end
 local function amount(n,min)
     if not Amount.valid(n,min) then
@@ -71,6 +72,14 @@ function A.edit(settings,args,catalog)
         if type(args.requireBuybackKey)~='boolean' or type(args.excludeBuybackBattery)~='boolean' then error('Choose key and battery rules.',0)end
         next.requireBuybackKey=args.requireBuybackKey;next.excludeBuybackBattery=args.excludeBuybackBattery;next.minimumBuybackParts=args.minimumBuybackParts
         next.buybacksEnabled=args.buybacksEnabled;next.buybackPercent=args.buybackPercent;next.damagePercent=args.damagePercent
+    elseif args.action=='resetModelDemand' then
+        Demand.modelFamilies(catalog,args.script)
+    elseif args.action=='resetDemand' then
+        Demand.resetScope(args.demandClass)
+    elseif args.action=='demand' then
+        local policy=Demand.policy({demandIncrease=args.demandIncrease,demandRecovery=args.demandRecovery})
+        if args.demandIncrease==nil or args.demandRecovery==nil then error('Enter both demand percentages.',0)end
+        next.demandIncrease=policy.increase;next.demandRecovery=policy.recovery
     elseif args.action=='mode' then
         if type(args.dynamic)~='boolean' then error('Choose static or dynamic pricing.',0)end
         next.dynamic=args.dynamic

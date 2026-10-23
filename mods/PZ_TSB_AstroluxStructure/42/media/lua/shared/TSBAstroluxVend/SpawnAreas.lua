@@ -1,11 +1,14 @@
 -- New two-corner area model. No tower offsets, parking slots or painted bays.
-local A={directions={'N','E','S','W'}}
+local diagonal=math.sqrt(0.5)
+local A={directions={'N','NE','E','SE','S','SW','W','NW'},
+ labels={'North (N)','Northeast (NE)','East (E)','Southeast (SE)','South (S)','Southwest (SW)','West (W)','Northwest (NW)'},
+ vectors={N={0,-1},NE={diagonal,-diagonal},E={1,0},SE={diagonal,diagonal},S={0,1},SW={-diagonal,diagonal},W={-1,0},NW={-diagonal,-diagonal}}}
 local function coordinate(n)
     return type(n)=='number' and n==n and n==math.floor(n) and n>=-2147483646 and n<=2147483646
 end
 function A.rectangle(ax,ay,bx,by,heading)
     if not coordinate(ax) or not coordinate(ay) or not coordinate(bx) or not coordinate(by) then return nil,'Use whole native map coordinates.' end
-    if heading~='N' and heading~='E' and heading~='S' and heading~='W' then return nil,'Choose North, East, South or West.' end
+    if not A.vectors[heading]then return nil,'Choose N, NE, E, SE, S, SW, W or NW.'end
     return {x1=math.min(ax,bx),y1=math.min(ay,by),x2=math.max(ax,bx),y2=math.max(ay,by),heading=heading}
 end
 function A.dimensions(script,heading)
@@ -18,7 +21,14 @@ function A.dimensions(script,heading)
     if x<=0 or z<=0 then error('Vehicle dimensions are invalid.',0) end
     -- Quarter-tile clearance on each side; no whole extra tile per vehicle.
     local rx,ry=x/2+math.abs(ox)+0.25,z/2+math.abs(oz)+0.25
+    if not A.vectors[heading]then error('Invalid delivery direction.',0)end
     if heading=='E' or heading=='W' then return ry,rx end
+    if #heading==2 then
+        -- Axis-aligned envelope of the same padded footprint at 45 degrees.
+        -- Reserve the full diagonal footprint, not the unrotated rectangle.
+        local radius=(rx+ry)*diagonal
+        return radius,radius
+    end
     return rx,ry
 end
 function A.measure(script,heading)

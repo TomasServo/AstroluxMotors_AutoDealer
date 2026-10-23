@@ -1,3 +1,7 @@
+function isoToScreenX(_,x,y)return (x-y)*32 end
+function isoToScreenY(_,x,y)return (x+y)*16 end
+ModData={getOrCreate=function()return {}end,add=function()end}
+package.preload['RadioCom/ISUIRadio/ISSliderPanel']=function()end
 package.path='mods/PZ_TSB_AstroluxStructure/42/media/lua/client/?.lua;mods/PZ_TSB_AstroluxStructure/42/media/lua/shared/?.lua;'..package.path
 local function class()
     local c={}
@@ -8,10 +12,11 @@ local function class()
     function c:removeFromUIManager() self.visible=false end
     function c:bringToTop() end
     function c:drawText() end
+    function c:drawLine() end
     return c
 end
 ISPanel=class()
-for _,name in ipairs({'ISModalDialog','ISRichTextPanel','ISPanel','ISButton','ISComboBox','ISTextEntryBox','ISTextBox','ISTickBox'}) do
+for _,name in ipairs({'ISScrollingListBox','ISModalDialog','ISRichTextPanel','ISPanel','ISButton','ISComboBox','ISTextEntryBox','ISTextBox','ISTickBox'}) do
     package.preload['ISUI/'..name]=function() end
     _G[name]=_G[name] or class()
 end

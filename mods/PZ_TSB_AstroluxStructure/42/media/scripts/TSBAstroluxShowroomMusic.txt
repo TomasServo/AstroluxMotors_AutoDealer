@@ -8,7 +8,7 @@ module Base
         clip
         {
             file = media/sound/TSBAstroluxShowroomMusic.mp3,
-            volume = 1.0,
+            volume = 0.25,
         }
     }
 }

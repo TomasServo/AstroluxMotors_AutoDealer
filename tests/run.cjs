@@ -31,7 +31,9 @@ run(['tests/visibility.lua'], 'PASS: all 404 slices');
 run(['tests/flooring.lua'], 'PASS: 28 dark border tiles');
 run(['tests/sliding-doors.lua'], 'PASS: eight native sliding leaves');
 run(['tests/vending/payments.lua'], 'standalone Astrolux payment checks passed');
+run(['tests/vending/delivery-payment.lua'], 'PASS all delivery-payment regression checks');
 run(['tests/vending/areas.lua'], 'PASS: unrestricted remote rectangles');
+run(['tests/vending/eight-directions.lua'], 'PASS eight headings:');
 run(['tests/vending/server-areas.lua'], 'PASS: server remote/huge area configuration');
 run(['tests/vending/client-startup.lua'], 'PASS: client modules load before native handlers');
 run(['tests/vending/sales-flow.lua'], 'PASS: kiosk quote/cash purchase queues remotely');
@@ -39,3 +41,10 @@ run(['tests/vending/furniture.lua'], 'PASS: native furniture hooks retain kiosk 
 run(['tests/decor-capture.lua'], 'PASS: decoration survey records relative furniture layout');
 run(['tests/showroom-sink.lua'], 'PASS: native sink on opposite counter');
 run(['tests/furnishings.lua'], 'PASS: all 19 native furnishing entries');
+
+run(['tests/vending/trade-list.lua'], 'PASS repeated listing:');
+run(['tests/vending/catalog.lua'], 'PASS');
+run(['tests/vending/demand.lua'], 'PASS');
+run(['tests/vending/personal.lua'], 'PASS');
+run(['tests/vending/admin-access.lua'], 'PASS: Lua syntax;');
+run(['tests/vending/trade-batch.lua'], 'PASS selector:');

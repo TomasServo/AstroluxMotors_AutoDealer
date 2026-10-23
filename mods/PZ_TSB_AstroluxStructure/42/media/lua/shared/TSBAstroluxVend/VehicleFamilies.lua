@@ -3,7 +3,8 @@ local Amount=require 'TSBAstroluxVend/Amount'
 local F={}
 F.members={
  ['Base.CarStationWagon2']={base='Base.CarStationWagon',kind='paint',label='Wood panel design'},
- -- Cargo and passenger Valulines are separate native models, not window options.
+ -- Optional native windowed body includes the original six-seat layout/stats.
+ ['Base.VanSeats']={base='Base.Van',kind='configuration',label='Passenger windows (6 seats)'},
 }
 function F.canonical(name)return F.members[name] and F.members[name].base or name end
 function F.member(base,target,kind)

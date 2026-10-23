@@ -1,82 +1,86 @@
 local Preview=require 'TSBAstroluxVend/Preview'
 local Admin=require 'TSBAstroluxVend/AdminPricing'
 local Areas=require 'TSBAstroluxVend/SpawnAreas'
+local TradeSelection=require 'TSBAstroluxVend/TradeSelection'
+local PersonalAudio=require 'TSBAstroluxVend/PersonalAudioPanel'
 local U={}
 function U.install(Panel,request,send,Client)
  function Panel:createChildren()
-  ISPanel.createChildren(self);self.brandLogo=getTexture('media/textures/Item_TSBAstroluxMotorsSign.png');self.groups={vehicles={},equipment={},trade={},zone={},common={}};self.equipmentControls={};self.equipmentRows={};self.equipmentSelection={}
+  ISPanel.createChildren(self);self.brandLogo=getTexture('media/textures/TSBAstroluxMenuLogo.png');self.groups={vehicles={},equipment={},trade={},zone={},personal={},common={}};self.equipmentControls={};self.equipmentRows={};self.equipmentSelection={}
   local function widget(group,w)w:initialise();self:addChild(w);self.groups[group][#self.groups[group]+1]=w;return w end
   local function button(group,x,y,w,label,fn)return widget(group,ISButton:new(x,y,w,28,label,self,fn))end
-  local function tab(x,label,name)local b=ISButton:new(x,60,125,28,label,self,function(s)if name=='admin'then s:updateAdmin(s.adminPricing)end;s:showTab(name)end);b:initialise();self:addChild(b);return b end
-  tab(20,'Vehicles','vehicles');tab(155,'Accessories','equipment');tab(290,'Trade-ins','trade');tab(425,'Delivery Zone','zone');self.adminButton=tab(560,'Admin','admin');self.adminButton:setVisible(false)
+  local function tab(x,label,name,width)local b=ISButton:new(x,60,width or 125,28,label,self,function(s)if name=='admin'then s:updateAdmin(s.adminPricing)end;s:showTab(name)end);b:initialise();if name=='zone' or name=='admin'then b.backgroundColor={r=0,g=136/255,b=240/255,a=1};b.backgroundColorMouseOver={r=0,g=160/255,b=1,a=1};b.borderColor={r=0,g=240/255,b=248/255,a=1}end;self:addChild(b);return b end
+  tab(20,'Vehicles','vehicles');tab(155,'Accessories','equipment');tab(290,'Trade-Ins','trade');tab(425,'My Audio','personal',110);tab(545,'Delivery Zone','zone');self.adminButton=tab(680,'Admin','admin');self.adminButton:setVisible(false)
+  local cashItem=getScriptManager():getItem('Base.Money')
+  self.cashBalanceIcon=cashItem and cashItem:getNormalTexture() or getTexture('Item_Money_Stack')
+  self.bankBalanceIcon=getTexture('location_business_bank_01_64')
+  self.personalView=widget('personal',PersonalAudio.newPanel(self.player))
   self.selection=widget('vehicles',ISComboBox:new(20,105,440,28,self,function(s)s.quote=nil;s.confirm:setEnable(false);s:updateConfiguration();s:updatePaint();s:updatePreview()end))
-  self.paint=widget('vehicles',ISComboBox:new(20,150,440,28,self,function(s)s.quote=nil;s.confirm:setEnable(false);s:updatePreview()end));self.paint:addOption('Factory appearance')
+  self.paint=widget('vehicles',ISComboBox:new(20,150,440,28,self,function(s)s.quote=nil;s.confirm:setEnable(false);s:updatePreview()end));self.paint:addOption('Factory Appearance')
   self.windows=widget('vehicles',ISTickBox:new(20,315,440,26,'AstroluxFactoryWindows',self,function(s)
    s.quote=nil;s.confirm:setEnable(false);s:updatePaint();s:updatePreview()
-  end));self.windows:addOption('Passenger windows (native 6-seat model)');self.windows:setSelected(1,false)
+  end));self.windows:addOption('Passenger Windows (Native 6-Seat Model)');self.windows:setSelected(1,false)
   self.search=widget('vehicles',ISTextEntryBox:new('',20,210,310,28))
   button('vehicles',340,210,120,'Search',function(s)s.query=s.search:getText();s.page=1;request(s,'open')end)
-  button('vehicles',20,255,215,'Previous page',function(s)s.page=math.max(1,(s.page or 1)-1);request(s,'open')end)
-  button('vehicles',245,255,215,'Next page',function(s)s.page=math.min(s.pages or 1,(s.page or 1)+1);request(s,'open')end)
-  button('vehicles',20,350,440,'Refresh / check order',function(s)request(s,'open')end)
-  button('vehicles',20,390,440,'Retry recorded delivery',function(s)request(s,'deliver')end)
-  self.tradeRows=widget('trade',ISScrollingListBox:new(20,255,940,245));self.tradeRows:instantiate()
-  self.tradeAppraise=button('trade',20,510,300,'Appraise vehicle in delivery area',function(s)request(s,'tradeQuote')end)
-  self.tradeAccept=button('trade',340,510,300,'Accept trade-in for cash',function(s)
-   request(s,'tradeAccept');s.tradeQuote=nil;s.tradeAccept:setEnable(false);s.tradeDecline:setEnable(false)
-  end)
-  self.tradeDecline=button('trade',660,510,300,'Keep my car',function(s)request(s,'tradeDecline')end)
-  self.tradeAccept:setEnable(false);self.tradeDecline:setEnable(false)
+  button('vehicles',20,255,215,'Previous Page',function(s)s.page=math.max(1,(s.page or 1)-1);request(s,'open')end)
+  button('vehicles',245,255,215,'Next Page',function(s)s.page=math.min(s.pages or 1,(s.page or 1)+1);request(s,'open')end)
+  button('vehicles',20,350,440,'Refresh / Check Order',function(s)request(s,'open')end)
+  button('vehicles',20,390,440,'Retry Recorded Delivery',function(s)request(s,'deliver')end)
+  TradeSelection.create(self,widget,button,request)
   self.zoneDirection=widget('zone',ISComboBox:new(250,215,260,28,self,nil))
-  for _,label in ipairs({'North','East','South','West'})do self.zoneDirection:addOption(label)end
+  for _,label in ipairs(Areas.labels)do self.zoneDirection:addOption(label)end
   self.zoneFields={}
   for i,key in ipairs({'x1','y1','x2','y2'})do
    self.zoneFields[key]=widget('zone',ISTextEntryBox:new('',20+(i-1)*235,290,215,28))
   end
-  self.zoneSave=button('zone',20,350,450,'Save rectangle and vehicle direction',function(s)s:saveZone()end)
-  self.zoneSelect=button('zone',490,350,470,'Select rectangle on the map',function(s)
+  self.zoneSave=button('zone',20,350,450,'Save Rectangle and Vehicle Direction',function(s)s:saveZone()end)
+  self.zoneSelect=button('zone',490,350,470,'Select Rectangle on the Map',function(s)
    local p,terminal,heading=s.player,s.zoneTerminal,Areas.directions[s.zoneDirection.selected]
    s:close()
    require('TSBAstroluxVend/AreaCursor'):start(p,heading,function(ax,ay,bx,by)
     send(p,'areaSet',{terminal=terminal,ax=ax,ay=ay,bx=bx,by=by,heading=heading,confirmed=true})
    end)
   end)
-  button('zone',20,400,450,'Refresh delivery zone',function(s)request(s,'open')end)
-  self.zoneShow=button('zone',490,400,470,'Show delivery zone',function(s)
+  button('zone',20,400,450,'Refresh Delivery Zone',function(s)request(s,'open')end)
+  self.zoneShow=button('zone',490,400,470,'Show Delivery Zone',function(s)
    if not s.spawnArea then s.message='No delivery zone configured for this kiosk.';return end
    local area={};for k,v in pairs(s.spawnArea)do area[k]=v end
    require('TSBAstroluxVend/AreaCursor'):showZone(s.player,area)
   end)
+  self.zoneBorder=widget('zone',ISTickBox:new(20,515,700,28,'AstroluxVisibleDeliveryBorder',self,function(s)request(s,'zoneBorder')end))
+  self.zoneBorder:addOption('Visible Yellow Delivery Border');self.zoneBorder:setSelected(1,false)
   self.equipmentPage=1
-  button('equipment',20,475,215,'Previous accessories',function(s)s.equipmentPage=math.max(1,s.equipmentPage-1);s:showTab('equipment')end)
-  button('equipment',245,475,215,'Next accessories',function(s)s.equipmentPage=math.min(math.max(1,math.ceil(#s.equipmentRows/8)),s.equipmentPage+1);s:showTab('equipment')end)
-  self.payment=widget('common',ISComboBox:new(20,510,440,28,self,function(s)s.quote=nil;s.confirm:setEnable(false)end));self.payment:addOption('Pay with carried cash');self.paymentIDs={'cash'}
+  button('equipment',20,475,215,'Previous Accessories',function(s)s.equipmentPage=math.max(1,s.equipmentPage-1);s:showTab('equipment')end)
+  button('equipment',245,475,215,'Next Accessories',function(s)s.equipmentPage=math.min(math.max(1,math.ceil(#s.equipmentRows/8)),s.equipmentPage+1);s:showTab('equipment')end)
+  self.payment=widget('common',ISComboBox:new(20,510,440,28,self,function(s)s.quote=nil;s.confirm:setEnable(false);s.bankBalance=(s.bankBalances or {})[(s.paymentIDs or {})[s.payment.selected]] or s.bankBalance end));self.payment:addOption('Pay with carried cash');self.paymentIDs={'cash'}
   self.scene=ISUI3DScene:new(500,105,460,340);self.scene:initialise();self.scene:instantiate();self:addChild(self.scene)
   self.preview=Preview.new(self.scene);self.preview.enabled=Client.previewEnabled~=false
   button('common',500,510,220,'Toggle 3D preview',function(s)s.preview.enabled=not s.preview.enabled;Client.previewEnabled=s.preview.enabled;s:updatePreview()end)
-  button('common',730,510,230,'Reset preview / fit vehicle',function(s)s.preview:clear();s:updatePreview()end)
-  self.getQuote=button('common',20,640,440,'Get price quote',function(s)request(s,'quote')end)
-  self.confirm=button('common',500,640,460,'Confirm purchase',function(s)
+  button('common',730,510,230,'Reset Preview / Fit Vehicle',function(s)s.preview:clear();s:updatePreview()end)
+  self.getQuote=button('common',20,640,440,'Get Price Quote',function(s)request(s,'quote')end)
+  self.confirm=button('common',500,640,460,'Confirm Purchase',function(s)
    -- Local UI feedback only; audio failure must never interrupt purchasing.
-   require('TSBAstroluxVend/AudioSettings').playPurchase()
+   require('TSBAstroluxVend/AudioSettings').playPurchase(s.player)
    request(s,'buy')
   end);self.confirm:setEnable(false)
   local close=ISButton:new(20,700,940,28,'Close',self,function(s)s:close()end);close:initialise();self:addChild(close)
   self:showTab('vehicles')
  end
  function Panel:showTab(tab)
+  if self.personalView then if self.activeTab=='personal' and tab~='personal'then self.personalView:save()end;if tab=='personal'then self.personalView:refresh()end end
   if tab=='admin' and not self.adminPricing then tab='vehicles'end
   self.equipmentPage=math.max(1,math.min(self.equipmentPage or 1,math.max(1,math.ceil(#self.equipmentRows/8))))
   self.activeTab=tab
-  for name,widgets in pairs(self.groups)do for _,w in ipairs(widgets)do w:setVisible(name==tab or (name=='common' and tab~='admin' and tab~='trade' and tab~='zone'))end end
+  for name,widgets in pairs(self.groups)do for _,w in ipairs(widgets)do w:setVisible(name==tab or (name=='common' and tab~='admin' and tab~='trade' and tab~='zone' and tab~='personal'))end end
   for i,row in ipairs(self.equipmentRows)do local w=self.equipmentControls[row.id]
    if w then w:setVisible(tab=='equipment' and math.floor((i-1)/8)+1==self.equipmentPage)end
   end
   if self.adminView then if tab~='admin' then self.adminView:stopAudioPreviews()end;self.adminView:setVisible(tab=='admin')end
   self.windows:setVisible(tab=='vehicles' and #(self.configurationRows or {})>0)
-  self.scene:setVisible(tab~='admin' and tab~='trade' and tab~='zone' and self.preview.enabled and self.preview.loaded==true)
+  self.scene:setVisible(tab~='admin' and tab~='trade' and tab~='zone' and tab~='personal' and self.preview.enabled and self.preview.loaded==true)
  end
  function Panel:updateZone()
+  self.zoneBorder:setSelected(1,self.deliveryBorder==true);self.zoneBorder.enable=self.adminPricing~=nil
   local a=self.spawnArea
   for key,w in pairs(self.zoneFields)do w:setText(tostring(a and a[key] or ''));w:setEditable(self.adminPricing~=nil)end
   for i,d in ipairs(Areas.directions)do if a and d==a.heading then self.zoneDirection.selected=i end end
@@ -133,10 +137,10 @@ function U.install(Panel,request,send,Client)
   local keep=old and self.paintScript==(offer and offer.script) and old.id
   self.paintScript=offer and offer.script;self.paintOptions=offer and offer.paintOptions;self.paint:clear()
   for i,o in ipairs(self.paintOptions or {})do
-   self.paint:addOption(o.id=='factory' and 'Factory color' or (o.label..(o.surcharge>0 and (' +$'..o.surcharge) or ' - included')))
+   self.paint:addOption(o.id=='factory' and 'Factory Color' or (o.label..(o.surcharge>0 and (' +$'..o.surcharge) or ' - included')))
    if keep==o.id then self.paint.selected=i end
   end
-  if not self.paintOptions then self.paint:addOption('Factory appearance')end
+  if not self.paintOptions then self.paint:addOption('Factory Appearance')end
   self:updateEquipment()
  end
  function Panel:updatePreview()
@@ -145,7 +149,7 @@ function U.install(Panel,request,send,Client)
   if offer and paint and paint.script then local copy={};for k,v in pairs(offer)do copy[k]=v end;copy.script=paint.script;offer=copy end
   self.preview:show(offer,selected.camper,selected)
   self.getQuote:setEnable(offer~=nil and offer.available~=false)
-  if self.activeTab=='admin' or self.activeTab=='trade' or self.activeTab=='zone'then self.scene:setVisible(false)end
+  if self.activeTab=='admin' or self.activeTab=='trade' or self.activeTab=='zone' or self.activeTab=='personal'then self.scene:setVisible(false)end
  end
  function Panel:updateAdmin(settings)
   self.adminPricing=settings;local previous=self.adminView
@@ -164,37 +168,53 @@ function U.install(Panel,request,send,Client)
  function Panel:prerender()
   ISPanel.prerender(self)
   if self.brandLogo then
-   -- The 64px icon artwork occupies x=1..63, y=11..51. Align its
-   -- visible right edge with the controls' 20px inner menu margin.
-   local size=150
-   self:drawTextureScaled(self.brandLogo,self.width-20-size*63/64,4-size*11/64,size,size,1,1,1,1)
+   -- Keep the accepted size/right edge; shift the header down five pixels.
+   local w,h=150*62/64,150*40/64
+   local x,y=self.width-30-w,9
+   -- The neon MOTORS subline loses definition when reduced to a few pixels.
+   -- Clip that subline and use native UI glyphs at final display resolution.
+   self:setStencilRect(x,y,w,74)
+   self:drawTextureScaled(self.brandLogo,x,y,w,h,1,1,1,1)
+   self:clearStencilRect()
+   local label='M O T O R S'
+   local textWidth=getTextManager():MeasureStringX(UIFont.Small,label)
+   local bar=math.max(0,(w-textWidth)/2-9)
+   self:drawTextCentre(label,x+w/2,y+76,1,0.25,0.12,1,UIFont.Small)
+   if bar>0 then
+    self:drawRect(x+3,y+83,bar,1,1,1,0.65,0.1)
+    self:drawRect(x+w-3-bar,y+83,bar,1,1,1,0.65,0.1)
+   end
   end
   self:drawText('Astrolux Motors',20,15,1,1,1,1,UIFont.Medium)
-  self:drawText('Cash: $'..tostring(self.balance or '?')..(self.bankAvailable and (' | Bank: $'..tostring(self.bankBalance)) or ''),300,22,1,1,1,1,UIFont.Small)
+  local function balanceCard(x,label,value,icon)
+   local w,h=230,48
+   self:drawRect(x,7,w,h,0.9,0.015,0.045,0.065)
+   self:drawRectBorder(x,7,w,h,0.8,0,136/255,240/255)
+   self:drawRect(x,7,3,h,1,0,240/255,248/255)
+   self:drawText(label,x+11,9,0.55,0.85,0.95,1,UIFont.Small)
+   if icon then self:drawTextureScaledAspect(icon,x+10,28,24,24,1,1,1,1)end
+   local amount=value~=nil and tostring(value) or '?'
+   if amount:match('^%d+$')then amount=amount:reverse():gsub('(%d%d%d)','%1,'):reverse():gsub('^,','')end
+   amount='$'..amount
+   local font=UIFont.Large
+   if getTextManager():MeasureStringX(font,amount)>w-(icon and 52 or 22) then font=UIFont.Medium end
+   self:drawTextRight(amount,x+w-10,25,0.88,0.98,1,1,font)
+  end
+  local balanceX=(self.width-(self.bankAvailable and 472 or 230))/2
+  balanceCard(balanceX,'CASH',self.balance,self.cashBalanceIcon)
+  if self.bankAvailable then balanceCard(balanceX+242,'BANK',self.bankBalance,self.bankBalanceIcon)end
   if self.activeTab=='zone'then
    local a=self.spawnArea
-   self:drawText('Vehicle delivery and trade-in zone',20,115,1,1,1,1,UIFont.Medium)
+   self:drawText('Vehicle Delivery and Trade-In Zone',20,115,1,1,1,1,UIFont.Medium)
    self:drawText(a and ('Saved rectangle: '..a.x1..', '..a.y1..' to '..a.x2..', '..a.y2..' | '..(a.x2-a.x1+1)..' x '..(a.y2-a.y1+1)..' tiles') or 'No delivery zone configured for this kiosk.',20,155,0.9,0.9,0.9,1,UIFont.Small)
    self:drawText(self.adminPricing and 'Choose vehicle direction, then select the area on the map or enter its corners.' or 'An administrator can change this zone.',20,185,0.9,0.9,0.9,1,UIFont.Small)
-   self:drawText('New vehicles face',20,220,1,1,1,1,UIFont.Small)
+   self:drawText('New Vehicles Face',20,220,1,1,1,1,UIFont.Small)
    for i,label in ipairs({'Corner 1 X','Corner 1 Y','Corner 2 X','Corner 2 Y'})do self:drawText(label,20+(i-1)*235,265,1,1,1,1,UIFont.Small)end
    self:drawText('Ground floor only. Changing direction affects future deliveries.',20,455,0.8,0.8,0.8,1,UIFont.Small)
    self:drawText('Resolve outstanding purchases before changing the zone. Unpaid quotes are cancelled.',20,480,0.8,0.8,0.8,1,UIFont.Small)
   elseif self.activeTab=='trade'then
-   local rules=self.tradeRules or {};local q=self.tradeQuote
-   self:drawText(self.tradeEnabled and 'Vehicle buybacks are enabled.' or 'Buybacks are disabled. An administrator can enable them in Admin > Buybacks.',20,110,1,1,1,1,UIFont.Small)
-   self:drawText('Park exactly one loaded vehicle in this kiosk delivery area; empty it, stop the engine and exit.',20,135,0.85,0.85,0.85,1,UIFont.Small)
-   self:drawText('Base: '..tostring(rules.buybackPercent or 50)..'% | Damage strength: '..tostring(rules.damagePercent or 100)..'% | Minimum parts: '..tostring(rules.minimumBuybackParts or 75)..'%',20,160,1,1,1,1,UIFont.Small)
-   self:drawText('Key: '..(rules.requireBuybackKey~=false and 'matching carried key required (player-made accepted)' or 'not required')..' | Hotwired: '..(rules.allowHotwiredBuybacks~=false and 'allowed' or 'blocked'),20,185,0.85,0.85,0.85,1,UIFont.Small)
-   self:drawText(q and ('Cash offer: $'..q.amount..' | Retail: $'..q.retail..' | Maximum: $'..q.maximum..' | Expires in 60 seconds') or 'Request an appraisal to see each standard part and its value.',20,210,1,0.9,0.7,1,UIFont.Small)
-   self:drawText('Part | Condition | Cash value / full value. Accepting permanently removes the vehicle.',20,235,1,0.8,0.5,1,UIFont.Small)
-   if not q then
-    local a=self.spawnArea
-    self:drawText('No appraisal yet. Click Appraise vehicle in delivery area below.',40,300,1,1,1,1,UIFont.Medium)
-    self:drawText(a and ('Delivery rectangle: '..a.x1..', '..a.y1..' to '..a.x2..', '..a.y2..' (ground floor).') or 'An administrator must configure this kiosk delivery area first.',40,340,0.9,0.9,0.9,1,UIFont.Small)
-    self:drawText('The vehicle must be inside that rectangle, which may be away from this building.',40,370,0.9,0.9,0.9,1,UIFont.Small)
-   end
-  elseif self.activeTab~='admin'then
+   TradeSelection.render(self)
+  elseif self.activeTab~='admin' and self.activeTab~='personal'then
    local offer=self.offers and self.offers[self.selection.selected]
    if self.activeTab=='equipment'then
     self:drawText(offer and offer.name or 'Choose a vehicle in the Vehicles tab.',20,103,1,1,1,1,UIFont.Small)

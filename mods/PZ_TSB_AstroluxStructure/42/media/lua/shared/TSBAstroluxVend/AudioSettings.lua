@@ -5,9 +5,22 @@ function A.settings()
 end
 function A.enabled(key)return A.settings()[key]~=false end
 function A.volume(key)
-    local defaults={purchaseVolume=50,musicVolume=10}
+    local defaults={purchaseVolume=15,musicVolume=10}
     local n=A.settings()[key]
     return (type(n)=='number' and n>=0 and n<=100 and n or defaults[key] or 0)/100
+end
+-- World defaults stay separate from client-only overrides.
+function A.playbackVolume(key,player)
+ return require('TSBAstroluxVend/PersonalAudioSettings').volume(player,key,A.volume(key))
+end
+function A.playbackEnabled(key,player)
+ return A.enabled(key) and not require('TSBAstroluxVend/PersonalAudioSettings').muted(player,key)
+end
+function A.refreshPurchase(player)
+ if not A.purchaseHandle or (A.purchasePlayer and A.purchasePlayer~=player)then return end
+ if not A.playbackEnabled('purchaseSound',player) or A.playbackVolume('purchaseVolume',player)==0 then
+  pcall(function()getSoundManager():stopUISound(A.purchaseHandle)end);A.purchaseHandle=nil
+ else pcall(function()getSoundManager():getUIEmitter():setVolume(A.purchaseHandle,A.playbackVolume('purchaseVolume',player))end)end
 end
 function A.pausePurchase()
  A.purchasePaused=true
@@ -16,11 +29,11 @@ end
 function A.resumePurchase()
  A.pausePurchase();A.purchasePaused=false;A.playPurchase()
 end
-function A.playPurchase()
-    if A.purchasePaused or not A.enabled('purchaseSound') or A.volume('purchaseVolume')==0 then return end
+function A.playPurchase(player)
+    if A.purchasePaused or not A.playbackEnabled('purchaseSound',player) or A.playbackVolume('purchaseVolume',player)==0 then return end
     pcall(function()
         local manager=getSoundManager();local id=manager:playUISound('TSBAstroluxPurchase')
-        if id and id~=0 then A.purchaseHandle=id;manager:getUIEmitter():setVolume(id,A.volume('purchaseVolume'))end
+        if id and id~=0 then A.purchaseHandle=id;A.purchasePlayer=player;manager:getUIEmitter():setVolume(id,A.playbackVolume('purchaseVolume',player))end
     end)
 end
 function A.edit(args)
