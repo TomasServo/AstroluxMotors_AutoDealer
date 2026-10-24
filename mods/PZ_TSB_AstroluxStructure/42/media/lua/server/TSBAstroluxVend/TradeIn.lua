@@ -106,7 +106,7 @@ function T.new(db,adapter)
         local valid,why=T.validate(player,terminal,q.vehicle,db.pricing);if not valid then fail(why)end;settled(q.vehicle)
         local fresh=Appraisal.calculate(q.vehicle,retail,((db.pricing or {}).buybackPercent or C.tradeInRate*100)/100,((db.pricing or {}).damagePercent or 100)/100)
         T.checkParts(fresh,db.pricing)
-        if fresh.fingerprint~=q.appraisal.fingerprint or fresh.amount~=q.appraisal.amount or retail~=q.appraisal.retail then
+        if fresh.fingerprint~=q.appraisal.fingerprint or fresh.amount~=q.appraisal.amount or fresh.retail~=q.appraisal.retail then
             self.quotes[actor]=nil;fail('Vehicle condition or price changed. Request another appraisal.')
         end
         -- Prepare physical currency and check capacity before irreversible removal.
