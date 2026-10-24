@@ -1,0 +1,14 @@
+module Base
+{
+    sound TSBAstroluxPurchase
+    {
+        category = UI,
+        loop = false,
+        is3D = false,
+        clip
+        {
+            file = media/sound/TSBAstroluxPurchase.wav,
+            volume = 0.5,
+        }
+    }
+}

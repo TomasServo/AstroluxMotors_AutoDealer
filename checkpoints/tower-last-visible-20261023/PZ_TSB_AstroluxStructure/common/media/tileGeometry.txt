@@ -1,0 +1,1716 @@
+tileGeometry
+{
+    VERSION = 2,
+    tileset
+    {
+        name = TSBAstroluxDisplay,
+        tile
+        {
+            xy = 0x0,
+        }
+        tile
+        {
+            xy = 1x0,
+        }
+        tile
+        {
+            xy = 2x0,
+        }
+        tile
+        {
+            xy = 3x0,
+        }
+        tile
+        {
+            xy = 4x0,
+        }
+        tile
+        {
+            xy = 5x0,
+        }
+        tile
+        {
+            xy = 6x0,
+        }
+        tile
+        {
+            xy = 7x0,
+        }
+        tile
+        {
+            xy = 0x1,
+        }
+        tile
+        {
+            xy = 1x1,
+        }
+        tile
+        {
+            xy = 2x1,
+        }
+        tile
+        {
+            xy = 3x1,
+        }
+        tile
+        {
+            xy = 4x1,
+        }
+        tile
+        {
+            xy = 5x1,
+        }
+        tile
+        {
+            xy = 6x1,
+        }
+        tile
+        {
+            xy = 7x1,
+        }
+        tile
+        {
+            xy = 0x2,
+        }
+        tile
+        {
+            xy = 1x2,
+        }
+        tile
+        {
+            xy = 2x2,
+        }
+        tile
+        {
+            xy = 3x2,
+        }
+        tile
+        {
+            xy = 4x2,
+        }
+        tile
+        {
+            xy = 5x2,
+        }
+        tile
+        {
+            xy = 6x2,
+        }
+        tile
+        {
+            xy = 7x2,
+        }
+        tile
+        {
+            xy = 0x3,
+        }
+        tile
+        {
+            xy = 1x3,
+        }
+        tile
+        {
+            xy = 2x3,
+        }
+        tile
+        {
+            xy = 3x3,
+        }
+        tile
+        {
+            xy = 4x3,
+        }
+        tile
+        {
+            xy = 5x3,
+        }
+        tile
+        {
+            xy = 6x3,
+        }
+        tile
+        {
+            xy = 7x3,
+        }
+        tile
+        {
+            xy = 0x4,
+        }
+        tile
+        {
+            xy = 1x4,
+        }
+        tile
+        {
+            xy = 2x4,
+        }
+        tile
+        {
+            xy = 3x4,
+        }
+        tile
+        {
+            xy = 4x4,
+        }
+        tile
+        {
+            xy = 5x4,
+        }
+        tile
+        {
+            xy = 6x4,
+        }
+        tile
+        {
+            xy = 7x4,
+        }
+        tile
+        {
+            xy = 0x5,
+        }
+        tile
+        {
+            xy = 1x5,
+        }
+        tile
+        {
+            xy = 2x5,
+        }
+        tile
+        {
+            xy = 3x5,
+        }
+        tile
+        {
+            xy = 4x5,
+        }
+        tile
+        {
+            xy = 5x5,
+        }
+        tile
+        {
+            xy = 6x5,
+        }
+        tile
+        {
+            xy = 7x5,
+        }
+        tile
+        {
+            xy = 0x6,
+        }
+        tile
+        {
+            xy = 1x6,
+        }
+        tile
+        {
+            xy = 2x6,
+        }
+        tile
+        {
+            xy = 3x6,
+        }
+        tile
+        {
+            xy = 4x6,
+        }
+        tile
+        {
+            xy = 5x6,
+        }
+        tile
+        {
+            xy = 6x6,
+        }
+        tile
+        {
+            xy = 7x6,
+        }
+        tile
+        {
+            xy = 0x7,
+        }
+        tile
+        {
+            xy = 1x7,
+        }
+        tile
+        {
+            xy = 2x7,
+        }
+        tile
+        {
+            xy = 3x7,
+        }
+        tile
+        {
+            xy = 4x7,
+        }
+        tile
+        {
+            xy = 5x7,
+        }
+        tile
+        {
+            xy = 6x7,
+        }
+        tile
+        {
+            xy = 7x7,
+        }
+        tile
+        {
+            xy = 0x8,
+        }
+        tile
+        {
+            xy = 1x8,
+        }
+        tile
+        {
+            xy = 2x8,
+        }
+        tile
+        {
+            xy = 3x8,
+        }
+        tile
+        {
+            xy = 4x8,
+        }
+        tile
+        {
+            xy = 5x8,
+        }
+        tile
+        {
+            xy = 6x8,
+        }
+        tile
+        {
+            xy = 7x8,
+        }
+        tile
+        {
+            xy = 0x9,
+        }
+        tile
+        {
+            xy = 1x9,
+        }
+        tile
+        {
+            xy = 2x9,
+        }
+        tile
+        {
+            xy = 3x9,
+        }
+        tile
+        {
+            xy = 4x9,
+        }
+        tile
+        {
+            xy = 5x9,
+        }
+        tile
+        {
+            xy = 6x9,
+        }
+        tile
+        {
+            xy = 7x9,
+        }
+        tile
+        {
+            xy = 0x10,
+        }
+        tile
+        {
+            xy = 1x10,
+        }
+        tile
+        {
+            xy = 2x10,
+        }
+        tile
+        {
+            xy = 3x10,
+        }
+        tile
+        {
+            xy = 4x10,
+        }
+        tile
+        {
+            xy = 5x10,
+        }
+        tile
+        {
+            xy = 6x10,
+        }
+        tile
+        {
+            xy = 7x10,
+        }
+        tile
+        {
+            xy = 0x11,
+        }
+        tile
+        {
+            xy = 1x11,
+        }
+        tile
+        {
+            xy = 2x11,
+        }
+        tile
+        {
+            xy = 3x11,
+        }
+        tile
+        {
+            xy = 4x11,
+        }
+        tile
+        {
+            xy = 5x11,
+        }
+        tile
+        {
+            xy = 6x11,
+        }
+        tile
+        {
+            xy = 7x11,
+        }
+        tile
+        {
+            xy = 0x12,
+        }
+        tile
+        {
+            xy = 1x12,
+        }
+        tile
+        {
+            xy = 2x12,
+        }
+        tile
+        {
+            xy = 3x12,
+        }
+        tile
+        {
+            xy = 4x12,
+        }
+        tile
+        {
+            xy = 5x12,
+        }
+        tile
+        {
+            xy = 6x12,
+        }
+        tile
+        {
+            xy = 7x12,
+        }
+        tile
+        {
+            xy = 0x13,
+        }
+        tile
+        {
+            xy = 1x13,
+        }
+        tile
+        {
+            xy = 2x13,
+        }
+        tile
+        {
+            xy = 3x13,
+        }
+        tile
+        {
+            xy = 4x13,
+        }
+        tile
+        {
+            xy = 5x13,
+        }
+        tile
+        {
+            xy = 6x13,
+        }
+        tile
+        {
+            xy = 7x13,
+        }
+        tile
+        {
+            xy = 0x14,
+        }
+        tile
+        {
+            xy = 1x14,
+        }
+        tile
+        {
+            xy = 2x14,
+        }
+        tile
+        {
+            xy = 3x14,
+        }
+        tile
+        {
+            xy = 4x14,
+        }
+        tile
+        {
+            xy = 5x14,
+        }
+        tile
+        {
+            xy = 6x14,
+        }
+        tile
+        {
+            xy = 7x14,
+        }
+        tile
+        {
+            xy = 0x15,
+        }
+        tile
+        {
+            xy = 1x15,
+        }
+        tile
+        {
+            xy = 2x15,
+        }
+        tile
+        {
+            xy = 3x15,
+        }
+        tile
+        {
+            xy = 4x15,
+        }
+        tile
+        {
+            xy = 5x15,
+        }
+        tile
+        {
+            xy = 6x15,
+        }
+        tile
+        {
+            xy = 7x15,
+        }
+        tile
+        {
+            xy = 0x16,
+        }
+        tile
+        {
+            xy = 1x16,
+        }
+        tile
+        {
+            xy = 2x16,
+        }
+        tile
+        {
+            xy = 3x16,
+        }
+        tile
+        {
+            xy = 4x16,
+        }
+        tile
+        {
+            xy = 5x16,
+        }
+        tile
+        {
+            xy = 6x16,
+        }
+        tile
+        {
+            xy = 7x16,
+        }
+        tile
+        {
+            xy = 0x17,
+        }
+        tile
+        {
+            xy = 1x17,
+        }
+        tile
+        {
+            xy = 2x17,
+        }
+        tile
+        {
+            xy = 3x17,
+        }
+        tile
+        {
+            xy = 4x17,
+        }
+        tile
+        {
+            xy = 5x17,
+        }
+        tile
+        {
+            xy = 6x17,
+        }
+        tile
+        {
+            xy = 7x17,
+        }
+        tile
+        {
+            xy = 0x18,
+        }
+        tile
+        {
+            xy = 1x18,
+        }
+        tile
+        {
+            xy = 2x18,
+        }
+        tile
+        {
+            xy = 3x18,
+        }
+        tile
+        {
+            xy = 4x18,
+        }
+        tile
+        {
+            xy = 5x18,
+        }
+        tile
+        {
+            xy = 6x18,
+        }
+        tile
+        {
+            xy = 7x18,
+        }
+        tile
+        {
+            xy = 0x19,
+        }
+        tile
+        {
+            xy = 1x19,
+        }
+        tile
+        {
+            xy = 2x19,
+        }
+        tile
+        {
+            xy = 3x19,
+        }
+        tile
+        {
+            xy = 4x19,
+        }
+        tile
+        {
+            xy = 5x19,
+        }
+        tile
+        {
+            xy = 6x19,
+        }
+        tile
+        {
+            xy = 7x19,
+        }
+        tile
+        {
+            xy = 0x20,
+        }
+        tile
+        {
+            xy = 1x20,
+        }
+        tile
+        {
+            xy = 2x20,
+        }
+        tile
+        {
+            xy = 3x20,
+        }
+        tile
+        {
+            xy = 4x20,
+        }
+        tile
+        {
+            xy = 5x20,
+        }
+        tile
+        {
+            xy = 6x20,
+        }
+        tile
+        {
+            xy = 7x20,
+        }
+        tile
+        {
+            xy = 0x21,
+        }
+        tile
+        {
+            xy = 1x21,
+        }
+        tile
+        {
+            xy = 2x21,
+        }
+        tile
+        {
+            xy = 3x21,
+        }
+        tile
+        {
+            xy = 4x21,
+        }
+        tile
+        {
+            xy = 5x21,
+        }
+        tile
+        {
+            xy = 6x21,
+        }
+        tile
+        {
+            xy = 7x21,
+        }
+        tile
+        {
+            xy = 0x22,
+        }
+        tile
+        {
+            xy = 1x22,
+        }
+        tile
+        {
+            xy = 2x22,
+        }
+        tile
+        {
+            xy = 3x22,
+        }
+        tile
+        {
+            xy = 4x22,
+        }
+        tile
+        {
+            xy = 5x22,
+        }
+        tile
+        {
+            xy = 6x22,
+        }
+        tile
+        {
+            xy = 7x22,
+        }
+        tile
+        {
+            xy = 0x23,
+        }
+        tile
+        {
+            xy = 1x23,
+        }
+        tile
+        {
+            xy = 2x23,
+        }
+        tile
+        {
+            xy = 3x23,
+        }
+        tile
+        {
+            xy = 4x23,
+        }
+        tile
+        {
+            xy = 5x23,
+        }
+        tile
+        {
+            xy = 6x23,
+        }
+        tile
+        {
+            xy = 7x23,
+        }
+        tile
+        {
+            xy = 0x24,
+        }
+        tile
+        {
+            xy = 1x24,
+        }
+        tile
+        {
+            xy = 2x24,
+        }
+        tile
+        {
+            xy = 3x24,
+        }
+        tile
+        {
+            xy = 4x24,
+        }
+        tile
+        {
+            xy = 5x24,
+        }
+        tile
+        {
+            xy = 6x24,
+        }
+        tile
+        {
+            xy = 7x24,
+        }
+        tile
+        {
+            xy = 0x25,
+        }
+        tile
+        {
+            xy = 1x25,
+        }
+        tile
+        {
+            xy = 2x25,
+        }
+        tile
+        {
+            xy = 3x25,
+        }
+        tile
+        {
+            xy = 4x25,
+        }
+        tile
+        {
+            xy = 5x25,
+        }
+        tile
+        {
+            xy = 6x25,
+        }
+        tile
+        {
+            xy = 7x25,
+        }
+        tile
+        {
+            xy = 0x26,
+        }
+        tile
+        {
+            xy = 1x26,
+        }
+        tile
+        {
+            xy = 2x26,
+        }
+        tile
+        {
+            xy = 3x26,
+        }
+        tile
+        {
+            xy = 4x26,
+        }
+        tile
+        {
+            xy = 5x26,
+        }
+        tile
+        {
+            xy = 6x26,
+        }
+        tile
+        {
+            xy = 7x26,
+        }
+        tile
+        {
+            xy = 0x27,
+        }
+        tile
+        {
+            xy = 1x27,
+        }
+        tile
+        {
+            xy = 2x27,
+        }
+        tile
+        {
+            xy = 3x27,
+        }
+        tile
+        {
+            xy = 4x27,
+        }
+        tile
+        {
+            xy = 5x27,
+        }
+        tile
+        {
+            xy = 6x27,
+        }
+        tile
+        {
+            xy = 7x27,
+        }
+        tile
+        {
+            xy = 0x28,
+        }
+        tile
+        {
+            xy = 1x28,
+        }
+        tile
+        {
+            xy = 2x28,
+        }
+        tile
+        {
+            xy = 3x28,
+        }
+        tile
+        {
+            xy = 4x28,
+        }
+        tile
+        {
+            xy = 5x28,
+        }
+        tile
+        {
+            xy = 6x28,
+        }
+        tile
+        {
+            xy = 7x28,
+        }
+        tile
+        {
+            xy = 0x29,
+        }
+        tile
+        {
+            xy = 1x29,
+        }
+        tile
+        {
+            xy = 2x29,
+        }
+        tile
+        {
+            xy = 3x29,
+        }
+        tile
+        {
+            xy = 4x29,
+        }
+        tile
+        {
+            xy = 5x29,
+        }
+        tile
+        {
+            xy = 6x29,
+        }
+        tile
+        {
+            xy = 7x29,
+        }
+        tile
+        {
+            xy = 0x30,
+        }
+        tile
+        {
+            xy = 1x30,
+        }
+        tile
+        {
+            xy = 2x30,
+        }
+        tile
+        {
+            xy = 3x30,
+        }
+        tile
+        {
+            xy = 4x30,
+        }
+        tile
+        {
+            xy = 5x30,
+        }
+        tile
+        {
+            xy = 6x30,
+        }
+        tile
+        {
+            xy = 7x30,
+        }
+        tile
+        {
+            xy = 0x31,
+        }
+        tile
+        {
+            xy = 1x31,
+        }
+        tile
+        {
+            xy = 2x31,
+        }
+        tile
+        {
+            xy = 3x31,
+        }
+        tile
+        {
+            xy = 4x31,
+        }
+        tile
+        {
+            xy = 5x31,
+        }
+        tile
+        {
+            xy = 6x31,
+        }
+        tile
+        {
+            xy = 7x31,
+        }
+        tile
+        {
+            xy = 0x32,
+        }
+        tile
+        {
+            xy = 1x32,
+        }
+        tile
+        {
+            xy = 2x32,
+        }
+        tile
+        {
+            xy = 3x32,
+        }
+        tile
+        {
+            xy = 4x32,
+        }
+        tile
+        {
+            xy = 5x32,
+        }
+        tile
+        {
+            xy = 6x32,
+        }
+        tile
+        {
+            xy = 7x32,
+        }
+        tile
+        {
+            xy = 0x33,
+        }
+        tile
+        {
+            xy = 1x33,
+        }
+        tile
+        {
+            xy = 2x33,
+        }
+        tile
+        {
+            xy = 3x33,
+        }
+        tile
+        {
+            xy = 4x33,
+        }
+        tile
+        {
+            xy = 5x33,
+        }
+        tile
+        {
+            xy = 6x33,
+        }
+        tile
+        {
+            xy = 7x33,
+        }
+        tile
+        {
+            xy = 0x34,
+        }
+        tile
+        {
+            xy = 1x34,
+        }
+        tile
+        {
+            xy = 2x34,
+        }
+        tile
+        {
+            xy = 3x34,
+        }
+        tile
+        {
+            xy = 4x34,
+        }
+        tile
+        {
+            xy = 5x34,
+        }
+        tile
+        {
+            xy = 6x34,
+        }
+        tile
+        {
+            xy = 7x34,
+        }
+        tile
+        {
+            xy = 0x35,
+        }
+        tile
+        {
+            xy = 1x35,
+        }
+        tile
+        {
+            xy = 2x35,
+        }
+        tile
+        {
+            xy = 3x35,
+        }
+        tile
+        {
+            xy = 4x35,
+        }
+        tile
+        {
+            xy = 5x35,
+        }
+        tile
+        {
+            xy = 6x35,
+        }
+        tile
+        {
+            xy = 7x35,
+        }
+        tile
+        {
+            xy = 0x36,
+        }
+        tile
+        {
+            xy = 1x36,
+        }
+        tile
+        {
+            xy = 2x36,
+        }
+        tile
+        {
+            xy = 3x36,
+        }
+        tile
+        {
+            xy = 4x36,
+        }
+        tile
+        {
+            xy = 5x36,
+        }
+        tile
+        {
+            xy = 6x36,
+        }
+        tile
+        {
+            xy = 7x36,
+        }
+        tile
+        {
+            xy = 0x37,
+        }
+        tile
+        {
+            xy = 1x37,
+        }
+        tile
+        {
+            xy = 2x37,
+        }
+        tile
+        {
+            xy = 3x37,
+        }
+        tile
+        {
+            xy = 4x37,
+        }
+        tile
+        {
+            xy = 5x37,
+        }
+        tile
+        {
+            xy = 6x37,
+        }
+        tile
+        {
+            xy = 7x37,
+        }
+        tile
+        {
+            xy = 0x38,
+        }
+        tile
+        {
+            xy = 1x38,
+        }
+        tile
+        {
+            xy = 2x38,
+        }
+        tile
+        {
+            xy = 3x38,
+        }
+        tile
+        {
+            xy = 4x38,
+        }
+        tile
+        {
+            xy = 5x38,
+        }
+        tile
+        {
+            xy = 6x38,
+        }
+        tile
+        {
+            xy = 7x38,
+        }
+        tile
+        {
+            xy = 0x39,
+        }
+        tile
+        {
+            xy = 1x39,
+        }
+        tile
+        {
+            xy = 2x39,
+        }
+        tile
+        {
+            xy = 3x39,
+        }
+        tile
+        {
+            xy = 4x39,
+        }
+        tile
+        {
+            xy = 5x39,
+        }
+        tile
+        {
+            xy = 6x39,
+        }
+        tile
+        {
+            xy = 7x39,
+        }
+        tile
+        {
+            xy = 0x40,
+        }
+        tile
+        {
+            xy = 1x40,
+        }
+        tile
+        {
+            xy = 2x40,
+        }
+        tile
+        {
+            xy = 3x40,
+        }
+        tile
+        {
+            xy = 4x40,
+        }
+        tile
+        {
+            xy = 5x40,
+        }
+        tile
+        {
+            xy = 6x40,
+        }
+        tile
+        {
+            xy = 7x40,
+        }
+        tile
+        {
+            xy = 0x41,
+        }
+        tile
+        {
+            xy = 1x41,
+        }
+        tile
+        {
+            xy = 2x41,
+        }
+        tile
+        {
+            xy = 3x41,
+        }
+        tile
+        {
+            xy = 4x41,
+        }
+        tile
+        {
+            xy = 5x41,
+        }
+        tile
+        {
+            xy = 6x41,
+        }
+        tile
+        {
+            xy = 7x41,
+        }
+        tile
+        {
+            xy = 0x42,
+        }
+        tile
+        {
+            xy = 1x42,
+        }
+        tile
+        {
+            xy = 2x42,
+        }
+        tile
+        {
+            xy = 3x42,
+        }
+        tile
+        {
+            xy = 4x42,
+        }
+        tile
+        {
+            xy = 5x42,
+        }
+        tile
+        {
+            xy = 6x42,
+        }
+        tile
+        {
+            xy = 7x42,
+        }
+        tile
+        {
+            xy = 0x43,
+        }
+        tile
+        {
+            xy = 1x43,
+        }
+        tile
+        {
+            xy = 2x43,
+        }
+        tile
+        {
+            xy = 3x43,
+        }
+        tile
+        {
+            xy = 4x43,
+        }
+        tile
+        {
+            xy = 5x43,
+        }
+        tile
+        {
+            xy = 6x43,
+        }
+        tile
+        {
+            xy = 7x43,
+        }
+        tile
+        {
+            xy = 0x44,
+        }
+        tile
+        {
+            xy = 1x44,
+        }
+        tile
+        {
+            xy = 2x44,
+        }
+        tile
+        {
+            xy = 3x44,
+        }
+        tile
+        {
+            xy = 4x44,
+        }
+        tile
+        {
+            xy = 5x44,
+        }
+        tile
+        {
+            xy = 6x44,
+        }
+        tile
+        {
+            xy = 7x44,
+        }
+        tile
+        {
+            xy = 0x45,
+        }
+        tile
+        {
+            xy = 1x45,
+        }
+        tile
+        {
+            xy = 2x45,
+        }
+        tile
+        {
+            xy = 3x45,
+        }
+        tile
+        {
+            xy = 4x45,
+        }
+        tile
+        {
+            xy = 5x45,
+        }
+        tile
+        {
+            xy = 6x45,
+        }
+        tile
+        {
+            xy = 7x45,
+        }
+        tile
+        {
+            xy = 0x46,
+        }
+        tile
+        {
+            xy = 1x46,
+        }
+        tile
+        {
+            xy = 2x46,
+        }
+        tile
+        {
+            xy = 3x46,
+        }
+        tile
+        {
+            xy = 4x46,
+        }
+        tile
+        {
+            xy = 5x46,
+        }
+        tile
+        {
+            xy = 6x46,
+        }
+        tile
+        {
+            xy = 7x46,
+        }
+        tile
+        {
+            xy = 0x47,
+        }
+        tile
+        {
+            xy = 1x47,
+        }
+        tile
+        {
+            xy = 2x47,
+        }
+        tile
+        {
+            xy = 3x47,
+        }
+        tile
+        {
+            xy = 4x47,
+        }
+        tile
+        {
+            xy = 5x47,
+        }
+        tile
+        {
+            xy = 6x47,
+        }
+        tile
+        {
+            xy = 7x47,
+        }
+        tile
+        {
+            xy = 0x48,
+        }
+        tile
+        {
+            xy = 1x48,
+        }
+        tile
+        {
+            xy = 2x48,
+        }
+        tile
+        {
+            xy = 3x48,
+        }
+        tile
+        {
+            xy = 4x48,
+        }
+        tile
+        {
+            xy = 5x48,
+        }
+        tile
+        {
+            xy = 6x48,
+        }
+        tile
+        {
+            xy = 7x48,
+        }
+        tile
+        {
+            xy = 0x49,
+        }
+        tile
+        {
+            xy = 1x49,
+        }
+        tile
+        {
+            xy = 2x49,
+        }
+        tile
+        {
+            xy = 3x49,
+        }
+        tile
+        {
+            xy = 4x49,
+        }
+        tile
+        {
+            xy = 5x49,
+        }
+        tile
+        {
+            xy = 6x49,
+        }
+        tile
+        {
+            xy = 7x49,
+        }
+        tile
+        {
+            xy = 0x50,
+        }
+        tile
+        {
+            xy = 1x50,
+        }
+        tile
+        {
+            xy = 2x50,
+        }
+        tile
+        {
+            xy = 3x50,
+        }
+    }
+    tileset
+    {
+        name = TSBAstroluxLogoRug,
+        tile
+        {
+            xy = 0x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 1x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 2x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 3x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 4x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 5x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 6x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 7x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+    }
+}

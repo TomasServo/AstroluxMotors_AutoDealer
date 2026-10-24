@@ -1,0 +1,13 @@
+module TSBAstrolux
+{
+    item AstroluxMotorsSign
+    {
+        DisplayName = Astrolux Motors Neon Sign,
+        DisplayCategory = TSBAstroluxMotors,
+        ItemType = base:moveable,
+        Icon = TSBAstroluxMotorsSign,
+        Weight = 5.0,
+        WorldObjectSprite = TSBAstroluxMotorsSign_0,
+    
+    }
+}

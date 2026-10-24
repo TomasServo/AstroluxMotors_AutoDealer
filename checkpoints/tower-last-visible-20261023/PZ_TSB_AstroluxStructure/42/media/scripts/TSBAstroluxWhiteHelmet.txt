@@ -1,0 +1,24 @@
+module TSBAstrolux
+{
+    item Hat_CrashHelmetFULL_White
+    {
+        DisplayName = Crash Helmet,
+        DisplayCategory = TSBAstroluxMotors,
+        ItemType = base:clothing,
+        Icon = TSB_Hat_CrashHelmetFULL_White,
+        BloodLocation = FullHelmet,
+        BodyLocation = base:fullhat,
+        CanHaveHoles = false,
+        ChanceToFall = 0,
+        ClothingItem = Hat_CrashHelmetFULL_White,
+        CombatSpeedModifier = 0.95,
+        Insulation = 1.0,
+        BiteDefense = 100,
+        ScratchDefense = 100,
+        WindResistance = 1.0,
+        VisionModifier = 0.5,
+        HearingModifier = 0.75,
+        DiscomfortModifier = 0.35,
+    
+    }
+}
