@@ -114,17 +114,18 @@ local function view(p,t,message,quote,args,tradeQuote,tradeSuccess)
         end
     end
     local order=db.orders[tostring(p:getUsername())]
+    local rules=Prices.view(db.pricing)
     reply(p,{ok=true,message=message or 'Select a vehicle and request a price quote.',terminal=t.id,spawnArea=t.spawnArea,deliveryBorder=t.deliveryBorder==true,
         offers=list,page=page,pages=pages,total=total,quote=quote,
         order=order and {id=order.id,status=order.status,terminal=order.terminal},simple=true,
         bankAvailable=bankOK,bankBalance=bankOK and bankBalance or nil,paymentMethods=paymentOptions.methods,paymentLabels=paymentOptions.labels,bankBalances=paymentOptions.balances,
-        tradeVehicles=trades:list(p,t,tradeRetail),tradeSuccess=tradeSuccess,tradeRules=Prices.view(db.pricing),tradeInsEnabled=TradeIn.enabled(db),tradeQuote=tradeQuote,balance=payments:balance(p),adminPricing=pricing})
+        tradeVehicles=trades:list(p,t,tradeRetail),tradeSuccess=tradeSuccess,tradeRules={buybackPercent=rules.buybackPercent,minimumBuybackParts=rules.minimumBuybackParts},tradeInsEnabled=TradeIn.enabled(db),tradeQuote=tradeQuote,balance=payments:balance(p),adminPricing=pricing})
 end
 local function handle(p,command,args)
     init()
     if not p or p:isDead() or type(args)~='table' then return end
     local actor=tostring(p:getUsername());players[actor]=p
-    local now=getTimestampMs();if last[actor] and now-last[actor]<250 then return end;last[actor]=now
+    local now=getTimestampMs();if last[actor] and now-last[actor]<250 then reply(p,{ok=false,message='Please wait a moment, then try again.'});return end;last[actor]=now
     if command=='coffeeCabinet' then
         if not admin(p) then fail('Administrator access required.') end
         local ok,why=require('TSBAstroluxVend/CoffeeSupplies').designate(p,args)
@@ -199,7 +200,12 @@ local function handle(p,command,args)
         local message=resetCount and ('Demand reset to base for '..resetCount..' vehicle families; unpaid quotes cancelled.')or 'Prices saved; unpaid quotes cancelled.'
         view(p,t,message,nil,args);return
     end
-    if command=='deliver' then service:deliver(actor,t);view(p,t,'Vehicle delivered; its key is in your inventory.',nil,args);return end
+    if command=='deliver' then
+        local order=service:deliver(actor,t)
+        local message=order.status=='queued' and 'Order still queued. Keep funds available until a clear delivery space is loaded.'
+            or 'Vehicle delivered; its key is in your inventory.'
+        view(p,t,message,nil,args);return
+    end
     if command~='quote' and command~='buy' then fail('Unsupported sales command.') end
     local offer=offers():resolve(args.offer)
     if args.configuration~=nil and (type(args.configuration)~='string' or not Families.member(offer.script,args.configuration,'configuration'))then fail('Invalid factory configuration.')end
