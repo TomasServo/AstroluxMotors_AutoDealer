@@ -1,6 +1,6 @@
 local A={}
 local function signature(p)
- return tostring(p.purchaseSound:isSelected(1))..':'..tostring(p.showroomMusic:isSelected(1))..':'..p.purchaseVolume:getCurrentValue()..':'..p.musicVolume:getCurrentValue()
+ return tostring(p.purchaseSound:isSelected(1))..':'..tostring(p.showroomMusic:isSelected(1))..':'..p.purchaseVolume:getCurrentValue()..':'..p.musicVolume:getCurrentValue()..':'..tostring(p.doorSound:isSelected(1))..':'..p.doorVolume:getCurrentValue()
 end
 function A.save(p)
  if not p.audioAutosaveReady then return end
@@ -12,7 +12,7 @@ function A.save(p)
 end
 function A.install(p)
  p.audioLastSent=signature(p);p.audioAutosaveReady=true
- for _,slider in ipairs({p.purchaseVolume,p.musicVolume})do
+ for _,slider in ipairs({p.purchaseVolume,p.musicVolume,p.doorVolume})do
   local changed=slider.onValueChange
   slider.onValueChange=function(target,value,widget)
    if changed then changed(target,value,widget)end
@@ -30,7 +30,7 @@ function A.install(p)
  p.update=function(panel,...)
   if update then update(panel,...)end
   if panel.audioSaveDue and getTimestampMs()>=panel.audioSaveDue then
-   for _,slider in ipairs({panel.purchaseVolume,panel.musicVolume})do
+   for _,slider in ipairs({panel.purchaseVolume,panel.musicVolume,panel.doorVolume})do
     if slider.dragInside or slider.leftPressed or slider.rightPressed then return end
    end
    A.save(panel)

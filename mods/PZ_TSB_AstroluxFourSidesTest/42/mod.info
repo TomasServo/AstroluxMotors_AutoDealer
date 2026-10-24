@@ -1,0 +1,21 @@
+name=Astrolux 12x12 Four-Side Test (Local)
+id=PZ_TSB_AstroluxFourSidesTest
+author=TomasServo
+modversion=0.1.0
+versionMin=42.21.0
+require=PZ_TSB_AstroluxStructure
+description=Private scale-study preview in AstroluxStructureLab_12x12_FourSides only. Separate decorative bay and real native Cerise reference. No banking dependency. Not a final interactive building or public map.
+pack=TSBAstroluxBayTest
+tiledef=TSBAstroluxBayTest 7988
+
+pack=TSBAstroluxBaySurface
+
+
+pack=TSBAstroluxLayers
+tiledef=TSBAstroluxLayers 7990
+
+pack=TSBAstroluxStackLayers
+tiledef=TSBAstroluxStackLayers 7991
+
+pack=TSBAstroluxBayCollision
+tiledef=TSBAstroluxBayCollision 7992

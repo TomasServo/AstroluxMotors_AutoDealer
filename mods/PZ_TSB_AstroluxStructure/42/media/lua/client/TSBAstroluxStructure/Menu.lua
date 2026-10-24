@@ -1,3 +1,4 @@
+local Menus=require 'TSBAstroluxVend/ContextMenu'
 require 'ISUI/ISModalRichText'
 local function report(player,fn)
     local ok,result,reason=pcall(fn)
@@ -17,23 +18,20 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
         local sq=obj:getSquare()
         if sq and sq:getZ()==0 then
             local x,y=sq:getX(),sq:getY()
-            context:addOption('Astrolux Motors lab: preview structure here',player,function()
+            local record=require('TSBAstroluxStructure/Records').near(x,y)
+            local inside=record and x>=record.x and x<=record.x+8 and y>=record.y and y<=record.y+8
+            local menu=Menus.section(context,'Showroom')
+            if inside then
+            menu:addOption('Save furnishings and inventory',player,function()
                 report(player,function()
-                    local plan,reason=builder.preview(player,x,y)
-                    if not plan then return nil,reason end
-                    local text='Build the structure prototype at '..x..', '..y..'? <LINE> '..
-                        '8 x 8 native ground floor and ceiling, with the preserved car-display tower above. Two-tile openings centered on all four sides; sliding doors deferred. <LINE> '..
-                        'Stand outside the 9 x 9 tower footprint. Keep the 11 x 11 site clear. Ground is preserved. <LINE> '..
-                        'Upper tower is display artwork only. No upper walkable floors or dealership systems. <LINE> '..
-                        'Disposable lab save only. Native cutaway and roof behavior still require testing.'
-                    local modal=ISModalRichText:new(100,100,620,320,text,true,nil,function(_,button)
-                        if button.internal=='YES' then report(player,function() local placed,reason=builder.place(player,x,y); if placed then player:Say('Astrolux Motors structure placed.') end; return placed,reason end) end
-                    end,playerNum)
-                    modal:initialise();modal:addToUIManager()
+                    local capture=require 'TSBAstroluxStructure/DecorCapture'
+                    local profile,why=capture.capture(record)
+                    if not profile then return nil,why end
+                    player:Say('Saved '..#profile.objects..' furnishings and their inventory for future pastes.')
                     return true
                 end)
             end)
-            context:addOption('Astrolux Motors lab: remove prototype',player,function()
+            menu:addOption('Remove this showroom',player,function()
                 local modal=ISModalRichText:new(100,100,520,230,
                     'Remove only this lab prototype? <LINE> Clear all people and loose items first. Original ground is retained.',
                     true,nil,function(_,button)
@@ -41,42 +39,25 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
                     end,playerNum)
                 modal:initialise();modal:addToUIManager()
             end)
-            context:addOption('Astrolux Motors lab: apply car-display tower above ground floor',player,function()
-                report(player,function() return builder.convert(player) end)
-            end)
-            context:addOption('Astrolux Motors lab: apply transparent walls and open entrances',player,function()
-                report(player,function() return TSBAstroluxClearWalls.apply(player) end)
-            end)
-            context:addOption('Astrolux Motors lab: apply bordered gray tile floor',player,function()
-                report(player,function() return TSBAstroluxFlooring.apply(player) end)
-            end)
-            context:addOption('Astrolux Motors lab: record showroom furnishings',player,function()
-                report(player,function()
-                    local capture=TSBAstroluxDecorCapture
-                    if not capture then capture=require 'TSBAstroluxStructure/DecorCapture' end
-                    local profile,reason=capture.capture()
-                    if not profile then return nil,reason end
-                    player:Say('Recorded '..#profile.objects..' showroom furnishings as the default layout.')
-                    return true
-                end)
-            end)
-            context:addOption('Astrolux Motors lab: paste furnished showroom here',player,function()
+            else
+            menu:addOption('Place furnished showroom here',player,function()
                 report(player,function()
                     local plan,why=builder.preview(player,x,y,true);if not plan then return nil,why end
                     local text='Paste a complete Astrolux Motors showroom here? <LINE> '..
-                        'Includes the glass tower, gray bordered floor, eight sliding door leaves and all 19 saved furnishings, including the sink. <LINE> '..
-                        'Both kiosks receive fresh identities and need new vehicle delivery areas. Existing showrooms and their purchases are retained. <LINE> '..
+                        'Includes the glass tower, gray bordered floor, eight sliding door leaves and the saved furnishings and container inventories. <LINE> '..
+                        'Pasted inventory is copied; the original is kept. Kiosks receive fresh identities and need new vehicle delivery areas. Existing showrooms and their purchases are retained. <LINE> '..
                         'Stand outside the footprint and clear the site first.'
                     local modal=ISModalRichText:new(100,100,620,310,text,true,nil,function(_,button)
                         if button.internal=='YES' then report(player,function()
                             local record,reason=builder.paste(player,x,y)
-                            if record then player:Say('Astrolux showroom pasted with all 19 furnishings. Configure its new kiosks.') end
+                            if record then player:Say('Astrolux showroom pasted with saved furnishings and inventory. Configure its new kiosks.') end
                             return record,reason
                         end) end
                     end,playerNum)
                     modal:initialise();modal:addToUIManager();return true
                 end)
             end)
+            end
             break
         end
     end

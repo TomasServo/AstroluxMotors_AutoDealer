@@ -200,4 +200,17 @@ P.vehicles['Base.88toyotaHiluxXCS']={
     'Windshield',
     'WindshieldRear',
 }
+-- Native CarStationWagon/CarStationWagon2 declare the reviewed CarNormal
+-- standard part templates (four doors/seats/windows, trunk, tires and running gear).
+-- Copy arrays so later vehicle-specific revisions remain independent.
+for _,name in ipairs({'Base.CarStationWagon','Base.CarStationWagon2'})do
+ local profile={};for i,id in ipairs(P.vehicles['Base.CarNormal'])do profile[i]=id end
+ P.vehicles[name]=profile
+end
+
+-- Adapter-provided reviewed profiles allow new providers without editing this table.
+setmetatable(P.vehicles,{__index=function(_,name)
+ local adapter=require('TSBAstroluxVend/VehicleAdapters').get(name)
+ return adapter and adapter.appraisalProfile or nil
+end})
 return P

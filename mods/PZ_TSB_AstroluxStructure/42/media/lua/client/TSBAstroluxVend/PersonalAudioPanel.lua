@@ -8,7 +8,8 @@ local A=ISPanel:derive('TSBAstroluxPersonalAudio')
 function A:createChildren()
  ISPanel.createChildren(self);self.pending={};self.sliders={};self.mutes={}
  for i,row in ipairs({{key='purchaseVolume',mute='mutePurchase',label='Mute Purchase Button / Trade-In Sound'},
-  {key='musicVolume',mute='muteMusic',label='Mute Showroom Music'}})do
+  {key='musicVolume',mute='muteMusic',label='Mute Showroom Music'},
+  {key='doorVolume',mute='muteDoor',label='Mute Sliding Doors'}})do
   local y=55+(i-1)*90
   local tick=ISTickBox:new(10,y,390,28,'Personal'..row.mute,self,function(p)p:save()end)
   tick:initialise();tick:addOption(row.label);self:addChild(tick);self.mutes[row.mute]=tick
@@ -23,7 +24,7 @@ function A:createChildren()
    end
   end
  end
- local reset=ISButton:new(10,260,350,28,'Use World Defaults',self,function(p)
+ local reset=ISButton:new(10,350,350,28,'Use World Defaults',self,function(p)
   if Prefs.save(p.player,{})then p.pending={};p.due=nil;p:refresh();Audio.refreshPurchase(p.player)
   else p.message='Could not save personal audio preferences.'end
  end)
@@ -56,10 +57,10 @@ end
 function A:prerender()
  ISPanel.prerender(self)
  self:drawText('My Audio',10,10,1,1,1,1,UIFont.Medium)
- for i,key in ipairs({'purchaseVolume','musicVolume'})do
+ for i,key in ipairs({'purchaseVolume','musicVolume','doorVolume'})do
   self:drawText(tostring(self.sliders[key]:getCurrentValue())..'%',780,60+(i-1)*90,1,1,1,1,UIFont.Small)
  end
- if self.message then self:drawText(self.message,10,310,1,0.7,0.4,1,UIFont.Small)end
+ if self.message then self:drawText(self.message,10,390,1,0.7,0.4,1,UIFont.Small)end
 end
 function A.newPanel(player)
  local p=A:new(20,105,940,440);p.player=player;return p

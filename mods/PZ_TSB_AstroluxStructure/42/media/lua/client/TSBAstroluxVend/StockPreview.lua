@@ -1,3 +1,4 @@
+local Adapters=require 'TSBAstroluxVend/VehicleAdapters'
 local Stock=require 'TSBAstroluxVend/Stock'
 local Equipment=require 'TSBAstroluxVend/Equipment'
 local Discovery=require 'TSBAstroluxVend/EquipmentDiscovery'
@@ -17,8 +18,9 @@ function P.resolve(source,camperTop,equipment)
     local selected=Equipment.selection(equipment,source,camperTop)
     local selectedParts=Equipment.parts(source,selected)
     local mask=Equipment.key(selected)
-    local dynamic=not Stock.isHilux(full) or mask:find('|',1,true)~=nil
-    local name=dynamic and 'Dynamic' or full:gsub('Base.88toyota','')
+    local adapter=Adapters.get(full);local prefix=adapter and (adapter.previewPrefixes or {})[full]
+    local dynamic=not prefix or mask:find('|',1,true)~=nil or (tonumber(mask) or 0)>255
+    local name=dynamic and 'Dynamic' or prefix
     if not dynamic then if mask=='1' then name=name..'Camper' elseif mask~='0' then name=name..'Equipment'..mask end end
     local previewName='TSBAstroluxVendPreview.'..name
     local dynamicID=full..'|'..mask
@@ -28,7 +30,7 @@ function P.resolve(source,camperTop,equipment)
     -- Copy already-loaded geometry without Loaded(): re-running it would scale
     -- wheel offsets a second time. Animation/parent data is deep-copied by the
     -- native copyPartsFrom API; the original vehicle scripts remain untouched.
-    local appearance=' skin { texture = Vehicles/Vehicles_88toyotaHilux_Shell_beige, } textureMask = Vehicles/Vehicles_88toyotaHilux_Mask, textureLights = Vehicles/Vehicles_88toyotaHilux_Lights, '
+    local appearance=adapter and adapter.previewAppearance or ''
     if dynamic then
         -- Only this private scene holder is cleared. No source or world script is edited.
         for _,field in ipairs({'parts','wheels','models','skins'})do

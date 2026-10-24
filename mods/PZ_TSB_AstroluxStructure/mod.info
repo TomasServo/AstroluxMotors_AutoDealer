@@ -1,7 +1,7 @@
 name=Astrolux Motors - Structure Lab
 id=PZ_TSB_AstroluxStructure
 author=TomasServo
-modversion=0.6.6-test
+modversion=0.6.6-test-price
 versionMin=42.21.0
 description=Astrolux structure and vending test batch. Native sliding doors, sales kiosks and two-corner spawn areas. Remote deliveries pause until loaded. No legacy save migration.
 
@@ -16,3 +16,12 @@ tiledef=TSBAstroluxSlidingDoor 7983
 
 pack=TSBAstroluxKiosk
 tiledef=TSBAstroluxKiosk 7984
+
+pack=TSBAstroluxEntranceSign
+tiledef=TSBAstroluxEntranceSign 7985
+
+pack=TSBAstroluxMotorsSign
+tiledef=TSBAstroluxMotorsSign 7986
+
+pack=TSBAstroluxLogoRug
+tiledef=TSBAstroluxLogoRug 7987

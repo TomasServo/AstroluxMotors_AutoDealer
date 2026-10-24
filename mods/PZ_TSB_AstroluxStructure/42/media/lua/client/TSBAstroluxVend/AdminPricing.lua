@@ -18,7 +18,7 @@ function A:showPage(page)
  for key,items in pairs(self.groups)do for _,w in ipairs(items)do w:setVisible(key==page)end end
 end
 function A:createChildren()
- ISPanel.createChildren(self);self.groups={prices={},vehiclePrices={},equipment={},buybacks={},sounds={}};self.fields={}
+ ISPanel.createChildren(self);self.groups={prices={},vehiclePrices={},equipment={},buybacks={},sounds={},colorPrices={}};self.fields={}
  local function button(page,x,y,w,label,fn)return self:addControl(page,ISButton:new(x,y,w,28,label,self,fn))end
  local function field(page,x,y,text)return self:addControl(page,ISTextEntryBox:new(tostring(text),x,y,160,26))end
  local function tick(page,x,y,name,label,fn)local t=self:addControl(page,ISTickBox:new(x,y,400,28,name,self,fn));t:addOption(label);return t end
@@ -26,15 +26,20 @@ function A:createChildren()
  local equipment=ISButton:new(200,5,220,28,'Accessory Settings',self,function(s)s:showPage('equipment')end);equipment:initialise();self:addChild(equipment)
  local buybacks=ISButton:new(430,5,180,28,'Buybacks',self,function(s)s:showPage('buybacks')end);buybacks:initialise();self:addChild(buybacks)
  local sounds=ISButton:new(810,5,110,28,'Sounds',self,function(s)s:showPage('sounds')end);sounds:initialise();self:addChild(sounds)
+ local colors=ISButton:new(620,5,180,28,'Color Prices',self,function(p)p:showPage('colorPrices')end);colors:initialise();self:addChild(colors)
  local audio=self.settings.audio or {}
  self.purchaseSound=tick('sounds',10,70,'AstroluxPurchaseSound','Purchase Button / Trade-In Sound',function(p)AudioAutosave.save(p)end);self.purchaseSound:setSelected(1,audio.purchaseSound~=false)
  self.showroomMusic=tick('sounds',10,120,'AstroluxShowroomMusic','Showroom Music',function(p)AudioAutosave.save(p)end);self.showroomMusic:setSelected(1,audio.showroomMusic~=false)
  self.purchaseVolume=self:addControl('sounds',ISSliderPanel:new(410,70,270,28,self,function(_,value)PreviewAudio.level('purchase',value)end));self.purchaseVolume:setValues(0,100,1,10);self.purchaseVolume:setCurrentValue(audio.purchaseVolume or 15,true)
- self.musicVolume=self:addControl('sounds',ISSliderPanel:new(410,120,270,28,self,function(_,value)PreviewAudio.level('music',value)end));self.musicVolume:setValues(0,100,1,10);self.musicVolume:setCurrentValue(audio.musicVolume or 10,true)
+ self.musicVolume=self:addControl('sounds',ISSliderPanel:new(410,120,270,28,self,function(_,value)PreviewAudio.level('music',value)end));self.musicVolume:setValues(0,100,1,10);self.musicVolume:setCurrentValue(audio.musicVolume or 2,true)
  button('sounds',745,70,75,'Play',function(s)PreviewAudio.play('purchase',s.purchaseVolume:getCurrentValue())end)
  button('sounds',830,70,75,'Pause',function()PreviewAudio.pause('purchase')end)
  button('sounds',745,120,75,'Play',function(s)PreviewAudio.play('music',s.musicVolume:getCurrentValue())end)
  button('sounds',830,120,75,'Pause',function()PreviewAudio.pause('music')end)
+ self.doorSound=tick('sounds',10,170,'AstroluxDoorSound','Sliding Doors',function(p)AudioAutosave.save(p)end);self.doorSound:setSelected(1,audio.doorSound~=false)
+ self.doorVolume=self:addControl('sounds',ISSliderPanel:new(410,170,270,28,self,function(_,value)PreviewAudio.level('door',value)end));self.doorVolume:setValues(0,100,1,10);self.doorVolume:setCurrentValue(audio.doorVolume or 15,true)
+ button('sounds',745,170,75,'Play',function()PreviewAudio.play('door')end)
+ button('sounds',830,170,75,'Pause',function()PreviewAudio.pause('door')end)
  AudioAutosave.install(self)
  self.buybacksEnabled=tick('buybacks',10,55,'AstroluxBuybacks','Enable Vehicle Buybacks',nil);self.buybacksEnabled:setSelected(1,self.settings.buybacksEnabled==true)
  self.buybackPercent=field('buybacks',400,110,self.settings.buybackPercent)
@@ -87,7 +92,27 @@ function A:createChildren()
  self.equipmentBuff=tick('equipment',10,220,'AstroluxEquipmentBuff','Enable Added Storage Bonus',nil)
  self.equipmentBonus=field('equipment',650,220,0)
  self.saveEquipment=button('equipment',10,330,800,'Save Accessory Availability, Price and Added Buff',function(s)s:submit('accessory')end)
+ self.colorModels=self:addControl('colorPrices',ISComboBox:new(10,65,420,28,self,function(p)p:refreshColorVariants()end))
+ self.colorVariants=self:addControl('colorPrices',ISComboBox:new(450,65,440,28,self,function(p)p:refreshColors()end))
+ self.colorChoices=self:addControl('colorPrices',ISComboBox:new(10,120,880,28,self,function(p)p:refreshColorPrice()end))
+ self.colorPrice=field('colorPrices',450,175,0)
+ button('colorPrices',10,225,420,'Save Color / Design Surcharge',function(p)p:submit('colorPrice')end)
+ button('colorPrices',450,225,440,'Reset Color / Design to Default',function(p)p:submit('resetColorPrice')end)
+ for _,group in ipairs(self.vehicleGroups)do self.colorModels:addOption(group.label)end
+ self:refreshColorVariants()
  self:refreshEquipment();self:showPage(self.keepPage or 'prices')
+end
+function A:refreshColorVariants()
+ self.colorIDs=Groups.select(self.vehicleGroups,self.colorModels,self.colorVariants);self:refreshColors()
+end
+function A:refreshColors()
+ local script=self.colorIDs[self.colorVariants.selected]
+ self.colorRows=(self.settings.colorOptions or {})[script] or {};self.colorChoices:clear();self.colorChoices.selected=1
+ for _,row in ipairs(self.colorRows)do self.colorChoices:addOption(row.label..' (+$'..row.surcharge..')')end
+ self:refreshColorPrice()
+end
+function A:refreshColorPrice()
+ local row=self.colorRows[self.colorChoices.selected];self.colorPrice:setText(tostring(row and row.surcharge or 0))
 end
 function A:refreshPriceVariations(wanted)
  self.priceScriptIDs=Groups.select(self.vehicleGroups,self.scripts,self.scriptVariations,wanted)
@@ -120,12 +145,13 @@ function A:submit(action,demandClass)
  local args={action=action,revision=self.settings.revision,offer=self.offer and self.offer.id}
  for key,field in pairs(self.fields)do args[key]=tonumber(field:getText())end
  if action=='buybacks'then args.allowHotwiredBuybacks=self.allowHotwiredBuybacks:isSelected(1);args.minimumBuybackParts=tonumber(self.minimumBuybackParts:getText());args.requireBuybackKey=self.requireBuybackKey:isSelected(1);args.excludeBuybackBattery=self.excludeBuybackBattery:isSelected(1);args.buybacksEnabled=self.buybacksEnabled:isSelected(1);args.buybackPercent=tonumber(self.buybackPercent:getText());args.damagePercent=tonumber(self.damagePercent:getText())end
- if action=='audio'then args.purchaseVolume=self.purchaseVolume:getCurrentValue();args.musicVolume=self.musicVolume:getCurrentValue(); args.purchaseSound=self.purchaseSound:isSelected(1);args.showroomMusic=self.showroomMusic:isSelected(1)end
+ if action=='audio'then args.doorVolume=self.doorVolume:getCurrentValue();args.doorSound=self.doorSound:isSelected(1);args.purchaseVolume=self.purchaseVolume:getCurrentValue();args.musicVolume=self.musicVolume:getCurrentValue(); args.purchaseSound=self.purchaseSound:isSelected(1);args.showroomMusic=self.showroomMusic:isSelected(1)end
  if action=='resetModelDemand'then args.script=self.priceScriptIDs[self.scriptVariations.selected]end
  if action=='resetDemand'then args.demandClass=demandClass end
  if action=='demand'then args.demandIncrease=tonumber(self.demandIncrease:getText());args.demandRecovery=tonumber(self.demandRecovery:getText())end
  if action=='mode'then args.dynamic=not self.staticPricing:isSelected(1)end
  if action=='buffs'then args.addonBuffs=self.addonBuffs:isSelected(1)end
+ if action=='colorPrice' or action=='resetColorPrice'then local row=self.colorRows[self.colorChoices.selected];if not row then return end;args.script=self.colorIDs[self.colorVariants.selected];args.paint=row.id;args.price=tonumber(self.colorPrice:getText())end
  if action=='paint'then args.specialPaint=tonumber(self.paintPrice:getText())end
  if action=='modelPrice' or action=='variantPrice' or action=='resetVariant'then args.script=self.priceScriptIDs[self.scriptVariations.selected];args.price=tonumber((action=='modelPrice' and self.modelPrice or self.addPrice):getText())end
  if action=='availability'then args.script=self.priceScriptIDs[self.scriptVariations.selected];args.enabled=self.offerVehicle:isSelected(1)end
@@ -138,7 +164,12 @@ function A:submit(action,demandClass)
 end
 function A:prerender()
  ISPanel.prerender(self)
+ if self.page=='colorPrices'then
+  self:drawText('Vehicle Model (A-Z)',10,42,1,1,1,1,UIFont.Small);self:drawText('Body / Vehicle Variation',450,42,1,1,1,1,UIFont.Small)
+  self:drawText('Color / Design',10,100,1,1,1,1,UIFont.Small);self:drawText('Extra Price ($)',10,180,1,1,1,1,UIFont.Small)
+  self:drawText('Color/design charge is added to this variation price. Zero means included.',10,280,1,1,1,1,UIFont.Small)end
  if self.page=='sounds'then
+  self:drawText(tostring(self.doorVolume:getCurrentValue())..'%',690,175,1,1,1,1,UIFont.Small)
   self:drawText(tostring(self.purchaseVolume:getCurrentValue())..'%',690,75,1,1,1,1,UIFont.Small)
   self:drawText(tostring(self.musicVolume:getCurrentValue())..'%',690,125,1,1,1,1,UIFont.Small)
  elseif self.page=='vehiclePrices'then

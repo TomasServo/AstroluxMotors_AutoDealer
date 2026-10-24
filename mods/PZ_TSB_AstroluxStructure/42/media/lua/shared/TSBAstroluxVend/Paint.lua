@@ -45,7 +45,10 @@ local function fingerprint(o)
 end
 function P.options(script,settings,variants)
     local result={}
-    local function add(o)o.key=fingerprint(o);result[#result+1]=o end
+    local function add(o)
+        local price=((((settings or {}).paintPrices or {})[script:getFullName()] or {})[o.id])
+        if price~=nil then o.surcharge=Amount.check(price,0)end
+        o.key=fingerprint(o);result[#result+1]=o end
     local name=script:getFullName()
     local count=script.getSkinCount and script:getSkinCount() or 0
     if count<0 or count>128 then error('Unsupported vehicle skin count.',0)end
@@ -87,13 +90,15 @@ function P.options(script,settings,variants)
     end
     for _,variant in ipairs(variants or {})do
         local source=getScriptManager():getVehicle(variant.script)
-        if source then
+        local Families=require 'TSBAstroluxVend/VehicleFamilies'
+        local policy=Families.policy(settings,script:getFullName(),variant.script)
+        if source and policy.enabled then
          local choices=P.options(source,settings)
          for _,paint in ipairs(choices)do
             local copy={};for k,v in pairs(paint)do copy[k]=v end
             copy.script=variant.script;copy.id='variant:'..variant.script..':'..paint.id
             copy.label=variant.label..(#choices>1 and (' - '..paint.label) or '')
-            copy.surcharge=paint.special and paint.surcharge or default;copy.special=true
+            copy.surcharge=Amount.add(policy.price,paint.surcharge);copy.special=true
             add(copy)
         end end
     end

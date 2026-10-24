@@ -17,8 +17,8 @@ function P.get(player)
   local line=reader:readLine()
   while line do
    local key,raw=line:match('^(%w+)=(%d+)$');local n=tonumber(raw)
-   if (key=='purchaseVolume' or key=='musicVolume') and valid(n)then values[key]=n end
-   if (key=='mutePurchase' or key=='muteMusic') and (n==0 or n==1)then values[key]=n==1 end
+   if (key=='purchaseVolume' or key=='musicVolume' or key=='doorVolume') and valid(n)then values[key]=n end
+   if (key=='mutePurchase' or key=='muteMusic' or key=='muteDoor') and (n==0 or n==1)then values[key]=n==1 end
    line=reader:readLine()
   end
   reader:close()
@@ -27,16 +27,16 @@ function P.get(player)
  P.cache[file]=values;return values
 end
 function P.save(player,values)
- for _,key in ipairs({'purchaseVolume','musicVolume'})do
+ for _,key in ipairs({'purchaseVolume','musicVolume','doorVolume'})do
   if values[key]~=nil and not valid(values[key])then return false end
  end
- local copy={purchaseVolume=values.purchaseVolume,musicVolume=values.musicVolume,
-  mutePurchase=values.mutePurchase==true,muteMusic=values.muteMusic==true}
+ local copy={purchaseVolume=values.purchaseVolume,musicVolume=values.musicVolume,doorVolume=values.doorVolume,
+  mutePurchase=values.mutePurchase==true,muteMusic=values.muteMusic==true,muteDoor=values.muteDoor==true}
  local ok=pcall(function()
   local writer=assert(getFileWriter(P.file(player),true,false))
-  for _,key in ipairs({'purchaseVolume','musicVolume'})do if copy[key]~=nil then writer:write(key..'='..copy[key]..'\n')end end
+  for _,key in ipairs({'purchaseVolume','musicVolume','doorVolume'})do if copy[key]~=nil then writer:write(key..'='..copy[key]..'\n')end end
   writer:write('mutePurchase='..(copy.mutePurchase and '1' or '0')..'\n')
-  writer:write('muteMusic='..(copy.muteMusic and '1' or '0')..'\n');writer:close()
+  writer:write('muteMusic='..(copy.muteMusic and '1' or '0')..'\n');writer:write('muteDoor='..(copy.muteDoor and '1' or '0')..'\n');writer:close()
  end)
  if ok then P.cache[P.file(player)]=copy end
  return ok
@@ -45,7 +45,7 @@ function P.volume(player,key,default)
  local n=P.get(player)[key];return valid(n) and n/100 or default
 end
 function P.muted(player,key)
- local field=key=='purchaseSound' and 'mutePurchase' or 'muteMusic'
+ local field=key=='purchaseSound' and 'mutePurchase' or (key=='doorSound' and 'muteDoor' or 'muteMusic')
  return P.get(player)[field]==true
 end
 return P

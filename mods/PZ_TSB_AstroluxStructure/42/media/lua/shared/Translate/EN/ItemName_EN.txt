@@ -1,0 +1,6 @@
+ItemName_EN = {
+    ItemName_TSBAstrolux_AstroluxRacingJacket = "Astrolux Motors Racing Jacket",
+    ItemName_TSBAstrolux_AstroluxRacingPants = "Astrolux Motors Racing Pants",
+    ItemName_TSBAstrolux_AstroluxRacingJacketWhite = "Astrolux Motors Racing Jacket - White",
+    ItemName_TSBAstrolux_AstroluxRacingPantsWhite = "Astrolux Motors Racing Pants - White",
+}

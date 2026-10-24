@@ -20,7 +20,7 @@ function U.create(p,widget,button,request)
   U.invalidate(panel)
  end));p.tradeAll:addOption('Trade In All');p.tradeAll:setSelected(1,false)
  button('trade',280,135,180,'Refresh Vehicles',function(panel)U.clear(panel);request(panel,'open')end)
- p.tradeVehicleList=widget('trade',ISScrollingListBox:new(20,195,440,300));p.tradeVehicleList:instantiate();p.tradeVehicleList.itemheight=42;p.tradeVehicleList.selected=0
+ p.tradeVehicleList=widget('trade',ISScrollingListBox:new(20,195,440,300));p.tradeVehicleList.itemheight=42;p.tradeVehicleList.selected=0
  p.tradeVehicleList.doDrawItem=function(list,y,item)
   local row=item.item;local chosen=p.tradeSelected[row.id];local c=row.eligible and 1 or 0.55
   list:drawText((chosen and '[x] ' or '[ ] ')..row.label..' [#'..row.id..']',8,y+3,c,c,c,1,UIFont.Small)
@@ -35,7 +35,7 @@ function U.create(p,widget,button,request)
   end
   return true
  end
- p.tradeRows=widget('trade',ISScrollingListBox:new(500,195,460,300));p.tradeRows:instantiate();p.tradeRows.selected=0
+ p.tradeRows=widget('trade',ISScrollingListBox:new(500,195,460,300));p.tradeRows.selected=0
  p.tradeAppraise=button('trade',20,510,300,'Appraise Selected Vehicles',function(panel)U.invalidate(panel);request(panel,'tradeQuote')end)
  p.tradeAccept=button('trade',340,510,300,'Accept Selected Trade-Ins',function(panel)
   request(panel,'tradeAccept');U.invalidate(panel)

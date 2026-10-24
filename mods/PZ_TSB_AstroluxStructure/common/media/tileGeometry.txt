@@ -1621,4 +1621,96 @@ tileGeometry
             xy = 3x50,
         }
     }
+    tileset
+    {
+        name = TSBAstroluxLogoRug,
+        tile
+        {
+            xy = 0x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 1x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 2x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 3x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 4x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 5x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 6x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+        tile
+        {
+            xy = 7x0,
+            box
+            {
+                translate = 0x0x0,
+                rotate = 0x0x0,
+                min = -5000x0x-5000,
+                max = 5000x30x5000,
+            }
+        }
+    }
 }

@@ -104,8 +104,9 @@ local function view(p,t,message,quote,args,tradeQuote,tradeSuccess)
     local bankBalance=paymentOptions.balances[args and args.payment] or paymentOptions.balances[paymentOptions.methods[2]]
     local pricing=admin(p) and Prices.view(db.pricing) or nil
     if pricing then pricing.audio=Audio.settings()end
-    if pricing then pricing.vehicleAvailability=offers().vehicleAvailability;pricing.scripts=offers().installedScripts;pricing.scriptLabels=offers().scriptLabels;pricing.accessoryOptions={};pricing.accessoryIssues={}
+    if pricing then pricing.vehicleAvailability=offers().vehicleAvailability;pricing.scripts=offers().installedScripts;pricing.scriptLabels=offers().scriptLabels;pricing.accessoryOptions={};pricing.accessoryIssues={};pricing.colorOptions={}
         for _,name in ipairs(pricing.scripts)do
+            pricing.colorOptions[name]=Paint.options(getScriptManager():getVehicle(name),db.pricing)
             pricing.accessoryOptions[name]=Equipment.options(getScriptManager():getVehicle(name),db.pricing,true)
             pricing.accessoryIssues[name]=Equipment.issues(getScriptManager():getVehicle(name))
             for _,row in ipairs(Families.adminRows(db.pricing,name,offers().installable))do
@@ -142,7 +143,7 @@ local function handle(p,command,args)
         local t=db.terminals[args.terminal]
         if not t then fail('Select a registered kiosk before designating an area.') end
         if args.confirmed~=true then fail('Confirm the two-corner area first.') end
-        local area,why=Areas.rectangle(args.ax,args.ay,args.bx,args.by,args.heading)
+        local area,why=Areas.rectangle(args.ax,args.ay,args.bx,args.by,args.heading,args.gap~=nil and args.gap or (t.spawnArea and t.spawnArea.gap))
         if not area then fail(why) end
         for _,o in pairs(db.orders) do
             if o.terminal==t.id and o.status~='delivered' then fail('Resolve outstanding orders before changing the area.') end

@@ -15,16 +15,16 @@ function F.id(target)return 'configuration:'..target end
 function F.target(id)
  if type(id)~='string'then return nil end
  local target=id:match('^configuration:(.+)$')
- return F.members[target] and F.members[target].kind=='configuration' and target or nil
+ return F.members[target] and (F.members[target].kind=='configuration' or F.members[target].kind=='paint') and target or nil
 end
 function F.policy(settings,base,target)
  local p=((((settings or {}).accessories or {})[base] or {})[F.id(target)]) or {}
- return {enabled=p.enabled~=false,price=Amount.check(p.price or 0,0)}
+ return {enabled=p.enabled~=false,price=Amount.check(p.price or ((F.members[target] and F.members[target].kind=='paint') and ((settings or {}).specialPaint or require('TSBAstroluxVend/Config').specialPaintPrice) or 0),0)}
 end
 function F.adminRows(settings,base,installable)
  local out={}
  for target,d in pairs(F.members)do
-  if d.base==base and d.kind=='configuration' and installable[target]then
+  if d.base==base and installable[target]then
    local p=F.policy(settings,base,target)
    out[#out+1]={id=F.id(target),label=d.label,effect='Native factory configuration; includes its original seating and stats',
     enabled=p.enabled,price=p.price,buffEnabled=false,capacityBonus=0,activeBonus=0,capacitySupported=false,configuration=true}
@@ -34,3 +34,5 @@ function F.adminRows(settings,base,installable)
  return out
 end
 return F
+
+-- Variant policies are also used by color pricing.

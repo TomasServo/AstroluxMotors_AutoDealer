@@ -4,9 +4,9 @@ local applied=setmetatable({},{__mode='k'})
 local transition=setmetatable({},{__mode='k'})
 function V.inside(player,record)
     if player:getZ()~=0 then return false end
-    -- Include the entire south/east boundary tile, including fractional positions.
-    local x,y=math.floor(player:getX()),math.floor(player:getY())
-    return x>=record.x and x<=record.x+8 and y>=record.y and y<=record.y+8
+    -- Match the actual 8 x 8 ground floor. The south/east outer tile is outside.
+    local x,y=player:getX(),player:getY()
+    return x>=record.x and x<record.x+8 and y>=record.y and y<record.y+8
 end
 function V.shouldHide(player,record)
     if player:getZ()~=0 then transition[player]=nil;return false end
@@ -14,12 +14,8 @@ function V.shouldHide(player,record)
     if not records then records={};transition[player]=records end
     local state=records[record.id]
     if not state then state={id=record.id,hidden=false};records[record.id]=state end
-    -- Hide before the native elevated-structure cutaway reaches the entrance.
-    -- Restore farther away so small doorway movements cannot flicker the shell.
-    local margin=state.hidden and 5 or 4
-    local x,y=math.floor(player:getX()),math.floor(player:getY())
-    state.hidden=x>=record.x-margin and x<=record.x+8+margin
-        and y>=record.y-margin and y<=record.y+8+margin
+    -- Cut away only on the building footprint, including doorway boundary tiles.
+    state.hidden=V.inside(player,record)
     return state.hidden
 end
 function V.isShell(obj,record)
@@ -40,6 +36,18 @@ function V.update(obj,record)
     if not V.isShell(obj,record) then return end
     local count,inside=0,0
     local dirty=applied[obj]==nil
+    -- Native building collapse must not independently cut sections out of the
+    -- decorative shell. Scope the square override to owned shell/ceiling tiles;
+    -- never change the shared native ceiling sprite or ground-floor glass.
+    local square=obj:getSquare()
+    if square then
+        local props=square:getProperties()
+        if not props:has(IsoFlagType.forceRender) then
+            props:set(IsoFlagType.forceRender)
+            square:setSquareChanged()
+            dirty=true
+        end
+    end
     for i=0,getNumActivePlayers()-1 do
         local player=getSpecificPlayer(i)
         if player then

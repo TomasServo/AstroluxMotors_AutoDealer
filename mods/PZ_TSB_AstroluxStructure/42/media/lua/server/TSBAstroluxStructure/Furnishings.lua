@@ -1,10 +1,14 @@
 require 'Moveables/ISMoveableSpriteProps'
 local layout=require 'TSBAstroluxStructure/DefaultFurnishings'
+local Inventory=require 'TSBAstroluxStructure/InventorySnapshot'
 local F={}
 local function key(x,y)return x..':'..y end
 function F.prepare(r)
+    local saved=ModData.getOrCreate('TSBAstroluxStructure.DecorDefaults.v1').profile
+    local profile=saved or layout
     local prepared={}
-    for index,entry in ipairs(layout.objects)do
+    for index,entry in ipairs(profile.objects)do
+        assert(type(entry.dx)=='number' and entry.dx>=0 and entry.dx<=8 and entry.dx==math.floor(entry.dx) and type(entry.dy)=='number' and entry.dy>=0 and entry.dy<=8 and entry.dy==math.floor(entry.dy) and entry.z==0,'Saved furnishing coordinates are invalid')
         local sq=getCell():getGridSquare(r.x+entry.dx,r.y+entry.dy,0)
         local sprite=getSprite(entry.sprite)
         if not sq or not sq:TreatAsSolidFloor() then return nil,'Furnishing floor is not loaded.' end
@@ -12,7 +16,7 @@ function F.prepare(r)
         local props=ISMoveableSpriteProps.new(entry.sprite)
         local item=props:instanceItem(entry.sprite)
         if not props.isMoveable or not item then return nil,'Native furniture item unavailable: '..entry.sprite end
-        prepared[#prepared+1]={entry=entry,index=index,sq=sq,props=props,item=item}
+        prepared[#prepared+1]={entry=entry,index=index,sq=sq,props=props,item=item,inventory=Inventory.prepareObject(entry.inventory)}
     end
     -- Tables and counters must exist before lamps, plants, appliance and sink.
     table.sort(prepared,function(a,b)
@@ -65,6 +69,7 @@ function F.apply(r,player)
                 if not md.TSBAstroluxVend then service.kioskPlaced(obj) end
                 assert(md.TSBAstroluxVend and not terminals[md.TSBAstroluxVend],'Fresh kiosk identity was not assigned.')
             end
+            Inventory.restoreObject(obj,slot.inventory)
             obj:transmitModData();slot.sq:RecalcAllWithNeighbours(true)
         end
     end)
@@ -85,7 +90,7 @@ function F.apply(r,player)
         if clean then r.furnishingsHold=nil else r.status='hold' end
         return nil,'Furnishing paste failed: '..tostring(why)..(clean and ' Rolled back.' or ' Held for inspection; do not retry.')
     end
-    r.furnishingsHold=nil;r.furnishingsRevision=1;r.furnishingCount=#layout.objects;r.showroomSinkRevision=1
+    r.furnishingsHold=nil;r.furnishingsRevision=1;r.furnishingCount=#prepared;r.showroomSinkRevision=1
     return true
 end
 return F

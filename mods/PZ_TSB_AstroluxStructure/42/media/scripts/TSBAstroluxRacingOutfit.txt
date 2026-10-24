@@ -3,7 +3,7 @@ module TSBAstrolux
     item AstroluxRacingJacket
     {
         DisplayName = Astrolux Motors Racing Jacket,
-        DisplayCategory = Clothing,
+        DisplayCategory = TSBAstroluxMotors,
         ItemType = base:clothing,
         Weight = 1.0,
         Icon = TSB_AstroluxRacingJacket,
@@ -18,10 +18,27 @@ module TSBAstrolux
     
     }
 
+    item AstroluxRacingPants
+    {
+        DisplayName = Astrolux Motors Racing Pants,
+        DisplayCategory = TSBAstroluxMotors,
+        ItemType = base:clothing,
+        Icon = TSB_AstroluxRacingPants,
+        BloodLocation = Trousers,
+        BodyLocation = base:pants,
+        ClothingItem = AstroluxRacingPants,
+        Insulation = 0.3,
+        ScratchDefense = 5,
+        WindResistance = 0.4,
+        WorldStaticModel = Trousers_Shellsuit_Ground,
+        Tags = base:isfirefuel;base:isfiretinder,
+    
+    }
+
     item AstroluxRacingJacketWhite
     {
         DisplayName = Astrolux Motors Racing Jacket - White,
-        DisplayCategory = Clothing,
+        DisplayCategory = TSBAstroluxMotors,
         ItemType = base:clothing,
         Weight = 1.0,
         Icon = TSB_AstroluxRacingJacketWhite,
@@ -32,6 +49,23 @@ module TSBAstrolux
         ScratchDefense = 5,
         WindResistance = 0.4,
         WorldStaticModel = Jacket_Shellsuit_Ground,
+        Tags = base:canbedyed;base:isfirefuel;base:isfiretinder,
+    
+    }
+
+    item AstroluxRacingPantsWhite
+    {
+        DisplayName = Astrolux Motors Racing Pants - White,
+        DisplayCategory = TSBAstroluxMotors,
+        ItemType = base:clothing,
+        Icon = TSB_AstroluxRacingPantsWhite,
+        BloodLocation = Trousers,
+        BodyLocation = base:pants,
+        ClothingItem = AstroluxRacingPantsWhite,
+        Insulation = 0.3,
+        ScratchDefense = 5,
+        WindResistance = 0.4,
+        WorldStaticModel = Trousers_Shellsuit_Ground,
         Tags = base:canbedyed;base:isfirefuel;base:isfiretinder,
     
     }

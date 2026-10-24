@@ -62,7 +62,7 @@ function D.scan(script,covered)
      label=label or (itemScript.getDisplayName and itemScript:getDisplayName()) or id
      out[#out+1]={id='native:'..script:getFullName()..':'..id..':'..item,
       vehicle=script:getFullName(),label=label,price=0,discovered=true,
-      effect='Native removable equipment',
+      effect='Native removable equipment: '..label..'. Uses the provider item and model unchanged; compatibility depends on its declared install rules.',
       requiredParts=words(at(install,'requireInstalled')),
       excludedParts=words(at(install,'requireUninstalled')),
       slots={{part=id,item=item,model=models[1] or false,models=models}}}

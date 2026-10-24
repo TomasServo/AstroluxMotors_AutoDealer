@@ -1,0 +1,1 @@
+-- Superseded by LayerUpgrade.lua. Keep legacy sprites available for migration.
