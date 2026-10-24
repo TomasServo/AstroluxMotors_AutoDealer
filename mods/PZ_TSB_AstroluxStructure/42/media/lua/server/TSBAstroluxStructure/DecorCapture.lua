@@ -12,8 +12,9 @@ local function encode(value)
     out[#out+1]='}';return table.concat(out)
 end
 function D.survey(record,cell)
-    local profile={version=2,inventoryIncluded=true,name='Astrolux Motors showroom',width=8,height=8,objects={}}
-    for dx=0,8 do for dy=0,8 do
+    local size=record.combinedSize or 8
+    local profile={version=2,inventoryIncluded=true,name='Astrolux Motors showroom',width=size,height=size,objects={}}
+    for dx=0,size do for dy=0,size do
         local sq=cell:getGridSquare(record.x+dx,record.y+dy,0)
         if not sq then return nil,'Showroom tiles are not all loaded.' end
         local list=sq:getObjects()
@@ -23,7 +24,7 @@ function D.survey(record,cell)
             if obj~=sq:getFloor() and not md.TSBAstroluxStructure and props and props:has('IsMoveAble') then
                 local entry={dx=dx,dy=dy,z=0,order=i,sprite=name,objectType=obj:getObjectName(),renderYOffset=obj:getRenderYOffset()}
                 if props:has('Facing') then entry.facing=props:get('Facing') end
-                if md.TSBAstroluxKiosk then entry.service='freshAstroluxKiosk' end
+                if md.TSBAstroluxKiosk or md.TSBAstroluxVend then entry.service='freshAstroluxKiosk' end
                 if md.movableData and md.movableData.TSBAstroluxCoffeeSuppliesV1 then entry.coffeeSupplies=true end
                 local children=obj:getChildSprites()
                 if children and children:size()>0 then
@@ -53,8 +54,18 @@ function D.capture(selectedRecord)
     local surveyed,profile,why=pcall(D.survey,record,getCell())
     if not surveyed then return nil,tostring(profile)end
     if not profile then return nil,why end
-    defaults.profile=profile;defaults.sourceTower=record.id
     local ok,reason=D.write(profile);if not ok then return nil,reason end
+    defaults.profile=profile;defaults.sourceTower=record.id
+    -- Adopt newly placed decor for helper collision; never rebuild the room.
+    for index,entry in ipairs(profile.objects)do
+        local sq=getCell():getGridSquare(record.x+entry.dx,record.y+entry.dy,0)
+        local obj=sq and sq:getObjects():get(entry.order)
+        if obj and obj:getSprite() and obj:getSprite():getName()==entry.sprite then
+            local md=obj:getModData();md.movableData=md.movableData or {}
+            md.movableData.TSBAstroluxFurnishingV1={tower=record.id,index=index}
+            obj:transmitModData()
+        end
+    end
     print('[Astrolux decorations] Recorded '..#profile.objects..' objects as default: '..D.filename)
     return profile
 end

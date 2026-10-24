@@ -4,9 +4,10 @@ local Clips=require 'TSBAstroluxVend/ClipVolume'
 local Records=require 'TSBAstroluxStructure/Records'
 local M={sound=nil,ticks=0}
 function M.inside(player,record)
+    local size=record.combinedSize or 8
     return player and not player:isDead() and player:getZ()==0
-        and player:getX()>=record.x and player:getX()<record.x+8
-        and player:getY()>=record.y and player:getY()<record.y+8
+        and player:getX()>=record.x and player:getX()<record.x+size
+        and player:getY()>=record.y and player:getY()<record.y+size
 end
 function M.stop()
     if M.sound then

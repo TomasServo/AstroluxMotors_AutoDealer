@@ -1,0 +1,990 @@
+[
+  {
+    "path": "mod.info",
+    "sha256": "45c680d4094316697006c0f14cf1e5645b23f7015f42b3a1fa52342f102485f9"
+  },
+  {
+    "path": "42/mod.info",
+    "sha256": "45c680d4094316697006c0f14cf1e5645b23f7015f42b3a1fa52342f102485f9"
+  },
+  {
+    "path": "common/.keep",
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  {
+    "path": "42/media/fileGuidTable.xml",
+    "sha256": "759ea41a4bd71409adced6634d963613cfcdbe178e9ca5c77f7ab4eaad64a0a4"
+  },
+  {
+    "path": "42/media/TSBAstroluxBayCollision.tiles",
+    "sha256": "b397590682e43188e764f1ffc1d640c3897d038163a28038750036b95121cea6"
+  },
+  {
+    "path": "42/media/TSBAstroluxBaySurface.tiles",
+    "sha256": "df1e49a7cb6e22a0925aacc641e91b578214bc1fbbf7a5b29cbe1fe03f5965f4"
+  },
+  {
+    "path": "42/media/TSBAstroluxBayTest.tiles",
+    "sha256": "e15ac634b3e6cd60528011f65946554e2d5fc6d569be1efecb2f439e0d36e7f1"
+  },
+  {
+    "path": "42/media/TSBAstroluxClearGlass.tiles",
+    "sha256": "ae86ba9188de619a9ee3070fb41b1db3d9305d0784062e7f4d9709b24e6ce409"
+  },
+  {
+    "path": "42/media/TSBAstroluxDisplay.tiles",
+    "sha256": "1f5ab3c1fc2b0e52bf5c1f37438875098269d9b553d4f8c98d060ff4ad55782d"
+  },
+  {
+    "path": "42/media/TSBAstroluxEntranceSign.tiles",
+    "sha256": "0b6e7c0d00e9b6e04170568ac215d58a2b3f259e10566debbafdb391bf6b3261"
+  },
+  {
+    "path": "42/media/TSBAstroluxKiosk.tiles",
+    "sha256": "81535db0f82cb415f1504d15fba1e1c3edfc0b3c3c2d5e1a9bb48f913ae06de5"
+  },
+  {
+    "path": "42/media/TSBAstroluxLayers.tiles",
+    "sha256": "339f9b271d565beb14ec9b4852dffd4e6222f0cfd07ace870700b0a2cfcc117a"
+  },
+  {
+    "path": "42/media/TSBAstroluxLogoRug.tiles",
+    "sha256": "2cf8e9acf1f676d63ec817ed61f3e41eeb850f56b32eb2701672cbaf0f4dffe7"
+  },
+  {
+    "path": "42/media/TSBAstroluxMotorsSign.tiles",
+    "sha256": "b8ba3b69ae9f0bba660afc556f4fd7a32aa916fe915de37758e73832a705e5a9"
+  },
+  {
+    "path": "42/media/TSBAstroluxSlidingDoor.tiles",
+    "sha256": "0340ea52f7e3aa60135cd4971c928e462bef7a9578d61f357c04a753dc2bf6e9"
+  },
+  {
+    "path": "42/media/TSBAstroluxStackLayers.tiles",
+    "sha256": "4501325f00817bf145fffc9194fd79c9340fdd90b9eb26775ca0afed003d8375"
+  },
+  {
+    "path": "42/media/clothing/clothingDecals.xml",
+    "sha256": "179d496230be3ccf9d8897a7edb5d57c6e5bc2c62a8939647584304643c432a8"
+  },
+  {
+    "path": "42/media/scripts/TSBAstroluxKiosk.txt",
+    "sha256": "46dbf83219b89b80173e2fb43246e3de749890d507b9aac1e0ef0e9d04c2dd67"
+  },
+  {
+    "path": "42/media/scripts/TSBAstroluxLogoRug.txt",
+    "sha256": "3bdb9315930fac67152ce3def5acfbebfc444c61c9a8cbbc1a6646294fb77840"
+  },
+  {
+    "path": "42/media/scripts/TSBAstroluxMotorsSign.txt",
+    "sha256": "9fcdb0de89c440bcfd97b0fe176fa2aa3d4ba0e4576b8912daa8d06f0e36f704"
+  },
+  {
+    "path": "42/media/scripts/TSBAstroluxPurchaseSound.txt",
+    "sha256": "d864444660226e420f9cb3af7a543f285cc95b9f6d711323448f8b0a42936d1d"
+  },
+  {
+    "path": "42/media/scripts/TSBAstroluxRacingOutfit.txt",
+    "sha256": "2529cc383c24b4b0eb8e9b8f018abe4cc91d0fcfc390d28a28ee72445dc254bf"
+  },
+  {
+    "path": "42/media/scripts/TSBAstroluxShowroomMusic.txt",
+    "sha256": "1be9247ba1b1a5718ffc517559c8fa32527144a090b4afc11f66ef0f38280878"
+  },
+  {
+    "path": "42/media/scripts/TSBAstroluxSlidingDoorSounds.txt",
+    "sha256": "708b1d452b910d433de13423ccc31ba985c3e81dd349a66b57a95ad22e3f5ee1"
+  },
+  {
+    "path": "42/media/scripts/TSBAstroluxVendPreview.txt",
+    "sha256": "d408f2a5295fe0487572a30c62d00a7aca132b09c388242cfa3cf731548ff9b3"
+  },
+  {
+    "path": "42/media/scripts/TSBAstroluxWhiteHelmet.txt",
+    "sha256": "a6de5cdaa2beb24bb137565ea5902fc8c36a98ebab184de659a5b1a6af9ee590"
+  },
+  {
+    "path": "42/media/sound/TSBAstroluxPurchase.wav",
+    "sha256": "54c0b5aad13b5bb58989ef0ef91c0d26d8637237a0137e46a225cdd8f78f3874"
+  },
+  {
+    "path": "42/media/sound/TSBAstroluxShowroomMusic.mp3",
+    "sha256": "ff2f4b696b3183c3773a949f98c3d5dacfcfec59e5ee30d59ea568f7e0d62494"
+  },
+  {
+    "path": "42/media/sound/TSBAstroluxSlidingDoorCycle.wav",
+    "sha256": "138e10ab318c6320901a8051f487512d1f7aae00ce115a4d514cae5dbb4b96f1"
+  },
+  {
+    "path": "42/media/sound/TSBAstroluxSlidingDoorSilent.wav",
+    "sha256": "f971a9aaa8626894132d1d3d7139e0f06b01f3beb894f680f5033eccfbbcd969"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxBayCollision.pack",
+    "sha256": "94c06d2b71e35f95e8dfc6629d2c372e78c866ec29b6e078fde7ab33a3552489"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxBaySurface.pack",
+    "sha256": "1157cad8cc56b662571418b7ab9bc9c8d988b82ecea973fa59bed735dc467403"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxBayTest.pack",
+    "sha256": "8b7ffe4bd1f9bcfb1631f53cfc96116e210988e16557dcb096401beaf8d32782"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxClearGlass.pack",
+    "sha256": "4f9cac22cce0e532a4c4637d5d673670ff2c3d3693886d3e207c4f099faf26e1"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxDisplay.pack",
+    "sha256": "c6ac69ee3ee6b4e7f30481a1627ae8ca4bd370687da546f1c824063478a0d350"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxEntranceSign.pack",
+    "sha256": "d5a0c693eb28135051736da93fd6b59102addf88d47ea0651633ea6e096f017a"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxKiosk.pack",
+    "sha256": "df224e5b4856c18fe1bfb48de5d426515267ba5555404b6018715ef04086a16a"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxLayers.pack",
+    "sha256": "349652e7375d892efa7328d0f4675648e494daeafba9a899e25a7408292c735d"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxLogoRug.pack",
+    "sha256": "11912464399d0e7ae1874dfcb3974519412e891b33d214b93f63b971721d3e92"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxMotorsSign.pack",
+    "sha256": "ce9d034870ad815f9f7da5382fea5e99e6aaaa9aa779a39f490f18936d6d18fb"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxSlidingDoor.pack",
+    "sha256": "bcfaaf298fd053ca120b5a5a0bf838cdfde951281de61d7ddbb9e1b45b03cade"
+  },
+  {
+    "path": "42/media/texturepacks/TSBAstroluxStackLayers.pack",
+    "sha256": "e7e4f9e20f8548f9ecf3a573b57b71ca8fca8c472d83f31eca95d949378ce6cb"
+  },
+  {
+    "path": "42/media/clothing/clothingDecals/TSBAstroluxRacingEmblem.xml",
+    "sha256": "84de8f0d7e4e153705814156b492cef8d96a993e22bb306e353b2d696fe1e9f2"
+  },
+  {
+    "path": "42/media/clothing/clothingItems/AstroluxRacingJacket.xml",
+    "sha256": "379bb1af36b25dd5ea969bc1f2a8f90126da5bc2c7b7c56fd22cc4d9854378f5"
+  },
+  {
+    "path": "42/media/clothing/clothingItems/AstroluxRacingJacketWhite.xml",
+    "sha256": "0d739feccbd90b7818e6d7fa5640d8754543ccda73c3c8403d26c3709de32639"
+  },
+  {
+    "path": "42/media/clothing/clothingItems/AstroluxRacingPants.xml",
+    "sha256": "748c0f6927b74ebfd1c221aedea3e393ddfbe9c21bafdc84ca76019339d16ce7"
+  },
+  {
+    "path": "42/media/clothing/clothingItems/AstroluxRacingPantsWhite.xml",
+    "sha256": "2bc486f406f74a5c4f48d70895e54e32244aae3458553a3ea1412d0bb1c267b6"
+  },
+  {
+    "path": "42/media/clothing/clothingItems/Hat_CrashHelmetFULL_White.xml",
+    "sha256": "8adf60c5402fb5cdeb568b33ce20d09b8475463287386a0a3b4a2cd94eb74e23"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/CombinedLights.lua",
+    "sha256": "40bf48bf2a14a47a159d2115dae9f692d201e6507edd118d4bd68f449c368e52"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/FixtureLights.lua",
+    "sha256": "bea09923857d071d85575f645e284cae81cb7950388f3471a05155d7e9f3abb6"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/FrameOcclusion.lua",
+    "sha256": "d92b61139c46c01fcb7c902143b4896d64e1ef66995af4ef999a31a50a8af983"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/GirderClip.lua",
+    "sha256": "2b31627f573348ffabc4ca024c93e8cc1a49bafb7f95bf5315cbe7328ffb94f1"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/GlassMask.lua",
+    "sha256": "360090abde873c35033bb294f7edb3e0d50905f4af45b3a3a320fdc634e9188c"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/GlassOverlay.lua",
+    "sha256": "3c71d82ffc34a4b556dd379e59c3b0ee5ce0574db4b5cee9b2a8b007e2c45425"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/MetalPlatform.lua",
+    "sha256": "d154b232213fea972645c7e0ee5c5edfbbe0675ac01fbabbbc156d9facad760f"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/RailMask.lua",
+    "sha256": "a98dffff0f1ca1f7231e5db09f77d50d3cd21d99a54216a2ee9184da8a4fde85"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/RoofCap.lua",
+    "sha256": "eef2dfac1ee8b36fb36bfebd4d63b12c8b2d2fc577353b41a0138ac58b239926"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/RoofRimOverlay.lua",
+    "sha256": "cd82cde3726417dc1ea819089a9971498cdee3e1359ec1dcdcf865fe65345f2d"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/ServiceCore.lua",
+    "sha256": "c09c75de04117aee2356a5e3f7c1fd66490c8a9924b2343c1a2c2bd7fda9f4b1"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/ShowroomGlassVisibility.lua",
+    "sha256": "75703cf01caaeb170cbf5897df967801a7a107cbc68e5a5cfae69b16c1ac7555"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/ShowroomLights.lua",
+    "sha256": "cd6f4054ef48fb8930ce9b006467bf426179e78cddde2d559f19d1eeb1b81427"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/ShowroomSurface.lua",
+    "sha256": "e31a984b3e785d35ca7be985a2b3472facf77d2b4102fb1214f701ce1e024f6b"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/ShowroomVisibility11.lua",
+    "sha256": "16e1953d8be3fa379d998af88e83d1dbdd93ee4b2ad19ac5cd02efe461da34e2"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/ShowroomVisibility12.lua",
+    "sha256": "194d6e0323e22052b15e7cac72945f16d5b63e95ad085fbe1479f5ce3ef31eb0"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/StackCutaway.lua",
+    "sha256": "cf007a32193e83d46af2ed59f3632f2b9c73cd8e8d165970f0a7f8e6e66a2a6a"
+  },
+  {
+    "path": "42/media/lua/client/AstroluxBayTest/Visibility.lua",
+    "sha256": "9fd796925528bff54808f2549d6da131ff1c9dc1613464de427e6c2be2ad3cc5"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/EntranceClick.lua",
+    "sha256": "5c4937b7ed75019d33c4c41598b998e431b72fb73ae31ec1dfe240bcd95eca82"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/FloorLamp.lua",
+    "sha256": "2d492b048cfc6f38b091c3999f20e7cfef1a76d4002b4dc76e791f8b61bfe225"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/FurnitureFacing.lua",
+    "sha256": "f983cfbafc726560418aef1249e4e1d3f57dd8f31120d44035b9ce6c590cb62d"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/FurnitureRotationTrace.lua",
+    "sha256": "bb84515038c10768a3fb2546906bdb9377e060d31983870eb0a4c76017be6384"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/LogoRugCursor.lua",
+    "sha256": "fc1d413530dd0cd2ddc321120f3870e1d4872ac463dc6aad46ce0131c5d07101"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/LogoRugTrace.lua",
+    "sha256": "765c68c56ef3c8baa2fc76f73d503dd0d8b5aef7ae7de20e08485b341845afa0"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/MannequinLock.lua",
+    "sha256": "48edb90e12d3750e64936e5a5c3d3abf8483b87404bbd5b7752bc4bdff7b1554"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/Menu.lua",
+    "sha256": "fd7cea9987c9f9f9f36d609851c1859d9e5bc5480078fd4bf921f2cf6adc75c1"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/MoveableInfoVisibility.lua",
+    "sha256": "3a5f7f5c1fdffd9e131ee9a05e70a0d3c637bd9c7f2f120cf66900d7c2cc2610"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/PickupTrace.lua",
+    "sha256": "3afccd38297ca76e3b328adb47392e9d26787aed8838c3c18fb4f6c84c51534e"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/SettingsDisplays.lua",
+    "sha256": "c0a653bd13422b3b9873d19b195138d5f55ef05e3b416d8a7cc40fdd4556dc58"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/ShowroomMusic.lua",
+    "sha256": "3f1f16cbc3add362529541982c5d7cb1058a627ddb08a390cf67fd57b3474d68"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/ShowroomSettings.lua",
+    "sha256": "a66a89d81eb8a8fd0febc0b7c772106419acfcdaef3e3114aa51367b000b31ee"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/SlidingAnimation.lua",
+    "sha256": "b4baaa213fc660c9ce49061fbdd75f6377f9a14589f2929e2ac59c4cb5cca455"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxStructure/Visibility.lua",
+    "sha256": "856107e4f86f01186f2864d85faa747dfc40283de2f7879cdcd08a1dcd6a9f52"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/AdminPricing.lua",
+    "sha256": "323aea34a1ab9322442c3e29305ed76da6a51e5036bc9d0713b0bb3c9dec8f50"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/AdminVehicleGroups.lua",
+    "sha256": "35ddd6ebec4fa50ba0e06d505276272b415f4771de6510175656a41c870376a4"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/AreaCursor.lua",
+    "sha256": "554ebd9a64ee096872bfbf3ac6120270082d6a9412994bfcbff1f932885be6b3"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/AudioAutosave.lua",
+    "sha256": "3b4da83bc87a0203498230c23022934a2445690573daf3b908a4eb2919b4c82b"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/AudioPreview.lua",
+    "sha256": "e2364b165af767b37a80635b2eb099bfd0af6b79ea506c871e8479549794022d"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/Client.lua",
+    "sha256": "232f33d3058998b2e710640109fdf1abf29d782777d8e6b2e9993cfe6a36ac25"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/ClipVolume.lua",
+    "sha256": "4ffa43129a9cbc3cc92e8a4191bc45c62a21b2c34835331a669ad68260db0789"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/ContextMenu.lua",
+    "sha256": "b57f59e4bffa378121d6e64a5bb3da8400bd1dddd5cfa2381885d41545086149"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/DoorAudio.lua",
+    "sha256": "5511ac188a2c7232dbddb4b4116fe1b2b092ea96b7d79c4202e9998acc20768f"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/KioskClient.lua",
+    "sha256": "439b44b24dc1cedd8e14dd2de5e0c3d7fb5c0acdc065f2758105e8373402159c"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/PersonalAudioPanel.lua",
+    "sha256": "4b6886d48cda627fdd81e569f6f5b4e7a7d20c15073a2c197c5062f11e7ad362"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/PersonalAudioSettings.lua",
+    "sha256": "f382020601367f2f761a41588298bc797a0553f1686e74987dc251a7f5d6bf2a"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/Preview.lua",
+    "sha256": "28bd520bfac45e72833a4d34ead4f5fb0ea949566111831fb0286a9736d9d383"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/StockPreview.lua",
+    "sha256": "c1c9a1f9c8eae917593dae8d35f95d1856f826763dab3ca5a241a9c23308309f"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/TabsUI.lua",
+    "sha256": "c8bb470d526d587ff84cba0f519b1e16e5039e3bc067c0599d8065b704146bce"
+  },
+  {
+    "path": "42/media/lua/client/TSBAstroluxVend/TradeSelection.lua",
+    "sha256": "ec9b0cfe0dbbdc294fc8d3500f2d3aea473060c13f485b978b15483d5aab4dca"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/Alignment11.lua",
+    "sha256": "133bc1c31233ac95b3269c9ea49ca67e7e3aeefe0760b95e41e6d772063a7977"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/Collision.lua",
+    "sha256": "49876b4f801c073195d83b62e8e77110d1acac9421e822d1f349c7efe15719a3"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/Combined.lua",
+    "sha256": "a2aeab3a9210d7f7e019db4f60ddd793b201cc6044c85a653825525198274a5a"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/Combined11.lua",
+    "sha256": "646818481e3fddfbd6de6ff780c62c51c73b9c9b36cb691dd7d460b018f50155"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/Combined12.lua",
+    "sha256": "d0a598b56a5010a42eaed37dfd66c13dc381f0c1055c108b16ce3f96209ef240"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/DecorCapture11.lua",
+    "sha256": "367dbdfc5b17104c73d92c150e2225ddc97c5a61e78ebce754c63203258207cf"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/FurnitureSolid.lua",
+    "sha256": "3b123630521b1f4c5734dbf71df81f9937a814aa86b4507db247b271397e54c5"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/InteriorFinish12.lua",
+    "sha256": "8b1715cb0a7ed8f251204a582d66ba7b9a3b8a55ac327fd624033030b8e5fa8e"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/LayerUpgrade.lua",
+    "sha256": "3af47d6a590b0529ef94f5b2a1be1daf329ac1fb74437c800941e526d958acb0"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/NativeFloor.lua",
+    "sha256": "9d8421faa6ea63aafd1d7406725dd3031357b209d439abc4102c39381767dbb8"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/OpenRoof11.lua",
+    "sha256": "7f9ba541b8ff439b744c0b917449f0a35a2c44fbea050bb0a1dd27c4947db82c"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/RoofRim2.lua",
+    "sha256": "888fc619f6101a153135a5fec58bdc225f58ab48d4314794adc13d06f5271cbd"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/Setup.lua",
+    "sha256": "624c6177e024129cb968a416bb9ac8343a5d4ccab389aa902c162900bd7d8f07"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/ShowroomBuilder11.lua",
+    "sha256": "12b399f26179f7e944aff18fcb61f1491622c9add06b144ea8ba2c3087670fa8"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/ShowroomBuilder12.lua",
+    "sha256": "ed6b95e591f7263c6b583d8e0da61b3c2fbc7ef05fd167ba6d882844f47ce8c7"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/ShowroomFlooring11.lua",
+    "sha256": "8ea7f421e7a46dac340f8e50150bb2d32b7ea2d94afcefc9cd79a2fb4adf8179"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/ShowroomFlooring12.lua",
+    "sha256": "e6b295d41357d78bc59aa96aa09775f31208a6991df7cd2204d9ad3cfd13580d"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/ShowroomFurnishings11.lua",
+    "sha256": "6f5de93e3e097ee63de60aea6d9ac8cee03926e924ea71ca8f16387300cac5bf"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/ShowroomFurnishings12.lua",
+    "sha256": "77725d4ae901365af2f4f3e99631bf0fbe0492408d15a9838a17d1f8ffab00b9"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/ShowroomGlassRepair.lua",
+    "sha256": "9b47b094eca4eb2a62f02864d069cf11c23c9590f03be58f7265d671589528fd"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/ShowroomSigns12.lua",
+    "sha256": "3d063871ebc01be29ce8d931df1128157a9cdbf03a532d3126cf6367e0bde17f"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/Stack.lua",
+    "sha256": "4bf6611d462d22f589a77ec41cd210d240eacf7a13424052443e5b6664cd1ad1"
+  },
+  {
+    "path": "42/media/lua/server/AstroluxBayTest/SurfaceUpgrade.lua",
+    "sha256": "3b6dbf7e9ccff1fcbe3161aebd79bf954dc7d102ace1d7135f8d00e5240f6746"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/Builder.lua",
+    "sha256": "c5d3ec8c622abc8f500dd81209db80bd9088c7da3ef164f2e219d35e1802df33"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/ClearWalls.lua",
+    "sha256": "b614171d2f61aacde8bef72c03e8cd31b82a88568545aa9f25e28716453b3d13"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/ClothingLoot.lua",
+    "sha256": "fe1547a3a0193e67705d26f1600e2601b4602f33dcf4b2d6112f9e5c796c89f9"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/DecorCapture.lua",
+    "sha256": "78ae91f1a5e1a0b6d298cad6301fef8deef68a22245bb554b51d699c8eab181a"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/EntranceAdmin.lua",
+    "sha256": "2854d7ed56c862807fcc0d2082780fbc89b2a1a83df55583ade7924d8711620b"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/EntranceSigns.lua",
+    "sha256": "d6e1feca98149fc97040b12d88b52e7ccd93c0203b7f2eddab9e72646785f673"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/Flooring.lua",
+    "sha256": "59900e4e95d698704097b934ad32c650e17f4cdc4dd5f52232d32af9d9f79a21"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/Furnishings.lua",
+    "sha256": "93cc6b60972e535d5382362e90bad0dba52bc0890834fd8599d030deb01c3fc4"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/FurnitureCollision.lua",
+    "sha256": "61299f4e613bc8b15a90d7dcfba4d77bb8d97b660dbaa0ab7ff225dd3ab2b491"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/InventorySnapshot.lua",
+    "sha256": "46f8e094dc01a2c6f402ccd4984d2fb58ccaed766af990a54e26158eb50bb49a"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/ShowroomSink.lua",
+    "sha256": "5520cfd94ff3fa3405d8e0ac53fe788f924f6e761174631e3c563e149e52ab3e"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/SlidingDoors.lua",
+    "sha256": "2ad0923e782a400d5ddf4f872bbcf7491a2e11b92ed8a13df2287e2e665c9229"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxStructure/SlidingInstall.lua",
+    "sha256": "249822edcdeac327cfc1bd26d3a57093f22663b06bf436184243a8afaf46be3a"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/BankAdapters.lua",
+    "sha256": "c064210ea9ef78a148e1ea65594bd03c6310fa83e629a64a9290d65921177ec7"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/BankPayments.lua",
+    "sha256": "6025c1da3128f7edec8a0342348a5601f6c3e451f511ef211b08d7744e1d2702"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/Cash.lua",
+    "sha256": "4c0e284e93bf4d550c229aa41efca1331a55962f682465cbff3df05cc6deabbb"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/CoffeeSupplies.lua",
+    "sha256": "4c158fd602ee99a02a99cc851fb1751bc734fb3fb39b5e87a942bc668b8f9fd9"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/Delivery.lua",
+    "sha256": "f7e9af2390aeb7cb7d836d9028b7fdc6df4e104d408c4599aa74a300005c6f08"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/DeliveryBorder.lua",
+    "sha256": "3ce7e846eee5a8320b78b0f5e24b787c2673427361d1b0f5bd330a2c75b6a0f5"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/Kiosk.lua",
+    "sha256": "5ab658caa6580d067fc10d1740aa4be7ed040de0a8abc52899fcd680b68c0dac"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/PriceAdmin.lua",
+    "sha256": "8ca45181d0b927220089fc701ab3950b8ac52eb77295fed7d60d2ef67c79fd3c"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/Server.lua",
+    "sha256": "981417835b27299bf2d94545cf81657523f1af3b50d83ad559a1a2d4130d8924"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/SpawnDefaults.lua",
+    "sha256": "18d947aec7f5fc149f7777c7e8eec8afd4b4db12e4baae9137f56fef8157ac83"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/StockDelivery.lua",
+    "sha256": "2c2149d88184a79c1ba6b7d2216c8bfce9f87b88df4891c9c130b5f818f94444"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/TradeBatch.lua",
+    "sha256": "9e77e4f431640277fad4fc7149290a97dd57826c0df3fdb0d18f5ba08a07ecd5"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/TradeIn.lua",
+    "sha256": "7801fc53737b1c68d57fbc2cce0ee75fa0f9fa015cd1279978f1ab00fe40b3a0"
+  },
+  {
+    "path": "42/media/lua/server/TSBAstroluxVend/VehicleSpawn.lua",
+    "sha256": "85839d8458a33835daf304cb5ebcca78f798e121dd6573e2ef1b11719e547672"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/LayerPlan.lua",
+    "sha256": "256aaf90999243c5a5f2f859608d7bd2ee8808d8ab49adbde42235d41b74fa06"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/Plan.lua",
+    "sha256": "3e79f2b2618e272c12aa34e27380cefac70b80f6860bee774df4b24f22b03cd4"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/ShowroomEntrances11.lua",
+    "sha256": "22b5e7de9f208c71ec3412dcd91ab081599705cdd669cdf4e716fd69481d0110"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/ShowroomEntrances12.lua",
+    "sha256": "6caeae351a9fd50a761857e03463feeeb1ecdedf33ef48735c8c0da5f4365028"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/ShowroomFloorPlan11.lua",
+    "sha256": "fd5ce1658987704e755055de6b3803fba02d69cd91964fcfa22c6c2380b74836"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/ShowroomFloorPlan12.lua",
+    "sha256": "adf5a4abe0593a11c697c4e656b1ed6000117b47555bbcb5325000ad6492bb73"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/ShowroomPlan11.lua",
+    "sha256": "38bda5b85dbd7de1a07d7e5b391c3202d7509881c4c431c74ed6ef204871c6e1"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/ShowroomPlan12.lua",
+    "sha256": "765852a4504ae3f6558f117799920312cd3b1b576e2e8101e1df8ad9895784d3"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/StackFramePlan.lua",
+    "sha256": "d21de6dfb25b1682f67d1f41d9af3ce18f6d18b388a944f02be23df90341d8e3"
+  },
+  {
+    "path": "42/media/lua/shared/AstroluxBayTest/SurfacePlan.lua",
+    "sha256": "67f540938ae432c88790337b757b8a1e954f58ca3b6c713e8691e202478e8231"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxStructure/DefaultFurnishings.lua",
+    "sha256": "8340b29f3e9bb355df69831dfd914ee00627bc16e81c8dcc0211aad21c304a03"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxStructure/DisplayPlan.lua",
+    "sha256": "5fe9068f0ca57c57b20ecf68f2f365fc7ecb7b3e28ac9439cbff5acab5a9d2bf"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxStructure/Entrances.lua",
+    "sha256": "c671d09b353a6243d53c8af8b11f06399143f6edfab668f2c4127879a6c29908"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxStructure/FloorPlan.lua",
+    "sha256": "e1fd063f0c48d5d2b68e9482b13006b8f562c5c81c42817fe4f6b29807532e65"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxStructure/LogoRugRotation.lua",
+    "sha256": "343d589a9cd6354a7e92e2f19c910ff1e4b766559a9cfbc68f273c49a51c3210"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxStructure/Plan.lua",
+    "sha256": "fb4f381c007c7f755a9fd20d9e20ac6d24af1bf54a57a682f737d6c35654fcc4"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxStructure/Records.lua",
+    "sha256": "38907067af27e4c4ed12dc6fed805311110ce3162d1bb23ed7edb19231707c12"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxStructure/SignGlassSupport.lua",
+    "sha256": "0d498299ab8ffe935c56e2c0d049cfda9afe292892253d55687b4297ba3bd645"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Accessories.lua",
+    "sha256": "10ba8bb23e56d1d9aadde01cd0f8d333feaec3db13b8e5b3e396199716a94aec"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/AdminAccess.lua",
+    "sha256": "a07b2c85f9cecc47d091ca0915f36fcb6cfbf25e95ae3679988f4c33124b2d98"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/AdminVehicleGroups.lua",
+    "sha256": "35ddd6ebec4fa50ba0e06d505276272b415f4771de6510175656a41c870376a4"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Amount.lua",
+    "sha256": "2029ede2a8391f0e27d0bf230c7f0083d53b0cf11d09aa89ab7f572f47a8fbff"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Appraisal.lua",
+    "sha256": "f5734f3cb755d9f374676b1599cec53c762dc4d81b9aade0b96c0c7020dc9509"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/AppraisalProfiles.lua",
+    "sha256": "f71878160e1afe2d51c5d04668301c77ae1dbd01b09fc0ec31c4f17503d2b138"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/AudioSettings.lua",
+    "sha256": "dcd2ed7e35af631c82a1978441a6ad2422cc83a494c4c8bf605b9fd329879e11"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/BuffSettings.lua",
+    "sha256": "c945cfdaf921cd0516081accde148a87daaa4f13c4a41aa411ad0ab8179a5491"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/CamperCapacity.lua",
+    "sha256": "06ee8ad7d969008f46d70360eb721dc8af72c59b28cff09c076d125794e5094f"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/CatalogPolicy.lua",
+    "sha256": "a018d5da38c61a439872d1c90768c32844f5fd4e455c7050dbebe0a0a6f557ca"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Config.lua",
+    "sha256": "ca076fde61b4a889dabc25601a21f15aad931c1e950372e091bed29512a1067c"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/DeliveryBorderPlan.lua",
+    "sha256": "1cf61a8736efc53c7f1f62386497e1a044d0b54ab02c9cf03c63c4c6576f8b1d"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Demand.lua",
+    "sha256": "5e5d74f09529455f7935a4da7bebda2750117b5b472bf5a3887b2d739808ed24"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Domain.lua",
+    "sha256": "13aef2a9de20be0a6ee66ccb66922848fdd31001f5c668c31975665a87a3638d"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Equipment.lua",
+    "sha256": "ee9b9ddbe7c3ddd5eefe19aaa712eae56aa522ef45618e8835cc1866056a1978"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/EquipmentDiscovery.lua",
+    "sha256": "bc95b019032b063db805ff51b965d2baf9c56903b006f915bfc8c13fe1754f4b"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/FixtureTargets.lua",
+    "sha256": "2e33d0cc7161ac05c01499a72a35daca8a8345b1cf1baac8ece5f69d88fbd1ee"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/HotelPilot.lua",
+    "sha256": "05269cf38a96ccf96b9beca29359fa3506429d75db307f448d3235f226e2cf0e"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/KioskFurniture.lua",
+    "sha256": "8cdeef6c82a493e7a2ebc60b78e331b0b155b72e7b07b5e4b307e6bb8c2501f9"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Paint.lua",
+    "sha256": "eaf14227fbcbbca398ae54a3ef8f2cf228d288cf15d504347ff6b3f9f5c68a2d"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/ParkingPreview.lua",
+    "sha256": "97a6c2e11b1a32929e61329b5db80cd038d6420c9a8b1ee13206d1dac05543c2"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Pricing.lua",
+    "sha256": "a88e1be0929cc8aef49e043972e1da3fc01e6315ef8d6c9b6dd9a1a52dd83d8a"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/SpawnAreas.lua",
+    "sha256": "08760701a1c7881b11b4d38498acd5070dc8c8607dfe77d8ee41503790a4ce41"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Stock.lua",
+    "sha256": "65bc1defeb6844f131d34b36d2b914c66eb15dcca6b1e90f89a19c89a11220f1"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/VehicleAdapters.lua",
+    "sha256": "170501d73dedea6d8d4b9683a680e0f3a049bc69d7860ded83e5eaf974a61b5f"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/VehicleCatalog.lua",
+    "sha256": "793c82b4deab35020810a52aa6d8dda4f97e71edf366eae8a06972049f148ff7"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/VehicleFamilies.lua",
+    "sha256": "4924acca8c2afdfc58cb73a8660e1bf939e072846bf894f82fb39c7abf45ea58"
+  },
+  {
+    "path": "42/media/lua/shared/Translate/EN/IG_UI.json",
+    "sha256": "3c86d2edb65e20e5fac9d155e18baef9a13e99060d95493405726ec443295133"
+  },
+  {
+    "path": "42/media/lua/shared/Translate/EN/ItemName.json",
+    "sha256": "96fe75c763d54780ffad6b1d208e886533826daae0b70fc75b2ddf3ab9a75d8f"
+  },
+  {
+    "path": "42/media/lua/shared/Translate/EN/ItemName_EN.txt",
+    "sha256": "cd1ff98f4dabbecc329dc50f14235c7661d758aa17d735fd569976bb55394e91"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Adapters/Hilux88.lua",
+    "sha256": "f76ad58ff53734b7924ab661914a7fdc76b02c70bba48d6dcb2cb32665c3c706"
+  },
+  {
+    "path": "42/media/lua/shared/TSBAstroluxVend/Adapters/HiluxLegacy.lua",
+    "sha256": "47f9be78fda99e4f2a676fdf83cc8bda1ade1d435d0b045df2553590cbf246f6"
+  },
+  {
+    "path": "42/media/models_X/TSBAstrolux/Bob_RacingJacket.x",
+    "sha256": "a08dbea32725d345e45466ff0994f5d11795bf81ce9bbc91b9b788ffcab0a8ba"
+  },
+  {
+    "path": "42/media/models_X/TSBAstrolux/Bob_RacingJacketV2Black.x",
+    "sha256": "5b74c919c5a6c4cd0c50f1c32147f9c49bf05b8a06d042f5ac407ee44df4597e"
+  },
+  {
+    "path": "42/media/models_X/TSBAstrolux/Bob_RacingJacketV2White.x",
+    "sha256": "2a5378e8e4e5bd93d2160fc3c91980982311c2a08b352ba50dc6c1bb3ec5cd0c"
+  },
+  {
+    "path": "42/media/models_X/TSBAstrolux/Bob_RacingPantsWhiteV2.x",
+    "sha256": "52bad95c150c435457de3df96a5283338189e4d52c3bb1c3360e5f9d8816bf45"
+  },
+  {
+    "path": "42/media/models_X/TSBAstrolux/Kate_RacingJacket.x",
+    "sha256": "5cf72a6402704e8a06af2663dbe32428c83be76130bd9720ea419fc5afb756ab"
+  },
+  {
+    "path": "42/media/models_X/TSBAstrolux/Kate_RacingJacketV2Black.x",
+    "sha256": "d0de0f143dbcdfba769bc44f63d41e43863354155a6dd851c050c1306bc079d3"
+  },
+  {
+    "path": "42/media/models_X/TSBAstrolux/Kate_RacingJacketV2White.x",
+    "sha256": "78c75792a5e5d288ae750f4dabf6281fb4e15ba21418217d933617a51a72630e"
+  },
+  {
+    "path": "42/media/models_X/TSBAstrolux/Kate_RacingPantsWhiteV2.x",
+    "sha256": "5e2fb14a4c55fb70edac8d16bec8fb4f2ef183ca71fa0c812368aa15ed2ec27b"
+  },
+  {
+    "path": "common/media/tileGeometry.txt",
+    "sha256": "1a0fc9c94e1a4866c72494b8f50012c112e6dba3ea8fcc1252408cbdd0d284ce"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxBaySurface.png",
+    "sha256": "ff4c58483726f07748362fa0b5372b1cecdaca92931681495961f660e088983c"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxBayTest.png",
+    "sha256": "3518224125ea2b70833399af61a0fa918281fc0e217fa28292ceb32a0b9a4098"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxDisplay.png",
+    "sha256": "09bbcfa3691d343b59861c62a89489bc1b71ee6e759476f5ec0d85fd911a71f9"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxLayerFloor0.png",
+    "sha256": "d6147e9005708972d912fc4b3b3181b92b44a2c3e2ba4b37cd2feec9d316bb50"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxLayerFloor1.png",
+    "sha256": "661ac87337dd0edd675d9ba477c86a4121f71bac3fd99fea1974ea7f7d27bad2"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxLayerFrame0.png",
+    "sha256": "a6196f227866462267f346d349f31b55a7b1d72ec64ffb1baa6bb55335eff8ff"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxLayerFrame1.png",
+    "sha256": "21cc0dd85ee9efbe150fc8900595087432b5eeb624b68bcf2a31608a5007a3c5"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxLayerFrame2.png",
+    "sha256": "c43043a9b402d7170bd4b97e46415ade71b2db5b4bc2ded7c40854064713d6e8"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxLayerGlass0.png",
+    "sha256": "983b2046f5131a910060c8f9e89537513ca5f520883d47b0b2439782ed0a6bd5"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxLayerGlass1.png",
+    "sha256": "92c77fc7823c3ec302d636131d1ed506b51e6783beaad19d3a507c3f7001bdfa"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxLayerVehicle0.png",
+    "sha256": "dd23049e6a1fa0ffe2887a0606ae845a3b195c44c5e23c49454ab242d20956bf"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxLogoRug.png",
+    "sha256": "ac7ab78558211ce0aaf12d60071caa1f6ef710075a8439c7b5bf31c7eab36bee"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxStackLayerFrame0.png",
+    "sha256": "fc7bc1c745090e0daf4fa630e04bb232d10bca75a664bd1b411da52d853ba114"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxStackLayerFrame1.png",
+    "sha256": "eaf224d7224609b837e1d5c12dc1a297c2e5d33c42a33ee6dcfe212a27ccfd90"
+  },
+  {
+    "path": "common/media/depthmaps/DEPTH_TSBAstroluxStackLayerFrame2.png",
+    "sha256": "06ec72c01895ab026e08ad616308c26cbf4e9e636d2fa92e17a3b28ff4be4305"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayBlueSedan.png",
+    "sha256": "8f090a155524d14ac71fa262a561f1c066fff8d0702ab4b16872ae704382e028"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayBlueSedanEast.png",
+    "sha256": "4dac55b642acdc62afb9db34afa0030e316be71aed6a216e0c9e6640a454ff41"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayCompactEast.png",
+    "sha256": "f7777ac9a38bdaa2fafc47b41085bed2ec57c83fcd2a9ca7edc9fad5b0defc9d"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayLuxuryNorth.png",
+    "sha256": "1d77d8c9f6583eb45a9d14b2d22c9b67dd34fd6718710abe904e9fb28ed16ae8"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayModern02East.png",
+    "sha256": "f97a33b8fb570e0af277a25e1946e4f2a7bdae19f88d06deb24a61e93c46208c"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayModernWest.png",
+    "sha256": "dba873e2e550aa595e20d289ef91512cdd706021ad2b95e6b497cb6e958e66e1"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayPickupSouth.png",
+    "sha256": "9c9f1505554e1008174f5c17ad040b627d5e2ee8cb6f0f6e6c6a3098da9902ab"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayPickupVanEast.png",
+    "sha256": "676ca9488cd7755d0736d02abe304cafb8d9a1ef3cb702f9d4c53b1c9bf3407e"
+  },
+  {
+    "path": "common/media/textures/AstroluxBaySmall02West.png",
+    "sha256": "9a6e2cb3971b67b76d59e6fc246f93bacc96fcbcb96bdf6bb81ddd0b336328a4"
+  },
+  {
+    "path": "common/media/textures/AstroluxBaySportsNorth.png",
+    "sha256": "d8c6a273eb7d67559e4b55108bfba28357458c624660ac5f1e8d46b7588c28cb"
+  },
+  {
+    "path": "common/media/textures/AstroluxBaySUVSouth.png",
+    "sha256": "86ef87710fc050660b28811b29d58e42838c195ac6266527c9384c0793686f46"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayUpperVehicle.png",
+    "sha256": "b42cf02e85bf57dfe04728efe736a929eb27410d10fa5e18d5078b9c4f28b925"
+  },
+  {
+    "path": "common/media/textures/AstroluxBayVanSouth.png",
+    "sha256": "a27e6732ff7b069d09d159f6509580c895ba8c3f408b5bea67920b6c81441d9d"
+  },
+  {
+    "path": "common/media/textures/AstroluxRoofWordmark.png",
+    "sha256": "dd05294906ee3ea3046f2d648ef9788c4afdb8c029a0b27b8c8e12810a267f88"
+  },
+  {
+    "path": "common/media/textures/Item_TSBAstroluxLogoRug.png",
+    "sha256": "074a50dad4e32310d2cd3bf8afbb02458628149c5b0b829a98b0482fc1b6c8c3"
+  },
+  {
+    "path": "common/media/textures/Item_TSBAstroluxMotorsSign.png",
+    "sha256": "55a7a7eb10eebaadd5a47b4b6b2802e08cdd2756dd04303b032bc3aeda590291"
+  },
+  {
+    "path": "common/media/textures/Item_TSB_AstroluxRacingJacket.png",
+    "sha256": "069e3b50cc94d9850f0bc72cd9f9af5e1cfb03c565fa5c1b07b77ee422a77130"
+  },
+  {
+    "path": "common/media/textures/Item_TSB_AstroluxRacingJacketWhite.png",
+    "sha256": "b0321af6ebe2e1930d7394ce15366a543c8df5815241d384e107f6e567429cde"
+  },
+  {
+    "path": "common/media/textures/Item_TSB_AstroluxRacingPants.png",
+    "sha256": "590d38cd15d451236c3ac275ed1186ba09c4b2b0223a6f9544ddb31f05caffb7"
+  },
+  {
+    "path": "common/media/textures/Item_TSB_AstroluxRacingPantsWhite.png",
+    "sha256": "31e15963548547939f67d55661d96a79f942dceb2c5a14857fbcf2f2f624e1cd"
+  },
+  {
+    "path": "common/media/textures/Item_TSB_Hat_CrashHelmetFULL_White.png",
+    "sha256": "c651bcb49f0ecab4c1dd63cc713108c39a61715f1938e21c711aa031f7100b7c"
+  },
+  {
+    "path": "common/media/textures/TSBAstroluxMenuLogo.png",
+    "sha256": "870cdb39eb5d46ecef5ddc07e1763a8f863d3e815600b0d7d27251667ff0c137"
+  },
+  {
+    "path": "common/media/textures/TSBAstrolux/CrashHelmetFullWhite.png",
+    "sha256": "b7224059013883a09ca2873f2493ce8c7ffc296b9e059d6a91c7452de64999ee"
+  },
+  {
+    "path": "common/media/textures/TSBAstrolux/RacingEmblem.png",
+    "sha256": "af3b767bdbe9ab610f9a0d21861d74db5ac28509abacc5f04f11f2f546cfd300"
+  },
+  {
+    "path": "common/media/textures/TSBAstrolux/RacingV2Black.png",
+    "sha256": "9d29d68cbb605487e9becb3040a626c868b6e0c9f01ac1154ba051346545ae0c"
+  },
+  {
+    "path": "common/media/textures/TSBAstrolux/RacingV2White.png",
+    "sha256": "55958e5fed1df4126e7b05462f0e194d305c2e8ae6013dfb53f3ec9ac8664dc9"
+  }
+]

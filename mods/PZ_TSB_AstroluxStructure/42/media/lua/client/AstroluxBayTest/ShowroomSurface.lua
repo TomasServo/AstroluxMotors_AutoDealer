@@ -54,8 +54,9 @@ function M.update()
     end
    end end
    local overlay=floor:getOverlaySprite()
-   if overlay and not inspected['overlay:'..overlay:getName()]then
-    inspected['overlay:'..overlay:getName()]=true;print('[Astrolux Surface Inspect] floor overlay '..overlay:getName())
+   local overlayName=overlay and overlay:getName()
+   if type(overlayName)=='string' and not inspected['overlay:'..overlayName]then
+    inspected['overlay:'..overlayName]=true;print('[Astrolux Surface Inspect] floor overlay '..overlayName)
    end
    if tracked[sq]==nil then tracked[sq]=sq:isOutside() end
    -- Native puddle geometry and isOutside() both read this square-local flag.
@@ -67,12 +68,14 @@ function M.update()
    local objects=sq:getObjects()
    for i=0,objects:size()-1 do
     local obj=objects:get(i);local sprite=obj:getSprite()
-    if obj~=floor and sprite and not inspected['object:'..sprite:getName()]then
-     inspected['object:'..sprite:getName()]=true
-     print('[Astrolux Surface Inspect] object '..sprite:getName()..' type='..tostring(obj:getObjectName())..' floor='..tostring(obj:isFloor()))
+    local name=sprite and sprite:getName()
+    -- Native transient objects may have a sprite without a registered name.
+    if obj~=floor and type(name)=='string' and not inspected['object:'..name]then
+     inspected['object:'..name]=true
+     print('[Astrolux Surface Inspect] object '..name..' type='..tostring(obj:getObjectName())..' floor='..tostring(obj:isFloor()))
     end
     if obj~=floor and not obj:isFloor() and not instanceof(obj,'IsoMovingObject')
-    and obj:getContainerCount()==0 and sprite and dirt(sprite:getName()) then
+    and obj:getContainerCount()==0 and dirt(name) then
      activeObjects[obj]=true;concealed=concealed+1
      if hidden[obj]==nil then hidden[obj]=obj:getDoRender() end
      if obj:getDoRender() then obj:setDoRender(false);dirty(obj) end

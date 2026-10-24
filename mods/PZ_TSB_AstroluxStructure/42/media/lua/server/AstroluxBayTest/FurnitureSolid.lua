@@ -2,6 +2,7 @@
 if isClient() or isServer() then return end
 local F={};local ticks=0;local tag='TSBAstroluxNativeHelperV1'
 local covered=setmetatable({},{__mode='k'})
+local refreshed=setmetatable({},{__mode='k'})
 local function refresh(sq)
  sq:RecalcProperties();sq:RecalcAllWithNeighbours(true);sq:setSquareChanged()
 end
@@ -11,7 +12,11 @@ local function ensure(sq,kind,owner,wanted,spriteName)
   local o=objects:get(i);local data=o:getModData()[tag]
   if data and data.kind==kind and data.owner==owner then
    if not wanted or found then sq:RemoveTileObject(o);refresh(sq)
-   else found=o;o:setDoRender(false)end
+   else
+    found=o;o:setDoRender(false)
+    -- Recalculate saved squares once after loading the corrected collision flags.
+    if kind=='furniture' and not refreshed[o] then refresh(sq);refreshed[o]=true end
+   end
   end
  end
  if wanted and not found then

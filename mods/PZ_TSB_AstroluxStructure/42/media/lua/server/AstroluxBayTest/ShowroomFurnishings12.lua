@@ -9,8 +9,8 @@ function F.prepare(r)
     local prepared={}
     for index,originalEntry in ipairs(profile.objects)do
         local entry={};for k,v in pairs(originalEntry)do entry[k]=v end
-        if entry.dx>=6 then entry.dx=entry.dx+1 end
-        if entry.dy>=6 then entry.dy=entry.dy+1 end
+        if profile.width~=12 and entry.dx>=6 then entry.dx=entry.dx+1 end
+        if profile.height~=12 and entry.dy>=6 then entry.dy=entry.dy+1 end
         assert(type(entry.dx)=='number' and entry.dx>=0 and entry.dx<=12 and entry.dx==math.floor(entry.dx) and type(entry.dy)=='number' and entry.dy>=0 and entry.dy<=12 and entry.dy==math.floor(entry.dy) and entry.z==0,'Saved furnishing coordinates are invalid')
         local sq=getCell():getGridSquare(r.x+entry.dx,r.y+entry.dy,0)
         local sprite=getSprite(entry.sprite)

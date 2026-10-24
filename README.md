@@ -1,8 +1,10 @@
+> Latest tested checkpoint (2026-10-24): [accepted changes and remaining audit limits](docs/TESTED-CHECKPOINT-20261024.md).
+
 > **AstroluxMotors_AutoTrader — consolidation / audit branch, not a beta release.**
 > Read [current progress](docs/PROGRESS-20261024.txt) and [Cursor audit brief](docs/CURSOR-AUDIT.txt).
 > The tower is integrated into the main package but still restricted to the existing single-player lab. Historical README instructions below are not a claim of current release readiness.
 
-# Astrolux Motors
+# Astrolux Motors Auto Dealer
 
 A standalone Project Zomboid Build 42 dealership with an Astrolux glass showroom, vehicle sales and trade-ins. **Pre-release testing candidate; multiplayer and final launch acceptance are pending.**
 

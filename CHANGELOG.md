@@ -2,6 +2,16 @@
 
 This file groups development checkpoints into launch-facing milestones. Git commit history is retained.
 
+## Tested local checkpoint - 2026-10-24
+
+- Display name: Astrolux Motors Auto Dealer; existing mod, item and saved sprite IDs retained.
+- Settings controls for entrances, linked rugs, mannequin outfit locks and coffee restocking.
+- Furniture pickup information, chair/lamp/mannequin rotation, rug facing and showroom lamp fixes.
+- Glass, collision, floor/weather, audio coverage and delivery-border corrections.
+- Updated kiosk and entrance art; approved car-logo neon sign and matching rug.
+- Complete entrance rugs now follow door/window toggles even when one half crosses the detection boundary.
+- User confirmed the current local build works and requested this GitHub checkpoint. Audit and multiplayer/release validation remain pending.
+
 ## Unreleased — dealership testing candidate (2026-10-23)
 
 ### Shopping and administration

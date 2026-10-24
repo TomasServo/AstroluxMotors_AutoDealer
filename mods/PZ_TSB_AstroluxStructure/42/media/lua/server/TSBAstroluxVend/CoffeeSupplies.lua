@@ -15,13 +15,30 @@ function R.corner(obj)
 end
 function R.mark(obj)
     if not obj:getContainer() then return nil,'Choose a cabinet with storage.' end
-    state(obj,true);obj:transmitModData();return true
+    local s=state(obj,true);local targets={};local items=obj:getContainer():getItems()
+    for i=0,items:size()-1 do local ft=items:get(i):getFullType();targets[ft]=(targets[ft] or 0)+1 end
+    s.targets=targets;s.pending={};s.initialized=true;s.nextRefill=getTimestamp()+R.delay
+    obj:transmitModData();return true
 end
 function R.update(obj,now)
     local s=state(obj);local container=obj:getContainer()
     if not s or not container then return end
     local counts={};local items=container:getItems()
     for i=0,items:size()-1 do local ft=items:get(i):getFullType();counts[ft]=(counts[ft] or 0)+1 end
+    if s.targets then
+        if not s.nextRefill then s.nextRefill=now+R.delay end
+        if now<s.nextRefill then return end
+        for ft,target in pairs(s.targets)do
+            for n=1,math.max(0,target-(counts[ft] or 0))do
+                local item=instanceItem(ft)
+                if not item or not container:hasRoomFor(nil,item)then break end
+                container:AddItem(item)
+                if not container:getItems():contains(item)then break end
+                if isServer()then sendAddItemToContainer(container,item)end
+            end
+        end
+        s.nextRefill=now+R.delay;obj:transmitModData();return
+    end
     local changed=false;s.pending=s.pending or {}
     for ft,target in pairs(R.targets) do
         local missing=math.max(0,target-(counts[ft] or 0));local q=s.pending[ft] or {};s.pending[ft]=q
@@ -44,9 +61,10 @@ local last=0
 function R.tick()
     local now=getTimestamp();if now-last<1 then return end;last=now
     for _,record in ipairs(require('TSBAstroluxStructure/Records').all())do
-    if record.status=='ready' then
+    if record.status=='ready' and record.coffeeRestockEnabled~=false and now>=(record.coffeeRestockResumeAt or 0) then
     local marked,corners={},{};local complete=true
-    for dx=0,7 do for dy=0,7 do
+    local size=record.combinedSize or 8
+    for dx=0,size do for dy=0,size do
         local sq=getCell():getGridSquare(record.x+dx,record.y+dy,0)
         if not sq then complete=false else
             local list=sq:getObjects()
@@ -56,7 +74,11 @@ function R.tick()
         end
     end end
     if #marked==0 and complete and #corners==1 then R.mark(corners[1]);marked[1]=corners[1] end
-    for _,obj in ipairs(marked) do R.update(obj,now) end
+    for _,obj in ipairs(marked) do
+        -- Snapshot the relocated cabinet before legacy defaults can refill it.
+        if record.combinedSize==12 and not state(obj).targets then R.mark(obj) end
+        R.update(obj,now)
+    end
     end end
 end
 function R.designate(p,args)
@@ -64,7 +86,7 @@ function R.designate(p,args)
     if not record or type(args.x)~='number' or type(args.y)~='number' or type(args.index)~='number'
         or args.x~=math.floor(args.x) or args.y~=math.floor(args.y) or args.index~=math.floor(args.index)
         or p:getZ()~=0 or (p:getX()-args.x)^2+(p:getY()-args.y)^2>9
-        or args.x<record.x or args.x>record.x+7 or args.y<record.y or args.y>record.y+7 then
+        or args.x<record.x or args.x>record.x+(record.combinedSize or 8) or args.y<record.y or args.y>record.y+(record.combinedSize or 8) then
         return nil,'Choose the corner cabinet inside the showroom and stand within three tiles.'
     end
     local sq=getCell():getGridSquare(args.x,args.y,0);local list=sq and sq:getObjects()

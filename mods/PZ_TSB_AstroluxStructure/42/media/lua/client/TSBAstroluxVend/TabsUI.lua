@@ -196,20 +196,20 @@ function U.install(Panel,request,send,Client)
   ISPanel.prerender(self)
   if self.brandLogo then
    -- Keep the accepted size/right edge; shift the header down five pixels.
-   local w,h=150*62/64,150*40/64
-   local x,y=self.width-30-w,9
+   local w,h=135*62/64,135*40/64
+   local x,y=self.width-40-w,13
    -- The neon MOTORS subline loses definition when reduced to a few pixels.
    -- Clip that subline and use native UI glyphs at final display resolution.
-   self:setStencilRect(x,y,w,74)
+   self:setStencilRect(x,y,w,66)
    self:drawTextureScaled(self.brandLogo,x,y,w,h,1,1,1,1)
    self:clearStencilRect()
    local label='M O T O R S'
    local textWidth=getTextManager():MeasureStringX(UIFont.Small,label)
    local bar=math.max(0,(w-textWidth)/2-9)
-   self:drawTextCentre(label,x+w/2,y+76,1,0.25,0.12,1,UIFont.Small)
+   self:drawTextCentre(label,x+w/2,y+68,1,0.25,0.12,1,UIFont.Small)
    if bar>0 then
-    self:drawRect(x+3,y+83,bar,1,1,1,0.65,0.1)
-    self:drawRect(x+w-3-bar,y+83,bar,1,1,1,0.65,0.1)
+    self:drawRect(x+3,y+75,bar,1,1,1,0.65,0.1)
+    self:drawRect(x+w-3-bar,y+75,bar,1,1,1,0.65,0.1)
    end
   end
   self:drawText('Astrolux Motors',20,15,1,1,1,1,UIFont.Medium)

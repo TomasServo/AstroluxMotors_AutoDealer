@@ -9,8 +9,9 @@ end
 function R.near(x,y)
     local best,score
     for _,r in ipairs(R.all())do
-        local dx=math.max(r.x-x,0,x-r.x-8);local dy=math.max(r.y-y,0,y-r.y-8)
-        local distance=dx*dx+dy*dy+((x-r.x-4)^2+(y-r.y-4)^2)*0.00001
+        local size=r.combinedSize or 8
+        local dx=math.max(r.x-x,0,x-r.x-size);local dy=math.max(r.y-y,0,y-r.y-size)
+        local distance=dx*dx+dy*dy+((x-r.x-size/2)^2+(y-r.y-size/2)^2)*0.00001
         if not score or distance<score then best=r;score=distance end
     end
     return best

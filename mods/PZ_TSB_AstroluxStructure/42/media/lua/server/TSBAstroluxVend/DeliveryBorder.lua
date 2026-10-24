@@ -5,8 +5,9 @@ local B={tracked={}}
 function B.square(db,sq)
  if not sq or sq:getZ()~=0 then return end
  local wanted={};local x,y=sq:getX(),sq:getY()
+ local eligible=sq:getFloor() and sq:TreatAsSolidFloor() and sq:isOutside()
  for id,t in pairs(db.terminals or {})do
-  if t.deliveryBorder==true and not t.packed then local name=Plan.sprite(t.spawnArea,x,y);if name then wanted[id]=name end end
+  if eligible and t.deliveryBorder==true and not t.packed then local name=Plan.sprite(t.spawnArea,x,y);if name then wanted[id]=name end end
  end
  local found={};local objects=sq:getObjects();local changed=false
  for i=objects:size()-1,0,-1 do
@@ -17,7 +18,7 @@ function B.square(db,sq)
    else sq:transmitRemoveItemFromSquare(obj);changed=true end
   end
  end
- if sq:getFloor() and sq:TreatAsSolidFloor() and sq:isOutside()then
+ if eligible then
   for id,name in pairs(wanted)do if not found[id]then
    local sprite=getSprite(name)
    if not sprite or sprite:getName()~=name then error('Native yellow delivery-border sprite unavailable.',0)end

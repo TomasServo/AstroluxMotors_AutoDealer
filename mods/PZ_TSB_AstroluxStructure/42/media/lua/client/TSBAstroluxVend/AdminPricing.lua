@@ -11,10 +11,29 @@ local A=ISPanel:derive('AstroluxPriceAdmin')
 function A:addControl(page,w)
  w:initialise();self:addChild(w);self.groups[page][#self.groups[page]+1]=w;return w
 end
+function A:refreshDisplayLocks()
+ if not self.displayLocks then return end
+ local D=require 'TSBAstroluxStructure/SettingsDisplays'
+ local selected,message,enabled=D.status(self.player)
+ self.displayLocks:setSelected(1,selected);self.displayLocks.enable=enabled;self.displayLockStatus=message
+end
+function A:refreshShowroomSettings()
+ if not self.entranceToggles then return end
+ local S=require 'TSBAstroluxStructure/ShowroomSettings'
+ local r,why=S.record(self.player)
+ for edge,t in pairs(self.entranceToggles)do
+  t:setSelected(1,r and not (r.closedEntrances and r.closedEntrances[edge]==true) or false)
+  t.enable=r~=nil
+ end
+ self.coffeeRestock:setSelected(1,r and r.coffeeRestockEnabled~=false or false)
+ self.coffeeRestock.enable=r~=nil
+ self.showroomSettingStatus=why or 'Unchecked entrances become windows; nearby entrance rugs are stored until reopened.'
+end
 function A:stopAudioPreviews() PreviewAudio.stopAll()end
 function A:showPage(page)
  if page~='sounds'then self:stopAudioPreviews()end
  self.page=page
+ if page=='sounds' then self:refreshDisplayLocks();self:refreshShowroomSettings()end
  for key,items in pairs(self.groups)do for _,w in ipairs(items)do w:setVisible(key==page)end end
 end
 function A:createChildren()
@@ -25,7 +44,7 @@ function A:createChildren()
  local prices=ISButton:new(10,5,180,28,'Prices and Catalog',self,function(s)s:showPage('prices')end);prices:initialise();self:addChild(prices)
  local equipment=ISButton:new(200,5,220,28,'Accessory Settings',self,function(s)s:showPage('equipment')end);equipment:initialise();self:addChild(equipment)
  local buybacks=ISButton:new(430,5,180,28,'Buybacks',self,function(s)s:showPage('buybacks')end);buybacks:initialise();self:addChild(buybacks)
- local sounds=ISButton:new(810,5,110,28,'Sounds',self,function(s)s:showPage('sounds')end);sounds:initialise();self:addChild(sounds)
+ local sounds=ISButton:new(810,5,110,28,'Settings',self,function(s)s:showPage('sounds')end);sounds:initialise();self:addChild(sounds)
  local colors=ISButton:new(620,5,180,28,'Color Prices',self,function(p)p:showPage('colorPrices')end);colors:initialise();self:addChild(colors)
  local audio=self.settings.audio or {}
  self.purchaseSound=tick('sounds',10,70,'AstroluxPurchaseSound','Purchase Button / Trade-In Sound',function(p)AudioAutosave.save(p)end);self.purchaseSound:setSelected(1,audio.purchaseSound~=false)
@@ -40,6 +59,28 @@ function A:createChildren()
  self.doorVolume=self:addControl('sounds',ISSliderPanel:new(410,170,270,28,self,function(_,value)PreviewAudio.level('door',value)end));self.doorVolume:setValues(0,100,1,10);self.doorVolume:setCurrentValue(audio.doorVolume or 15,true)
  button('sounds',745,170,75,'Play',function()PreviewAudio.play('door')end)
  button('sounds',830,170,75,'Pause',function()PreviewAudio.pause('door')end)
+ self.displayLocks=tick('sounds',10,235,'AstroluxDisplayLocks','Lock showroom mannequin outfits',function(p)
+  local D=require 'TSBAstroluxStructure/SettingsDisplays'
+  local ok,reason=D.set(p.player,p.displayLocks:isSelected(1))
+  p:refreshDisplayLocks();if not ok then p.displayLockStatus=reason end
+ end)
+ self:refreshDisplayLocks()
+ self.entranceToggles={}
+ for i,edgeName in ipairs({'north','south','east','west'})do
+  local edge=edgeName
+  local t=tick('sounds',10+(i-1)*225,325,'AstroluxEntrance_'..edge,edge:sub(1,1):upper()..edge:sub(2)..' entrance',function(p)
+   local S=require 'TSBAstroluxStructure/ShowroomSettings'
+   local ok,why=S.entrance(p.player,edge,p.entranceToggles[edge]:isSelected(1))
+   p:refreshShowroomSettings();if not ok then p.showroomSettingStatus=why end
+  end)
+  t:setWidth(215);self.entranceToggles[edge]=t
+ end
+ self.coffeeRestock=tick('sounds',10,385,'AstroluxCoffeeRestock','Enable coffee-supply restocking',function(p)
+  local S=require 'TSBAstroluxStructure/ShowroomSettings'
+  local ok,why=S.coffee(p.player,p.coffeeRestock:isSelected(1))
+  p:refreshShowroomSettings();if not ok then p.showroomSettingStatus=why end
+ end)
+ self:refreshShowroomSettings()
  AudioAutosave.install(self)
  self.buybacksEnabled=tick('buybacks',10,55,'AstroluxBuybacks','Enable Vehicle Buybacks',nil);self.buybacksEnabled:setSelected(1,self.settings.buybacksEnabled==true)
  self.buybackPercent=field('buybacks',400,110,self.settings.buybackPercent)
@@ -169,6 +210,10 @@ function A:prerender()
   self:drawText('Color / Design',10,100,1,1,1,1,UIFont.Small);self:drawText('Extra Price ($)',10,180,1,1,1,1,UIFont.Small)
   self:drawText('Color/design charge is added to this variation price. Zero means included.',10,280,1,1,1,1,UIFont.Small)end
  if self.page=='sounds'then
+  self:drawText(self.showroomSettingStatus or '',10,358,.8,.8,.8,1,UIFont.Small)
+  self:drawText('Saved quantities stay unchanged. Re-enabling waits 10 real minutes.',10,419,.8,.8,.8,1,UIFont.Small)
+  self:drawText(self.displayLockStatus or '',10,273,.8,.8,.8,1,UIFont.Small)
+  self:drawText('Unlock to change outfits. Applies to this showroom only.',10,298,.8,.8,.8,1,UIFont.Small)
   self:drawText(tostring(self.doorVolume:getCurrentValue())..'%',690,175,1,1,1,1,UIFont.Small)
   self:drawText(tostring(self.purchaseVolume:getCurrentValue())..'%',690,75,1,1,1,1,UIFont.Small)
   self:drawText(tostring(self.musicVolume:getCurrentValue())..'%',690,125,1,1,1,1,UIFont.Small)
@@ -202,7 +247,7 @@ function A:prerender()
  end
 end
 function A.embed(settings,offer,send,parent,previous)
- local p=A:new(20,100,940,450);p.settings=settings;p.offer=offer;p.send=send
+ local p=A:new(20,100,940,450);p.settings=settings;p.offer=offer;p.send=send;p.player=parent.player
  if previous then p.keepPage=previous.page;p.keepPriceScript=previous.priceScriptIDs[previous.scriptVariations.selected];p.keepScript=previous.equipmentScriptIDs[previous.equipmentVariations.selected];local row=previous.equipmentRows[previous.equipmentChoice.selected];p.keepAccessory=row and row.id end
  p:initialise();parent:addChild(p);return p
 end

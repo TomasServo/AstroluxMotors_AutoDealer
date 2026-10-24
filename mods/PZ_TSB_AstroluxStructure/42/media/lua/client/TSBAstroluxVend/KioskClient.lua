@@ -26,7 +26,7 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
         local label=props and (tostring(props:get('GroupName') or '')..' '..tostring(props:get('CustomName') or '')):lower() or ''
         if kiosk:getContainer() and label:find('corner',1,true) and (label:find('counter',1,true) or label:find('cabinet',1,true)) then
             local target=kiosk
-            Menus.section(context,'Administration'):addOption('Use as coffee supplies cabinet',p,function()
+            Menus.section(context,'Administration'):addOption('Save current supplies — restock every 10 real minutes',p,function()
                 local args={x=x,y=y,index=target:getObjectIndex()}
                 if isClient() then sendClientCommand(p,C.channel,'coffeeCabinet',args)
                 elseif TSBAstroluxVendServer then TSBAstroluxVendServer.handle(p,'coffeeCabinet',args) end

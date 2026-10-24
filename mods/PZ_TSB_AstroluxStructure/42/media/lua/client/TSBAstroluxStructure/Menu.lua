@@ -19,9 +19,32 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
         if sq and sq:getZ()==0 then
             local x,y=sq:getX(),sq:getY()
             local record=require('TSBAstroluxStructure/Records').near(x,y)
-            local inside=record and x>=record.x and x<=record.x+8 and y>=record.y and y<=record.y+8
+            local size=record and (record.combinedSize or 8) or 8
+            local inside=record and x>=record.x and x<=record.x+size and y>=record.y and y<=record.y+size
             local menu=Menus.section(context,'Showroom')
             if inside then
+            local entrances=Menus.submenu(menu,'Entrances')
+            local clickedRug
+            for _,candidate in ipairs(objects)do
+                local sprite=candidate:getSprite();local name=sprite and sprite:getName()
+                if type(name)=='string' and name:match('^TSBAstroluxLogoRug_%d+$')then clickedRug=candidate;break end
+            end
+            for _,direction in ipairs({'north','south','east','west'})do
+                local edge=direction
+                local closed=record.closedEntrances and record.closedEntrances[edge]
+                entrances:addOption(edge..(closed and ': restore sliding doors and linked rug' or ': replace doors with windows'),player,function()
+                    report(player,function()return require('TSBAstroluxStructure/EntranceAdmin').toggle(player,record,edge)end)
+                end)
+                if record.entranceRugs and record.entranceRugs[edge] then
+                    entrances:addOption(edge..': unlink entrance rug',player,function()
+                        report(player,function()return require('TSBAstroluxStructure/EntranceAdmin').unlink(player,record,edge)end)
+                    end)
+                elseif clickedRug and not closed then
+                    entrances:addOption(edge..': link this rug',player,function()
+                        report(player,function()return require('TSBAstroluxStructure/EntranceAdmin').link(player,record,edge,clickedRug)end)
+                    end)
+                end
+            end
             menu:addOption('Save furnishings and inventory',player,function()
                 report(player,function()
                     local capture=require 'TSBAstroluxStructure/DecorCapture'
