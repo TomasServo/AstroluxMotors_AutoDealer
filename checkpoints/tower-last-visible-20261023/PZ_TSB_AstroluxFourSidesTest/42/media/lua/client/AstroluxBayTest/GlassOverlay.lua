@@ -170,7 +170,7 @@ function Glass:render()
    local x,y=combined.x,combined.y
    local inside=p:getX()>=x and p:getX()<x+12 and p:getY()>=y and p:getY()<y+12
    if not inside and getCell():getGridSquare(x+10,y+10,1) then
-    roofRim.draw(self,x,y)
+    -- Corner framing is sorted with each car level.
     -- Complete each story from rear bays to front bays before the next story.
     local vehicles={
      {'AstroluxBayPickupSouth','AstroluxBayCompactEast','AstroluxBayBlueSedanEast','AstroluxBayUpperVehicle'},
@@ -178,7 +178,8 @@ function Glass:render()
      {'AstroluxBaySportsNorth','AstroluxBaySmall02West','AstroluxBayPickupVanEast','AstroluxBayVanSouth'},
     }
     for level=0,2 do
-     serviceCore.draw(self,x,y,level)
+     roofRim.draw(self,x,y,level,'rear')
+    serviceCore.draw(self,x,y,level)
      local names=vehicles[level+1]
      local bays={{3,0,northStructure=true},{0,3,rotated=true,westStructure=true},{9,3,rotated=true},{3,9}}
      for i,b in ipairs(bays) do
@@ -186,6 +187,7 @@ function Glass:render()
        northStructure=b.northStructure,rotated=b.rotated,westStructure=b.westStructure,levelOffset=level,
        noGlassRoof=true,previewTexture='media/textures/'..names[i]..'.png'})
      end
+    roofRim.draw(self,x,y,level,'front')
     end
     roofCap.draw(self,x,y)
    end

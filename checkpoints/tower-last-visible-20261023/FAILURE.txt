@@ -1,0 +1,2 @@
+Diagnostic snapshot of installed corner-girder revision. User reported complete tower disappearance after reload. Preserve for diagnosis, not a release.
+No overlay exception in captured local log. Reproduced: GlassOverlay requires upper square x+10,y+10,z1; ShowroomPlan12.openRoof removes that corner floor. Without that square, entire combined tower and roof are skipped. Prior checkpoint also contains this latent guard defect.
