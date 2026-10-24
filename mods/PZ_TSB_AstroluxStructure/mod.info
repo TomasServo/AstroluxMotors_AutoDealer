@@ -1,9 +1,9 @@
-name=Astrolux Motors - Structure Lab
+name=AstroluxMotors_AutoTrader
 id=PZ_TSB_AstroluxStructure
 author=TomasServo
 modversion=0.6.6-test-price
 versionMin=42.21.0
-description=Astrolux structure and vending test batch. Native sliding doors, sales kiosks and two-corner spawn areas. Remote deliveries pause until loaded. No legacy save migration.
+description=AstroluxMotors_AutoTrader development candidate: dealership and integrated twelve-bay tower. Tower placement remains restricted to the existing test world pending release audit. Existing mod ID retained for save compatibility.
 
 pack=TSBAstroluxDisplay
 tiledef=TSBAstroluxDisplay 7981
@@ -25,3 +25,14 @@ tiledef=TSBAstroluxMotorsSign 7986
 
 pack=TSBAstroluxLogoRug
 tiledef=TSBAstroluxLogoRug 7987
+
+# Integrated tower assets; original tile IDs retained.
+pack=TSBAstroluxBayTest
+tiledef=TSBAstroluxBayTest 7988
+pack=TSBAstroluxBaySurface
+pack=TSBAstroluxLayers
+tiledef=TSBAstroluxLayers 7990
+pack=TSBAstroluxStackLayers
+tiledef=TSBAstroluxStackLayers 7991
+pack=TSBAstroluxBayCollision
+tiledef=TSBAstroluxBayCollision 7992

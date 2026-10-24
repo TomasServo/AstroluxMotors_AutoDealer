@@ -1,0 +1,28 @@
+ASTROLUXMOTORS_AUTOTRADER — PROGRESS, 2026-10-24
+Status: consolidated development candidate for independent audit. NOT 0.9 Beta released.
+
+Identity and package
+GitHub repository renamed to TomasServo/AstroluxMotors_AutoTrader at owner's request. Public mod name matches. Internal PZ_TSB_AstroluxStructure ID, Lua namespaces, save keys, item IDs, tile IDs and GUIDs retained for existing-save compatibility. Former PZ_TSB_AstroluxFourSidesTest is now a metadata-only dependency shim. All its Lua and art load from the main package exactly once. Existing standalone reference cubes remain part of guarded lab code; not newly removed.
+
+Confirmed by user in live testing
+Showroom floor dirt removed; rain puddles eliminated after native rain covers. Furniture collision including floor plants now accepted. Light switch works. Door/other sound volume controls work. Compact post brackets accepted. Tower lighting accepted generally; dawn fill fix subsequently installed. Twelve-bay arrangement, neon signs and white interior floor/dark perimeter retained.
+
+Installed but acceptance incomplete
+Ground anchors and scoped glass visibility correction; audit missing panes rather than recreate broken windows. Broader Van/StepVan/ModernCar grouping, preserving ModernCar02 as its own model and exact variation identities. Updated kiosk artwork; no explicit final acceptance. Consolidated package installed with full backup and 235 installed-file hashes verified; no save-file edits. Requires another live test.
+
+Architecture
+Dealership supplies sales kiosks, cash transactions, quotes, delivery, buyback, admin pricing and equipment options. Banking optional via registered provider; TSB banking appears only with compatible service available and enabled. No mandatory bank-mod dependency. No Java plugin added.
+12x12 showroom with three four-sided car-display levels (12 decorative cars), roof/wordmarks, native furniture and glass, custom rendering/cutaway, local light/surface/collision helpers. Decorative displayed cars are not automatically representations of all modded purchased cars.
+
+Limits before 0.9 Beta
+Tower modules still use the named single-player debug lab, global singleton state and historical upgrade handlers. Consolidation does NOT make the tower generally placeable or multiplayer-ready. Review those guards and choose a supported release placement/migration strategy before shipping. Legacy 8x8 builder remains in the base package. Version metadata remains development versions; no release tag or main update.
+Armor: Hilux six slot/item/model mappings source-checked; four-window SC versus six XC/XCS layout. Window armor is one package, bullbars separate. Other simple removable parts are discovered, disabled by default; ambiguous mappings require adapters. Built-in armored bodies currently rejected by stock validation. Native protection/damage/purchase/reload acceptance pending. No universal armor compatibility claim.
+Trailers deferred to possible optional add-on. No new external vehicle/armor mods enabled. Live transaction/item-loss/duplication bugs block release; community testing does not substitute for these checks.
+
+Validation
+All 132 runtime Lua files parse after consolidation (check actual runner count if changed). Existing structural tests passed before the legacy suite stopped in tests/menu.lua: missing TSBAstroluxVend/ContextMenu in the test harness module search. Full legacy suite NOT passing/NOT fully executed. Local prior focused tests covered helpers, plant collision, post light fill, model grouping, rendering/cutaway and glass ownership; retain their live-test limits. Consolidation byte-preservation and asset-registration validation supplied separately.
+
+Checkpoint and rollback
+Branch codex/pre-consolidation-20261024 preserves the two installed packages before folding. PRE-CONSOLIDATION-MANIFEST.json records their source hashes. Runtime native furniture/rain helpers may be saved objects: never remove their tile definitions before cleaning up helpers. Keep original asset IDs during rollback. No player saves, inventory, credentials, Workshop source or live logs included in the branch.
+
+Consolidation checks: 230 original code/asset files preserved byte-for-byte before Git line-ending normalization; only mod metadata and combined tile geometry changed. Unique pack/tile identifiers and merged geometry checked with python tests/consolidation.py. The legacy shim contains no Lua or texture packs.

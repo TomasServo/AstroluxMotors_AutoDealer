@@ -1,0 +1,7 @@
+2026-10-24
+PASS: 132 runtime Lua files parse.
+PASS: existing tests/structure.lua perimeter, placement/conversion guards, rollback/furnished paste checks.
+STOP: tests/menu.lua cannot require TSBAstroluxVend/ContextMenu in its mock module search path. Later suite tests were NOT executed. Do not infer a runtime module is absent: the package contains that module.
+PASS: python tests/consolidation.py (unique asset registrations, geometry, metadata-only shim).
+PASS: local packaging check preserved 230 code/asset source files byte-for-byte; metadata/geometry merge only.
+NOT RUN: consolidated in-game launch, full transactions/reload, multiplayer, native armor damage behavior.

@@ -1,21 +1,7 @@
-name=Astrolux 12x12 Four-Side Test (Local)
+name=AstroluxMotors_AutoTrader - Legacy Test Compatibility
 id=PZ_TSB_AstroluxFourSidesTest
 author=TomasServo
-modversion=0.1.0
+modversion=0.1.1
 versionMin=42.21.0
 require=PZ_TSB_AstroluxStructure
-description=Private scale-study preview in AstroluxStructureLab_12x12_FourSides only. Separate decorative bay and real native Cerise reference. No banking dependency. Not a final interactive building or public map.
-pack=TSBAstroluxBayTest
-tiledef=TSBAstroluxBayTest 7988
-
-pack=TSBAstroluxBaySurface
-
-
-pack=TSBAstroluxLayers
-tiledef=TSBAstroluxLayers 7990
-
-pack=TSBAstroluxStackLayers
-tiledef=TSBAstroluxStackLayers 7991
-
-pack=TSBAstroluxBayCollision
-tiledef=TSBAstroluxBayCollision 7992
+description=Compatibility ID only. All tower code and assets now load from AstroluxMotors_AutoTrader. Keep enabled in existing test saves; no duplicate scripts or asset registration.
