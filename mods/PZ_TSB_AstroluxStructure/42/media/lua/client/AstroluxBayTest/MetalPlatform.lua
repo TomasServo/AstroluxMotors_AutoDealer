@@ -1,6 +1,8 @@
 local girderClip=require 'AstroluxBayTest/GirderClip'
 -- Decorative upper-bay style sample; no world objects, collision or shadow casters.
 local M={}
+-- Normalized screen geometry: camera translation, zoom and lighting stay live.
+local girderCache={};local cacheCount=0
 function M.draw(panel,point,light)
  local function quad(a,b,c,d,color)
   local ax,ay=point(a[1],a[2],a[3]);local bx,by=point(b[1],b[2],b[3])
@@ -43,7 +45,7 @@ function M.drawDetails(panel,point,light,lightsOn,fixtureStrength,upperOnly,desc
   if len==0 then return end
   local nx,ny=-dy/len*width*scale/2,dx/len*width*scale/2
   local l=brightness or light
-  panel:drawPolygon(nil,x1+nx,y1+ny,x2+nx,y2+ny,x2-nx,y2-ny,x1-nx,y1-ny,color[1]*l,color[2]*l,color[3]*l,1)
+  panel:drawPolygon(nil,x1+nx,y1+ny,x2+nx,y2+ny,x2-nx,y2-ny,x1-nx,y1-ny,color[1]*l,color[2]*l,color[3]*l,1,brightness~=nil and 'diffuser' or 'surface')
  end
  local steel={0.36,0.40,0.43};local trim={0.49,0.53,0.55}
  -- H-section rear girders with compact connections inside the recessed web.
@@ -56,16 +58,31 @@ function M.drawDetails(panel,point,light,lightsOn,fixtureStrength,upperOnly,desc
   local wall
   if a[2]==b[2] then wall={p(0,0,1),p(6,0,1),p(6,0,2),p(0,0,2)}
   else wall={p(0,0,1),p(0,3,1),p(0,3,2),p(0,0,2)} end
+  if scale<=0 then return end
+  local signature={string.format('%.6f,%.6f',dx/scale,dy/scale)}
+  for _,v in ipairs(wall) do signature[#signature+1]=string.format('%.6f,%.6f',(v[1]-x1)/scale,(v[2]-y1)/scale) end
+  local key=table.concat(signature,';')
+  local function replay(shapes)
+   for _,entry in ipairs(shapes) do
+    local shape,color=entry.shape,entry.color
+    local function emit(a,b,c,d)
+     panel:drawPolygon(nil,x1+a[1]*scale,y1+a[2]*scale,x1+b[1]*scale,y1+b[2]*scale,
+      x1+c[1]*scale,y1+c[2]*scale,x1+d[1]*scale,y1+d[2]*scale,color[1]*light,color[2]*light,color[3]*light,1)
+    end
+    if #shape==4 then emit(shape[1],shape[2],shape[3],shape[4])
+    else for i=2,#shape-1 do emit(shape[1],shape[i],shape[i+1],shape[i+1]) end end
+   end
+  end
+  local cached=girderCache[key]
+  if cached then replay(cached);return end
+  local shapes={}
   local function strip(t1,t2,n1,n2,color)
    local function vertex(t,n)return x1+ux*t+nx*n*scale,y1+uy*t+ny*n*scale end
    local ax,ay=vertex(t1,n1);local bx,by=vertex(t2,n1)
    local cx,cy=vertex(t2,n2);local dx,dy=vertex(t1,n2)
    local shape=girderClip.clip({{ax,ay},{bx,by},{cx,cy},{dx,dy}},wall)
-   -- A clipped joint can have more than four corners. Triangulate without overlaps.
-   for i=2,#shape-1 do
-    local p,q,r=shape[1],shape[i],shape[i+1]
-    panel:drawPolygon(nil,p[1],p[2],q[1],q[2],r[1],r[2],r[1],r[2],color[1]*light,color[2]*light,color[3]*light,1)
-   end
+   for _,v in ipairs(shape) do v[1]=(v[1]-x1)/scale;v[2]=(v[2]-y1)/scale end
+   shapes[#shapes+1]={shape=shape,color=color}
   end
   -- H-section appearance: recessed web between two raised longitudinal flanges.
   strip(0,length,-12,12,{0.25,0.29,0.32})
@@ -87,6 +104,9 @@ function M.drawDetails(panel,point,light,lightsOn,fixtureStrength,upperOnly,desc
     strip(t+(offset-1)*scale,t+(offset+1)*scale,-1,1,{0.68,0.72,0.75})
    end
   end
+  if cacheCount>=32 then girderCache={};cacheCount=0 end
+  girderCache[key]=shapes;cacheCount=cacheCount+1
+  replay(shapes)
  end
  -- One member on each rear wall; preserve open front views of the car.
  if descending then girder({0,0,2},{6,0,1}) else girder({0,0,1},{6,0,2}) end
@@ -112,6 +132,41 @@ function M.drawDetails(panel,point,light,lightsOn,fixtureStrength,upperOnly,desc
  end
  lamp({0.55,0.12,1.94},{5.45,0.12,1.94})
  if not upperOnly then lamp({0.55,0.12,0.94},{5.45,0.12,0.94}) end
+end
+-- Cache complete fixed bay polygons, retaining live diffuse/fixture shading.
+local buildPlatform,buildDetails=M.draw,M.drawDetails
+local geometryCache={};local geometryCount=0
+local function replay(kind,panel,point,light,lightsOn,strength,upperOnly,descending)
+ local ox,oy=point(0,0,0)
+ local xx,xy=point(1,0,0);local yx,yy=point(0,1,0);local zx,zy=point(0,0,1)
+ local scale=math.abs(xx-ox)/64
+ if scale<=0 then return end
+ xx,xy=(xx-ox)/scale,(xy-oy)/scale
+ yx,yy=(yx-ox)/scale,(yy-oy)/scale
+ zx,zy=(zx-ox)/scale,(zy-oy)/scale
+ local key=kind..':'..tostring(upperOnly)..':'..tostring(descending)..':'..string.format('%.6f,%.6f,%.6f,%.6f,%.6f,%.6f',xx,xy,yx,yy,zx,zy)
+ local polygons=geometryCache[key]
+ if not polygons then
+  polygons={}
+  local recorder={drawPolygon=function(_,texture,...)polygons[#polygons+1]={...}end}
+  local function localPoint(x,y,z)return x*xx+y*yx+z*zx,x*xy+y*yy+z*zy end
+  if kind=='platform' then buildPlatform(recorder,localPoint,1)
+  else buildDetails(recorder,localPoint,1,true,1,upperOnly,descending) end
+  if geometryCount>=32 then geometryCache={};geometryCount=0 end
+  geometryCache[key]=polygons;geometryCount=geometryCount+1
+ end
+ local diffuser=lightsOn==false and .45*light or (.30+.70*(strength or 1))
+ local draw=panel.drawPolygon
+ for i=1,#polygons do
+  local q=polygons[i];local shade=q[13]=='diffuser' and diffuser or light
+  draw(panel,nil,ox+q[1]*scale,oy+q[2]*scale,ox+q[3]*scale,oy+q[4]*scale,
+   ox+q[5]*scale,oy+q[6]*scale,ox+q[7]*scale,oy+q[8]*scale,
+   q[9]*shade,q[10]*shade,q[11]*shade,q[12])
+ end
+end
+function M.draw(panel,point,light)replay('platform',panel,point,light)end
+function M.drawDetails(panel,point,light,lightsOn,strength,upperOnly,descending)
+ replay('details',panel,point,light,lightsOn,strength,upperOnly,descending)
 end
 return M
 

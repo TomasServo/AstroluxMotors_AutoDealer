@@ -10,21 +10,6 @@ local function state()
  local s=ModData.get('TSBAstroluxBayTest.v1')
  if s and s.stackRevision==1 and s.siteX and s.siteY then return s end
 end
--- Read-only introspection follows vanilla DebugUIs/ObjectViewer.lua.
--- The nested ChunkLevelData type is NOT exposed to Lua; never call its methods.
-local flagField=nil
-local function hidden(cell)
- if not flagField then
-  for i=0,getNumClassFields(cell)-1 do
-   local f=getClassField(cell,i)
-   if f:getName()=='occludedByOrphanStructureFlag' then flagField=f;break end
-  end
- end
- assert(flagField,'Native orphan-structure visibility flag unavailable')
- local value=getClassFieldVal(cell,flagField)
- assert(type(value)=='boolean','Native cutaway flag must be a boolean')
- return value
-end
 local function visible(sq) return sq~=nil end
 local function restore()
  for obj,original in pairs(touched) do
@@ -34,12 +19,16 @@ local function restore()
 end
 function M.update()
  local s=state()
- if not s then if next(touched) then restore() end;M.ready=false;return end
- local cell=getCell();local collapse=hidden(cell);local nextVisible={};local groups={[0]={},[1]={}}
+ -- PZ's Lua environment does not provide next(). restore safely handles an
+ -- empty table and clears all cached visibility after the test bay retires.
+ if not s then restore();return end
+ local cell=getCell();local nextVisible={};local groups={[0]={},[1]={}}
  local player=getSpecificPlayer(0)
  if not player then return end
  local x,y=player:getX()-s.siteX,player:getY()-s.siteY
  local inside=x>0 and x<6 and y>0 and y<3
+ -- This isolated test bay uses its own footprint, not private renderer state.
+ local collapse=inside and player:getZ()==0
  -- Keep the masked overlay around exterior corners even when native cutaway clears.
  -- Hysteresis avoids repeatedly swapping native and overlay frames at the boundary.
  local dx=math.max(0,-x,x-6);local dy=math.max(0,-y,y-3)

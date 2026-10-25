@@ -2,24 +2,22 @@
 local combinedLights=require 'AstroluxBayTest/CombinedLights'
 local M={corners={{0,0},{9,0},{0,9},{9,9}}}
 function M.isRim()return false end
-function M.draw(panel,sx,sy,levelOffset,pass)
- local zoom=getCore():getZoom(0)
- local sq=getCell():getGridSquare(sx+5,sy+5,0)
- local light=sq and math.max(.10,math.min(1,sq:getLightLevel(0))) or 1
+-- Fixed local polygons; lighting is applied separately during replay.
+local cached={};local cachedBasis=nil
+local function build(levelOffset,pass,xx,xy,yx,yy,zx,zy)
+ local polygons={}
+ local panel={drawPolygon=function(_,texture,...)polygons[#polygons+1]={...}end}
+ local zoom=1
  local function p(v)
-  return (IsoUtils.XToScreen(sx+v[1],sy+v[2],v[3],0)-IsoCamera.getOffX(0))/zoom,
-   (IsoUtils.YToScreen(sx+v[1],sy+v[2],v[3],0)-IsoCamera.getOffY(0))/zoom
+  return v[1]*xx+v[2]*yx+v[3]*zx,v[1]*xy+v[2]*yy+v[3]*zy
  end
  local function quad(a,b,c,d,color,emission,alpha)
   local ax,ay=p(a);local bx,by=p(b);local cx,cy=p(c);local dx,dy=p(d)
-  local shade=emission and (.35+.65*(1-light)) or light
-  panel:drawPolygon(nil,ax,ay,bx,by,cx,cy,dx,dy,color[1]*shade,color[2]*shade,color[3]*shade,alpha or 1)
+  local shade=1
+  panel:drawPolygon(nil,ax,ay,bx,by,cx,cy,dx,dy,color[1]*shade,color[2]*shade,color[3]*shade,alpha or 1,emission and 'emission' or 'surface')
  end
  local function post(x,y,z0,z1)
-  local sample=getCell():getGridSquare(sx+5,sy+5,1)
-  local light=sample and math.max(.10,math.min(1,sample:getLightLevel(0))) or 1
-  -- Match the bays' fixture fill through night/dawn; preserve brighter daylight.
-  light=math.max(light,.88*math.max(0,math.min(1,combinedLights.brightness or 0)))
+  local light=1
   local ax,ay=p({x,y,z0});local bx,by=p({x,y,z1})
   local dx,dy=bx-ax,by-ay;local len=math.sqrt(dx*dx+dy*dy)
   if len<0.01 then return end
@@ -29,7 +27,7 @@ function M.draw(panel,sx,sy,levelOffset,pass)
    n0=n0*scale;n1=n1*scale
    panel:drawPolygon(nil,ax+ux*t0+nx*n0,ay+uy*t0+ny*n0,
     ax+ux*t1+nx*n0,ay+uy*t1+ny*n0,ax+ux*t1+nx*n1,ay+uy*t1+ny*n1,
-    ax+ux*t0+nx*n1,ay+uy*t0+ny*n1,c[1]*light,c[2]*light,c[3]*light,1)
+    ax+ux*t0+nx*n1,ay+uy*t0+ny*n1,c[1]*light,c[2]*light,c[3]*light,1,'post')
   end
   strip(0,len,-12,12,{0.25,0.29,0.32})
   strip(0,len,-7,7,{0.36,0.40,0.43})
@@ -134,6 +132,38 @@ function M.draw(panel,sx,sy,levelOffset,pass)
    local innerX=x==0 and 3 or 9;local innerY=y==0 and 3 or 9
    post(innerX,innerY,level==1 and 1.015 or level,level+1)
   end
+ end
+ return polygons
+end
+function M.draw(panel,sx,sy,levelOffset,pass)
+ local xx=IsoUtils.XToScreen(1,0,0,0);local xy=IsoUtils.YToScreen(1,0,0,0)
+ local yx=IsoUtils.XToScreen(0,1,0,0);local yy=IsoUtils.YToScreen(0,1,0,0)
+ local zx=IsoUtils.XToScreen(0,0,1,0);local zy=IsoUtils.YToScreen(0,0,1,0)
+ if not cachedBasis or cachedBasis[1]~=xx or cachedBasis[2]~=xy or cachedBasis[3]~=yx
+  or cachedBasis[4]~=yy or cachedBasis[5]~=zx or cachedBasis[6]~=zy then
+  cached={};cachedBasis={xx,xy,yx,yy,zx,zy}
+ end
+ local level=levelOffset or 0
+ if level<0 or level>2 or level%1~=0 or (pass~='front' and pass~='rear') then return end
+ local key=level*2+(pass=='front' and 1 or 0)
+ if not cached[key] then cached[key]=build(level,pass,xx,xy,yx,yy,zx,zy) end
+ local polygons=cached[key]
+ local scale=1/getCore():getZoom(0)
+ local ox=(IsoUtils.XToScreen(sx,sy,0,0)-IsoCamera.getOffX(0))*scale
+ local oy=(IsoUtils.YToScreen(sx,sy,0,0)-IsoCamera.getOffY(0))*scale
+ local sq=getCell():getGridSquare(sx+5,sy+5,0)
+ local light=sq and math.max(.10,math.min(1,sq:getLightLevel(0))) or 1
+ local sample=getCell():getGridSquare(sx+5,sy+5,1)
+ local postLight=sample and math.max(.10,math.min(1,sample:getLightLevel(0))) or 1
+ postLight=math.max(postLight,.88*math.max(0,math.min(1,combinedLights.brightness or 0)))
+ local emission=.35+.65*(1-light)
+ local draw=panel.drawPolygon
+ for i=1,#polygons do
+  local q=polygons[i]
+  local shade=q[13]=='post' and postLight or (q[13]=='emission' and emission or light)
+  draw(panel,nil,ox+q[1]*scale,oy+q[2]*scale,ox+q[3]*scale,oy+q[4]*scale,
+   ox+q[5]*scale,oy+q[6]*scale,ox+q[7]*scale,oy+q[8]*scale,
+   q[9]*shade,q[10]*shade,q[11]*shade,q[12])
  end
 end
 return M

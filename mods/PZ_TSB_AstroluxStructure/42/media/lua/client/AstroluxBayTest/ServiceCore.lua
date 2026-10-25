@@ -18,13 +18,14 @@ add({2,5,1},{2,8,2},'brace')
 -- Two overhead ties join the rear skeleton to the inner display supports.
 add({5,2,2},{8,8,2},'tie')
 add({2,5,2},{8,8,2},'tie')
-function M.draw(panel,siteX,siteY,levelOffset)
- local zoom=getCore():getZoom(0)
- local sq=getCell():getGridSquare(siteX+5,siteY+5,1)
- local light=sq and math.max(0.10,math.min(1,sq:getLightLevel(0))) or 1
+-- Camera-independent geometry at unit zoom, rebuilt only if projection scale changes.
+local cached=nil;local cachedBasis=nil
+local function build(xx,xy,yx,yy,zx,zy)
+ local polygons={}
+ local panel={drawPolygon=function(_,texture,...)polygons[#polygons+1]={...}end}
+ local zoom,light=1,1
  local function p(v)
-  return (IsoUtils.XToScreen(siteX+v[1]+1,siteY+v[2]+1,v[3]+(levelOffset or 0),0)-IsoCamera.getOffX(0))/zoom,
-   (IsoUtils.YToScreen(siteX+v[1]+1,siteY+v[2]+1,v[3]+(levelOffset or 0),0)-IsoCamera.getOffY(0))/zoom
+  return v[1]*xx+v[2]*yx+v[3]*zx,v[1]*xy+v[2]*yy+v[3]*zy
  end
  -- Recessed webs and two narrow flanges; no large flat equipment silhouettes.
  local function member(m)
@@ -60,7 +61,28 @@ function M.draw(panel,siteX,siteY,levelOffset)
  for _,kind in ipairs({'brace','tie','beam','column'}) do
   for _,m in ipairs(M.members) do if m.kind==kind then member(m) end end
  end
+ return polygons
+end
+function M.draw(panel,siteX,siteY,levelOffset)
+ local xx=IsoUtils.XToScreen(1,0,0,0);local xy=IsoUtils.YToScreen(1,0,0,0)
+ local yx=IsoUtils.XToScreen(0,1,0,0);local yy=IsoUtils.YToScreen(0,1,0,0)
+ local zx=IsoUtils.XToScreen(0,0,1,0);local zy=IsoUtils.YToScreen(0,0,1,0)
+ if not cachedBasis or cachedBasis[1]~=xx or cachedBasis[2]~=xy or cachedBasis[3]~=yx
+  or cachedBasis[4]~=yy or cachedBasis[5]~=zx or cachedBasis[6]~=zy then
+  cached=build(xx,xy,yx,yy,zx,zy)
+  cachedBasis={xx,xy,yx,yy,zx,zy}
+ end
+ local zoom=getCore():getZoom(0);local scale=1/zoom
+ local ox=(IsoUtils.XToScreen(siteX+1,siteY+1,(levelOffset or 0),0)-IsoCamera.getOffX(0))*scale
+ local oy=(IsoUtils.YToScreen(siteX+1,siteY+1,(levelOffset or 0),0)-IsoCamera.getOffY(0))*scale
+ local sq=getCell():getGridSquare(siteX+5,siteY+5,1)
+ local light=sq and math.max(.10,math.min(1,sq:getLightLevel(0))) or 1
+ local draw=panel.drawPolygon
+ for i=1,#cached do
+  local q=cached[i]
+  draw(panel,nil,ox+q[1]*scale,oy+q[2]*scale,ox+q[3]*scale,oy+q[4]*scale,
+   ox+q[5]*scale,oy+q[6]*scale,ox+q[7]*scale,oy+q[8]*scale,
+   q[9]*light,q[10]*light,q[11]*light,q[12])
+ end
 end
 return M
-
-

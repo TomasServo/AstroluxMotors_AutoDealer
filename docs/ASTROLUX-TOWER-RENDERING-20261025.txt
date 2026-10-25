@@ -1,0 +1,16 @@
+Tower rendering checkpoint - 2026-10-25
+
+Fixed rear cube edges drawing over vehicle artwork in both bay orientations.
+Caches fixed framework, canopy/support and bay-detail geometry while retaining current camera, zoom, native lighting and fixture emission. Intact glass panes use one quad. Lab controls now reach every rendered bay; hidden rear bays retain the exposed middle north frame.
+Includes the accepted lab-only retirement of the separate two-cube study and its cutaway cleanup fix. Retirement is limited to tagged study objects in AstroluxStructureLab_12x12_FourSides; real vehicles and unrelated objects are preserved.
+Optional lab controls support vehicle-image comparisons and a 120-exterior-frame CPU-submission profile. These diagnostics do not measure asynchronous GPU execution.
+
+Validation
+- Geometry/color/alpha comparisons cover orientations, tiers, zoom, translation, lighting and fixture state.
+- Warm caches avoid reconstruction and handle projection-scale changes.
+- Frame ordering retains each edge exactly once and preserves the isolated north frame.
+- User confirmed crossing lines fixed at32-37FPS with glass enabled. Earlier glass-off result40-42FPS is not a fully enabled baseline.
+- CPU samples: core10.483->5.025ms; canopies4.417->1.983ms; bays5.275->4.342ms. Separate runs, not a controlled benchmark or general FPS guarantee.
+- User isolated yellow-border artifact to PZ Optimization; no border code changes here.
+
+Still pending: busy-city/Louisville and multiplayer performance validation, frame-time spike diagnosis, small demo map and deferred final roof redesign. This is a tested lab checkpoint, not release readiness certification.
