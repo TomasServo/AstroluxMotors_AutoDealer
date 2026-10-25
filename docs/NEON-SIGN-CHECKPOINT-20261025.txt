@@ -1,0 +1,10 @@
+Neon sign checkpoint — 2026-10-25
+
+User confirmed left-click and right-click switching both work. The sign texture pack had disabled mouse masks, so native object picking reached scenery behind the sign. Enable all eight page masks, retain four existing tile identities, and supply native HasLightOnSprite overlays for powered appearance. Preserve native bulb controls and toggle actions. The entrance handler delegates picked signs; the sign click handler uses native wall-edge access.
+
+Validated: appearance scope, native toggle guards, entrance delegation, exact image/anchor preservation during mask correction, and user in-game confirmation. Lab power provisioning and temporary diagnostics are excluded. Broader dealership changes and roof concepts are not part of this checkpoint.
+
+Focused Lua checks (pass file path as the second CLI argument):
+ tests/sign-appearance.lua -> mods/PZ_TSB_AstroluxStructure/42/media/lua/client/TSBAstroluxStructure/SignAppearance.lua
+ tests/sign-left-click.lua -> mods/PZ_TSB_AstroluxStructure/42/media/lua/client/TSBAstroluxStructure/SignLeftClick.lua
+ tests/sign-entrance-click.lua -> mods/PZ_TSB_AstroluxStructure/42/media/lua/client/TSBAstroluxStructure/EntranceClick.lua
