@@ -4,25 +4,29 @@ local Plan=require 'TSBAstroluxVend/DeliveryBorderPlan'
 local B={tracked={}}
 function B.square(db,sq)
  if not sq or sq:getZ()~=0 then return end
+ require('TSBAstroluxVend/KioskLabels').ensure(db)
  local wanted={};local x,y=sq:getX(),sq:getY()
+ local eligible=sq:getFloor() and sq:TreatAsSolidFloor() and sq:isOutside()
  for id,t in pairs(db.terminals or {})do
-  if t.deliveryBorder==true and not t.packed then local name=Plan.sprite(t.spawnArea,x,y);if name then wanted[id]=name end end
+  if eligible and t.deliveryBorder==true and not t.packed then local name=Plan.sprite(t.spawnArea,x,y);if name then wanted[id]=name end end
  end
  local found={};local objects=sq:getObjects();local changed=false
  for i=objects:size()-1,0,-1 do
   local obj=objects:get(i);local id=Plan.owner(obj)
   if id~=nil then
    B.tracked[sq]=true
+   if db.terminals[id] then require('TSBAstroluxVend/KioskLabels').mark(obj,db.terminals[id],x,y)end
    if wanted[id]==obj:getSprite():getName() and not found[id]then found[id]=true
    else sq:transmitRemoveItemFromSquare(obj);changed=true end
   end
  end
- if sq:getFloor() and sq:TreatAsSolidFloor() and sq:isOutside()then
+ if eligible then
   for id,name in pairs(wanted)do if not found[id]then
    local sprite=getSprite(name)
    if not sprite or sprite:getName()~=name then error('Native yellow delivery-border sprite unavailable.',0)end
    local obj=IsoObject.new(getCell(),sq,sprite);local md=obj:getModData()
    md.TSBAstroluxDeliveryBorder=id;md.TSBAstroluxDeliveryBorderKind='perimeter'
+   require('TSBAstroluxVend/KioskLabels').mark(obj,db.terminals[id],x,y)
    local ok,err=pcall(function()sq:AddTileObject(obj);B.tracked[sq]=true;obj:transmitCompleteItemToClients()end)
    if not ok then pcall(function()sq:transmitRemoveItemFromSquare(obj)end);error(err,0)end
    changed=true;found[id]=true

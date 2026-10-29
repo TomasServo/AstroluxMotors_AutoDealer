@@ -1,0 +1,12 @@
+module TSBAstrolux
+{
+    item AstroluxLogoRug
+    {
+        DisplayName = Astrolux Motors Logo Rug,
+        DisplayCategory = TSBAstroluxMotors,
+        ItemType = base:moveable,
+        Icon = TSBAstroluxLogoRug,
+        Weight = 2.0,
+        WorldObjectSprite = TSBAstroluxLogoRug_0,
+    }
+}

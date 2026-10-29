@@ -1,7 +1,9 @@
 -- Shared stock-equipment policy. Never edit Workshop scripts or owned vehicles.
 local S={version=1}
-local hilux={['Base.88toyotaHiluxSC']=true,['Base.88toyotaHiluxXC']=true,['Base.88toyotaHiluxXCS']=true}
-function S.isHilux(name)return hilux[name]==true end
+local Adapters=require 'TSBAstroluxVend/VehicleAdapters'
+require 'TSBAstroluxVend/Adapters/Hilux88'
+-- Legacy save/order helper; new providers use registry metadata.
+function S.isHilux(name)local a=Adapters.get(name);return a and a.legacyHilux==true or false end
 local extraWords={'armor','armour','roofrack','roofbasket','luggagerack','bullbar','rollbar','sidesteps','steprail','mudflaps','sparetire','truckbedextras','generator'}
 function S.optional(id)
     local s=string.lower(id or ''):gsub('[^%w]','')
@@ -9,16 +11,11 @@ function S.optional(id)
     return s:match('rack%d*$')~=nil and not s:find('track',1,true)
 end
 function S.choice(script,id)
-    if S.isHilux(script) then
-        if id=='DAMNBumperFront' then return 'Base.88toyotaHiluxBumperFront0','FrontBumper0' end
-        if id=='DAMNBumperRear' then return 'Base.88toyotaHiluxBumperRear0','RearBumper0' end
-        if id=='TireFrontLeft' or id=='TireFrontRight' or id=='TireRearLeft' or id=='TireRearRight' then
-            return 'Base.88toyotaHiluxTire2','HLX88Tire0'
-        end
-    end
+ local a=Adapters.get(script);local choice=a and (a.stock or {})[id]
+ if choice then return choice[1],choice[2]end
 end
 function S.blank(script,id)
-    return S.isHilux(script) and id=='TruckBed'
+ local a=Adapters.get(script);return a and (a.blankParts or {})[id]==true or false
 end
 function S.validate(script)
     -- A body mesh authored as an armored/rack-equipped variant cannot safely

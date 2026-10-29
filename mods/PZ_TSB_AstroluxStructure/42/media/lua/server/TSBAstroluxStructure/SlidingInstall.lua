@@ -1,4 +1,4 @@
-if isClient() or isServer() then return end
+if isClient() then return end
 local E=require 'TSBAstroluxStructure/Entrances'
 local M=require 'TSBAstroluxStructure/SlidingDoors'
 local I={}
@@ -27,7 +27,7 @@ function I.apply(r)
     local added={}
     local ok,err=pcall(function()
         for _,e in ipairs(pending) do
-            added[#added+1]=e;e.sq:AddSpecialObject(e.obj)
+            added[#added+1]=e;e.sq:AddSpecialObject(e.obj);if isServer()then e.obj:transmitCompleteItemToClients()end
             assert(e.obj:getObjectIndex()>=0,'Door insertion failed')
             e.sq:RecalcAllWithNeighbours(true)
         end
@@ -36,7 +36,7 @@ function I.apply(r)
         local clean=true
         for i=#added,1,-1 do local e=added[i]
             if not pcall(function()
-                if e.obj:getObjectIndex()>=0 then e.sq:RemoveTileObject(e.obj) end
+                if e.obj:getObjectIndex()>=0 then if isServer()then e.sq:transmitRemoveItemFromSquare(e.obj)else e.sq:RemoveTileObject(e.obj)end end
                 e.sq:RecalcAllWithNeighbours(true)
             end) then clean=false end
         end
@@ -87,7 +87,7 @@ function M.togglePair(player,a,b)
 end
 local last=0
 Events.OnTick.Add(function()
-    if not getDebug() or not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return end
+    if isServer() or not getDebug() or not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return end
     local now=getTimestampMs();if now-last<1000 then return end;last=now
     for _,r in ipairs(require('TSBAstroluxStructure/Records').all())do
     if r and not r.slidingDoorsRevision then

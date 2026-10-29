@@ -1,0 +1,3 @@
+# Preserve tested runtime bytes and checksum parity.
+/mods/** -text
+/bundled-saves/*.zip -text

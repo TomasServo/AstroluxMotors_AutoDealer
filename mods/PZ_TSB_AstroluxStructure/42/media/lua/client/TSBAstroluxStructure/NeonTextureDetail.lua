@@ -1,0 +1,2 @@
+-- Native 128x256 approved textures supply their own size and picking masks.
+-- Retired HD resizing hooks; no callbacks required.

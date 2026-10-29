@@ -2,14 +2,6 @@
 -- or infer an item/model pairing from similar names.
 local Stock=require 'TSBAstroluxVend/Stock'
 local D={}
-function D.field(object,name)
- if type(object)=='table' then return object[name] end
- if not object or not getNumClassFields then return nil end
- for i=0,getNumClassFields(object)-1 do
-  local field=getClassField(object,i)
-  if field:getName()==name then return getClassFieldVal(object,field) end
- end
-end
 local function at(map,key)
  if not map then return nil end
  if type(map)=='table'then return map[key]end
@@ -34,24 +26,24 @@ function D.scan(script,covered)
  local probe
  local function definitions(part,id)
   if type(part)=='table' then
-   local tables=D.field(part,'tables');return at(tables,'install'),at(tables,'uninstall')
+   local tables=part.tables;return at(tables,'install'),at(tables,'uninstall'),part.itemType,part.specificItem,part.setAllModelsVisible
   end
   -- Native VehiclePart exposes getTable; VehicleScript.Part.tables is an opaque
   -- HashMap. Build a detached probe only; never add, spawn or transmit it.
   if not probe then probe=BaseVehicle.new(getCell());probe:setScript(script:getFullName())end
   local native=probe:getPartById(id)
-  if native then return native:getTable('install'),native:getTable('uninstall')end
+  if native then return native:getTable('install'),native:getTable('uninstall'),native:getItemType(),native:isSpecificItem(),native:isSetAllModelsVisible()end
  end
  local parts={};for i=0,script:getPartCount()-1 do parts[#parts+1]=script:getPart(i)end
  table.sort(parts,function(a,b)return a:getId()<b:getId()end)
  for _,part in ipairs(parts)do
   local id=part:getId()
   if D.optional(id) and not covered[id] then
-   local install,uninstall=definitions(part,id)
-   local items=values(D.field(part,'itemType'))
+   local install,uninstall,itemTypes,specificItem,allModels=definitions(part,id)
+   local items=values(itemTypes)
    if not install or not uninstall then
     issues[#issues+1]=id..': no removable native install definition'
-   elseif #items~=1 or D.field(part,'specificItem')==true or (part:getModelCount()>1 and D.field(part,'setAllModelsVisible')~=true) then
+   elseif #items~=1 or specificItem==true or (part:getModelCount()>1 and allModels~=true) then
     issues[#issues+1]=id..': multiple/unknown item mappings; compatibility mapping needed'
    else
     local item=items[1];local manager=getScriptManager()
@@ -62,7 +54,7 @@ function D.scan(script,covered)
      label=label or (itemScript.getDisplayName and itemScript:getDisplayName()) or id
      out[#out+1]={id='native:'..script:getFullName()..':'..id..':'..item,
       vehicle=script:getFullName(),label=label,price=0,discovered=true,
-      effect='Native removable equipment',
+      effect='Native removable equipment: '..label..'. Uses the provider item and model unchanged; compatibility depends on its declared install rules.',
       requiredParts=words(at(install,'requireInstalled')),
       excludedParts=words(at(install,'requireUninstalled')),
       slots={{part=id,item=item,model=models[1] or false,models=models}}}

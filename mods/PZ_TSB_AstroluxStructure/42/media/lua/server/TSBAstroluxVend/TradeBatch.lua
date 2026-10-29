@@ -38,7 +38,7 @@ function B.new(db,adapter)
   local valid,why=Trade.validate(player,terminal,vehicle,db.pricing);if not valid then fail(why)end
   settled(db,vehicle)
   local price=retail(vehicle);if not price then fail('Vehicle is not in the enabled Astrolux Motors catalog.')end
-  local a=Appraisal.calculate(vehicle,price,((db.pricing or {}).buybackPercent or C.tradeInRate*100)/100,((db.pricing or {}).damagePercent or 100)/100)
+  local a=Appraisal.calculate(vehicle,price,((db.pricing or {}).buybackPercent or C.tradeInRate*100)/100,((db.pricing or {}).damagePercent or 100)/100,db.pricing)
   Trade.checkParts(a,db.pricing)
   if a.amount<1 then fail('No payable offer: this vehicle appraises to $0.')end
   return a
@@ -57,8 +57,9 @@ function B.new(db,adapter)
     local row={id=vehicle:getId(),script=script,label=translated or script,x=math.floor(vehicle:getX()),y=math.floor(vehicle:getY()),eligible=false}
     local ok,a=false,hold
     if allowed then
-     if not Profiles.vehicles[script]then
-      a='This vehicle has no reviewed trade-in appraisal profile.'
+     local supported,profile=pcall(Profiles.resolve,vehicle,db.pricing)
+     if not supported or not profile then
+      a='Cannot appraise this vehicle: '..tostring(profile)
      else
       local valid,why=Trade.validate(player,terminal,vehicle,db.pricing)
       if not valid then a=why else ok,a=pcall(grade,player,terminal,vehicle,retail)end
@@ -103,8 +104,11 @@ function B.new(db,adapter)
   end
   add('Base.MoneyBundle',math.floor(q.amount/100));add('Base.Money',q.amount%100)
   local inventory=player:getInventory()
-  if inventory:getCapacityWeight()+weight>inventory:getEffectiveCapacity(player)then fail('Make room in your main inventory for the full trade-in payment.')end
-  local record={token=token,terminal=terminal.id,amount=q.amount,vehicles={},status='processing',paidItems=0,time=adapter.now()}
+  local free=math.max(0,inventory:getEffectiveCapacity(player)-inventory:getCapacityWeight())
+  if inventory:getCapacityWeight()+weight>inventory:getEffectiveCapacity(player)then
+   return nil,string.format('Trade-in not completed: $%d cash needs %.2f inventory capacity; you have %.2f free. Free space in your main inventory, then appraise again. Your vehicles and money are unchanged.',q.amount,weight,free)
+  end
+  local record={token=token,terminal=terminal.id,amount=q.amount,vehicles={},status='processing',paidItems=0,paidAmount=0,time=adapter.now()}
   for _,row in ipairs(q.vehicles)do record.vehicles[#record.vehicles+1]={id=row.id,script=row.script,amount=row.appraisal.amount,retail=row.appraisal.retail,removed=false}end
   self.quotes[actor]=nil;db.tradeIns[actor]=record
   local ok,err=pcall(function()
@@ -115,9 +119,11 @@ function B.new(db,adapter)
     record.vehicles[i].removed=true
    end
    record.removed=true
-   for _,item in ipairs(payout)do
+   for i,item in ipairs(payout)do
+    local value=i<=math.floor(q.amount/100) and 100 or 1
+    item:getModData().TSBAstroluxTradePayout={actor=actor,token=token,item=i,value=value}
     if inventory:AddItem(item)~=item or item:getContainer()~=inventory then fail('Cash payout was interrupted.')end
-    record.paidItems=record.paidItems+1
+    record.paidItems=record.paidItems+1;record.paidAmount=Amount.add(record.paidAmount,value)
    end
   end)
   if not ok then record.status='hold';record.error=tostring(err);fail('Trade-in batch needs administrator inspection. Do not retry; each vehicle and cash progress is recorded.')end

@@ -6,7 +6,9 @@ function D.new(db,adapter)
     function self:quote(actor,terminal,offer,method)
         local old=db.orders[actor]
         if old and old.status~='delivered' then fail('An existing order needs delivery or administrator inspection.') end
-        adapter.clear(terminal,nil,offer.script)
+        if adapter.preflight then adapter.preflight(offer) end
+        local position=adapter.clear(terminal,nil,offer.script)
+        if not position or position.deferred then fail('Delivery area must be clear and loaded. No order placed.')end
         db.serial=db.serial+1
         local q={token=tostring(db.serial),terminal=terminal.id,offer=offer.id,
             configurationLabel=offer.configurationLabel,equipment=offer.equipment,equipmentKey=offer.equipmentKey,equipmentLabel=offer.equipmentLabel,camperTop=offer.camperTop,camperSurcharge=offer.camperSurcharge,pricingRevision=offer.pricingRevision,paint=offer.paint,paintKey=offer.paintKey,payment=method or 'cash',price=offer.price,pricing=offer.pricing,basePrice=offer.basePrice,demandRevision=offer.demandRevision,script=offer.script,expires=adapter.now()+60}
@@ -24,26 +26,42 @@ function D.new(db,adapter)
         self.quotes[actor]=nil
         local old=db.orders[actor]
         if old and old.status~='delivered' then fail('An order is already outstanding.') end
+        if adapter.preflight then adapter.preflight(offer) end
+        -- Refuse unaffordable purchases before persisting an unpaid order.
+        -- Charging still rechecks the exact payment plan immediately before effects.
+        local funded,reason=adapter.requireFunds(actor,q.price,q.payment or 'cash')
+        if not funded then return nil,reason end
         local position=adapter.clear(terminal,nil,offer.script)
+        if not position or position.deferred then fail('Delivery area must be clear and loaded. No order placed.')end
         local order={id=q.token,actor=actor,terminal=terminal.id,script=offer.script,
             configurationLabel=q.configurationLabel,equipment=q.equipment,equipmentKey=q.equipmentKey,equipmentLabel=q.equipmentLabel,camperTop=q.camperTop,camperSurcharge=q.camperSurcharge,pricingRevision=q.pricingRevision,paint=q.paint,paintKey=q.paintKey,price=q.price,basePrice=q.basePrice,pricing=q.pricing,placement=position,condition=100,payment=q.payment~='cash' and 'serverBank' or 'vanillaCash',paymentMethod=q.payment,status='queued',paymentTiming='onDelivery',created=adapter.now()}
-        -- Persist an unpaid queue entry before any external/native operation.
-        -- No funds are reserved: ability to pay is rechecked on delivery.
+        -- Persist the in-flight journal before native effects for crash recovery.
+        -- This entry is delivered immediately or rejected; never scheduled.
         db.orders[actor]=order
-        if order.placement and order.placement.deferred then return order end
-        return self:deliver(actor,terminal)
+        local ok,result=pcall(self.deliver,self,actor,terminal)
+        if not ok then
+            if order.status=='queued' and not order.spawnStarted and not order.paymentCommitted then
+                order.status='rejected';order.error=tostring(result)
+                db.rejectedOrders=db.rejectedOrders or {};db.rejectedOrders[tostring(order.id)]=order
+                db.orders[actor]=nil
+            end
+            fail(tostring(result))
+        end
+        return result
     end
     function self:deliver(actor,terminal)
         local order=db.orders[actor]
         if not order or order.terminal~=terminal.id then fail('No order at this terminal.') end
         if order.status=='delivered' then fail('This order was already delivered.') end
         if order.status~='paid' and order.status~='queued' then fail('Delivery is on hold. Ask an administrator to inspect the area and order.') end
+        -- Definition failures leave a queued order unpaid and retryable.
+        if adapter.preflight then adapter.preflight(order) end
         local payOnDelivery=order.paymentTiming=='onDelivery'
         -- Existing prepaid orders retain receipt validation and never pay twice.
         if not payOnDelivery and adapter.authorizeDelivery then adapter.authorizeDelivery(order) end
         local position=adapter.clear(terminal,order,order.script)
         if position then order.placement=position end
-        if order.placement and order.placement.deferred then return order end
+        if order.placement and order.placement.deferred then fail('Delivery area must be clear and loaded. No delivery attempted.')end
         -- Persist before native effects; interrupted dispatch is never replayed.
         order.status='dispatching'
         local started=false
@@ -64,10 +82,13 @@ function D.new(db,adapter)
             else spawn()end
             order.status='delivered';order.error=nil
         end)
-        -- Insufficient/moved cash before native effects leaves a safe unpaid
-        -- queue. Partial spawn, debit or bank uncertainty requires inspection.
+        -- Refuse cash failures before native effects without a pending order.
+        -- Partial spawn, debit or bank uncertainty still requires inspection.
         if not ok and payOnDelivery and not started then
-            order.status='queued';order.error=tostring(err);fail(tostring(err))
+            order.status='rejected';order.error=tostring(err)
+            db.rejectedOrders=db.rejectedOrders or {};db.rejectedOrders[tostring(order.id)]=order
+            db.orders[actor]=nil
+            fail('Purchase rejected; no payment taken or vehicle created. '..tostring(err))
         end
         if not ok then
             order.status='hold';order.error=tostring(err)

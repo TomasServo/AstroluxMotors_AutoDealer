@@ -1,0 +1,21 @@
+module TSBAstrolux
+{
+    item CeilingLightCool
+    {
+        DisplayName = Cool White Ceiling Light (6000K),
+        DisplayCategory = Furniture,
+        ItemType = base:moveable,
+        Icon = TSBAstroluxCeilingLightCool,
+        Weight = 2.0,
+        WorldObjectSprite = TSBAstroluxCeiling_0,
+    }
+    item CeilingLightWarm
+    {
+        DisplayName = Warm White Ceiling Light (2700K),
+        DisplayCategory = Furniture,
+        ItemType = base:moveable,
+        Icon = TSBAstroluxCeilingLightWarm,
+        Weight = 2.0,
+        WorldObjectSprite = TSBAstroluxCeiling_1,
+    }
+}

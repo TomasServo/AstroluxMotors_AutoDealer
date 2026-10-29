@@ -6,37 +6,27 @@ local Discovery=require 'TSBAstroluxVend/EquipmentDiscovery'
 local E={}
 local discovered={}
 local function slot(part,item,model)return {part=part,item=item,model=model}end
-E.definitions={
- {id='camper',label='Camper top',price=500,bonus=46,effect='Native removable bed cover',slots={slot('HLX88TruckBedExtras','Base.88toyotaHiluxBedCap2','HLX88Cap')}},
- {id='roofRack',label='Luggage rack',price=500,requires='camper',effect='Native rack storage; requires camper top',slots={slot('HLX88Roofrack','Base.88toyotaHiluxRoofrack2','Roofrack0')}},
- {id='frontBullbar',label='Front bullbar',price=500,effect='Native front protection',slots={slot('DAMNBumperFront','Base.88toyotaHiluxBullbarFrontA','FrontBullbarA')}},
- {id='rearBullbar',label='Rear bullbar',price=500,effect='Native rear protection',slots={slot('DAMNBumperRear','Base.88toyotaHiluxBullbarRearA','RearBullbarA')}},
- {id='steps',label='Step rails',price=250,effect='Native side-step equipment',slots={slot('DAMNSideSteps','Base.88toyotaHiluxSideSteps2','SideSteps0')}},
- {id='armor',label='Window armor',price=1500,effect='Native protection on compatible windows',partial=true,slots={
-  slot('DAMNWindshieldArmor','Base.88toyotaHiluxWindshieldArmor','winda'),
-  slot('DAMNFrontLeftArmor','Base.88toyotaHiluxFrontWindowArmor','leftWindowa'),
-  slot('DAMNFrontRightArmor','Base.88toyotaHiluxFrontWindowArmor','rightWindowa'),
-  slot('DAMNBackLeftArmor','Base.88toyotaHiluxBackWindowArmor','winbla'),
-  slot('DAMNBackRightArmor','Base.88toyotaHiluxBackWindowArmor','winbra'),
-  slot('DAMNWindshieldRearArmor','Base.88toyotaHiluxWindshieldRearArmor','windra')}},
- {id='bedSpare',label='Bed-mounted spare tire',price=250,effect='Native spare tire and mount',slots={slot('DAMNSpareTireBed','Base.88toyotaHiluxTire2','SpareTire')}},
- {id='spareTire',label='Underbody spare tire',price=250,effect='Native spare tire; hidden underbody mounting',slots={slot('DAMNSpareTire','Base.88toyotaHiluxTire2',false)}},
-}
-E.byID={};for i,d in ipairs(E.definitions)do E.byID[d.id]=d;d.bit=2^(i-1)end
+local Adapters=require 'TSBAstroluxVend/VehicleAdapters'
+require 'TSBAstroluxVend/Adapters/Hilux88'
+E.definitions=Adapters.definitions
+E.byID={}
+local function sync()for _,d in ipairs(E.definitions)do E.byID[d.id]=d end end
+sync()
 function E.policy(settings,script,id)
- local d=assert(E.byID[id],'Unknown accessory')
- local per=((settings or {}).accessories or {})[script] or {};local p=per[id] or {}
+ sync();local d=assert(E.byID[id],'Unknown accessory')
+ sync();local per=((settings or {}).accessories or {})[script] or {};local p=per[id] or (d.policyAlias and per[string.format(d.policyAlias,script)]) or {}
  local price=p.price
- if price==nil then price=id=='camper' and ((settings or {}).camperTop or C.camperTopPrice) or d.price end
+ if price==nil then price=d.priceSetting and ((settings or {})[d.priceSetting] or C[d.priceSetting..'Price']) or d.price end
+ local protection=require('TSBAstroluxVend/ProtectionPolicy').read(p)
  local bonus=p.capacityBonus
- if bonus==nil then bonus=id=='camper' and (C.camperTopCapacityBonus or 46) or 0 end
+ if bonus==nil then bonus=(d.bonusSetting and C[d.bonusSetting]) or d.bonus or 0 end
  Amount.check(bonus,0)
  if bonus>2147480000 then error('Capacity bonus exceeds the native storage limit.',0)end
  return {enabled=(p.enabled==true or (not d.discovered and p.enabled~=false)),price=Amount.check(price,0),buffEnabled=p.buffEnabled~=false,
-  capacityBonus=Amount.check(bonus,0)}
+  capacityBonus=Amount.check(bonus,0),protectionOverride=protection.protectionOverride,durabilityPercent=protection.durabilityPercent,protectionPercent=protection.protectionPercent}
 end
 function E.compatible(script,d)
- if not script or (d.vehicle and d.vehicle~=script:getFullName()) or (not d.discovered and not Stock.isHilux(script:getFullName()))then return nil end
+ if not script or (d.vehicle and d.vehicle~=script:getFullName()) or (d.vehicles and not d.vehicles[script:getFullName()])then return nil end
  local found={}
  for _,s in ipairs(d.slots)do
   local part
@@ -51,13 +41,17 @@ function E.compatible(script,d)
 end
 function E.list(script)
  local full=script:getFullName();local cached=discovered[full]
- if not cached or cached.script~=script then
+ sync()
+ for _,d in ipairs(E.definitions)do if d.orderAlias and d.vehicles[full]then
+  local id=string.format(d.orderAlias,full);local alias={};for k,v in pairs(d)do alias[k]=v end;alias.id=id;alias.bit=nil;alias.vehicle=full;E.byID[id]=alias
+ end end
+ if not cached or cached.script~=script or cached.version~=Adapters.version then
   local covered={}
   for _,d in ipairs(E.definitions)do local slots=E.compatible(script,d)
    for _,s in ipairs(slots or {})do covered[s.part]=true end
   end
   local extra,issues=Discovery.scan(script,covered)
-  cached={script=script,extra=extra,issues=issues};discovered[full]=cached
+  cached={script=script,extra=extra,issues=issues,version=Adapters.version};discovered[full]=cached
   for _,d in ipairs(extra)do E.byID[d.id]=d end
  end
  local out={};for _,d in ipairs(E.definitions)do out[#out+1]=d end
@@ -66,12 +60,15 @@ function E.list(script)
 end
 function E.issues(script)E.list(script);return discovered[script:getFullName()].issues end
 function E.optional(script,id)
- E.list(script)
- for _,d in ipairs(discovered[script:getFullName()].extra)do for _,s in ipairs(d.slots)do if s.part==id then return true end end end
- return Discovery.optional(id)
+ -- Strip only reviewed/discovered choices that Astrolux can also reinstall.
+ -- Unknown provider equipment keeps its native spawn setup.
+ for _,d in ipairs(E.list(script))do
+  for _,slot in ipairs(E.compatible(script,d) or {})do if slot.part==id then return true end end
+ end
+ return false
 end
 function E.capacityPart(script)
- local target=Stock.isHilux(script:getFullName()) and 'HLX88Trunk' or 'TruckBed'
+ local adapter=Adapters.get(script:getFullName());local target=adapter and adapter.capacityPart or 'TruckBed'
  if script.getPartCount then for i=0,script:getPartCount()-1 do if script:getPart(i):getId()==target then return target end end end
 end
 function E.options(script,settings,includeDisabled)
@@ -80,7 +77,8 @@ function E.options(script,settings,includeDisabled)
   if E.compatible(script,d)then
    local p=E.policy(settings,script:getFullName(),d.id)
    if includeDisabled or (p.enabled and (not d.requires or E.policy(settings,script:getFullName(),d.requires).enabled))then
-    out[#out+1]={id=d.id,label=d.label,price=p.price,enabled=p.enabled,requires=d.requires,effect=d.effect,
+    out[#out+1]={id=d.id,label=d.label,price=p.price,enabled=p.enabled,requires=d.requires,requiresAny=d.requiresAny,exclusiveGroup=d.exclusiveGroup,effect=d.effect,
+      protectionSupported=d.protectionParts~=nil,protectionOverride=p.protectionOverride,durabilityPercent=p.durabilityPercent,protectionPercent=p.protectionPercent,
       buffEnabled=p.buffEnabled,capacityBonus=p.capacityBonus,capacitySupported=E.capacityPart(script)~=nil,discovered=d.discovered==true,
       activeBonus=(settings or {}).addonBuffs~=false and p.buffEnabled and p.capacityBonus or 0}
    end
@@ -103,6 +101,13 @@ function E.selection(value,script,camper)
   if not E.compatible(script,d)then error('Accessory no longer compatible: '..d.label,0)end
   if d.requires and not selected[d.requires]then error(d.label..' requires the camper top.',0)end
  end
+ local groups={};for id in pairs(selected)do local d=E.byID[id];if d.exclusiveGroup then if groups[d.exclusiveGroup]then error('Choose only one accessory for '..d.exclusiveGroup..'.',0)end;groups[d.exclusiveGroup]=id end end
+ for id in pairs(selected)do
+  local d=E.byID[id]
+  if d.requiresAny then local found=false;for _,other in ipairs(d.requiresAny)do if selected[other]then found=true end end
+   if not found then error(d.label..' requires one of its listed supporting accessories.',0)end
+  end
+ end
  local parts=E.parts(script,selected)
  for id in pairs(selected)do local d=E.byID[id]
   for _,partID in ipairs(d.requiredParts or {})do
@@ -116,7 +121,7 @@ function E.selection(value,script,camper)
 end
 function E.key(selected)
  local mask=0;local dynamic={}
- for id,v in pairs(selected or {})do if v then local d=assert(E.byID[id],'Unknown accessory')
+ for id,v in pairs(selected or {})do if v then sync();local d=assert(E.byID[id],'Unknown accessory')
   if d.bit then mask=mask+d.bit else dynamic[#dynamic+1]=id end
  end end
  table.sort(dynamic)

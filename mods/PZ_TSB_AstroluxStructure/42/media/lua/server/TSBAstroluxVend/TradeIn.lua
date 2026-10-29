@@ -8,7 +8,7 @@ function T.checkParts(appraisal,settings)
     settings=settings or {};local minimum=settings.minimumBuybackParts or 75
     local installed,total=0,0
     for _,part in ipairs(appraisal.parts)do
-        if part.id~='Battery' or settings.excludeBuybackBattery==false then
+        if not part.optional and (part.id~='Battery' or settings.excludeBuybackBattery==false) then
             total=total+1
             if not part.missing then installed=installed+1 end
         end
@@ -83,7 +83,7 @@ function T.new(db,adapter)
     function self:quote(player,terminal,vehicle,retail,revision)
         if not T.enabled(db) then fail('Trade-ins are disabled pending testing.')end
         local actor=tostring(player:getUsername());available(actor);local valid,why=T.validate(player,terminal,vehicle,db.pricing);if not valid then fail(why)end;settled(vehicle)
-        local appraisal=Appraisal.calculate(vehicle,retail,((db.pricing or {}).buybackPercent or C.tradeInRate*100)/100,((db.pricing or {}).damagePercent or 100)/100)
+        local appraisal=Appraisal.calculate(vehicle,retail,((db.pricing or {}).buybackPercent or C.tradeInRate*100)/100,((db.pricing or {}).damagePercent or 100)/100,db.pricing)
         T.checkParts(appraisal,db.pricing)
         if appraisal.amount<1 then
  self.quotes[actor]=nil
@@ -104,7 +104,7 @@ function T.new(db,adapter)
         local q=self.quotes[actor]
         if not q or q.token~=token or q.terminal~=terminal.id or q.expires<adapter.now() or q.revision~=revision then fail('Trade-in quote expired. Request another appraisal.')end
         local valid,why=T.validate(player,terminal,q.vehicle,db.pricing);if not valid then fail(why)end;settled(q.vehicle)
-        local fresh=Appraisal.calculate(q.vehicle,retail,((db.pricing or {}).buybackPercent or C.tradeInRate*100)/100,((db.pricing or {}).damagePercent or 100)/100)
+        local fresh=Appraisal.calculate(q.vehicle,retail,((db.pricing or {}).buybackPercent or C.tradeInRate*100)/100,((db.pricing or {}).damagePercent or 100)/100,db.pricing)
         T.checkParts(fresh,db.pricing)
         if fresh.fingerprint~=q.appraisal.fingerprint or fresh.amount~=q.appraisal.amount or fresh.retail~=q.appraisal.retail then
             self.quotes[actor]=nil;fail('Vehicle condition or price changed. Request another appraisal.')

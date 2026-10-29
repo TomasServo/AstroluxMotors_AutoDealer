@@ -16,6 +16,11 @@ function M.apply(player)
     local r=require('TSBAstroluxStructure/Records').near(player:getX(),player:getY())
     if not r or r.status~='ready' or (r.revision or 1)<2 then return nil,'Convert the tower display first.' end
     if player:getZ()~=0 or (player:getX()-r.x)^2+(player:getY()-r.y)^2>900 then return nil,'Stand near the tower on the ground.' end
+    -- This is a legacy conversion, not ongoing doorway maintenance.
+    -- Expanded showrooms already contain native transparent glass and centered doors.
+    if r.clearWallsRevision==1 or (r.combinedSize and r.combinedSize~=8) then
+        return true,'Transparent walls already installed; existing panes retained.'
+    end
     local cell=getCell();local changes,removals,corners={},{},{};local deferred=0
     for _,i in ipairs({0,1,3}) do
         local sprite=getSprite('TSBAstroluxClearGlass_'..i)

@@ -19,12 +19,13 @@ function D.prepare(vehicle,camperTop,equipment)
             local item=instanceItem(Accessories.item)
             if not item then error('Camper top item unavailable.',0)end
             changes[#changes+1]={part=part,item=item,model=Accessories.model}
-        elseif Equipment.optional(vehicle:getScript(),id)then
-            changes[#changes+1]={part=part,empty=true}
         elseif itemType then
             local item=instanceItem(itemType)
             if not item then error('Stock equipment unavailable: '..itemType,0)end
             changes[#changes+1]={part=part,item=item,model=model}
+        elseif Equipment.optional(vehicle:getScript(),id)then
+            -- Empty optional slots only when no stock replacement is declared.
+            changes[#changes+1]={part=part,empty=true}
         end
     end
     -- Set defaults before repair/replication so dependency init cannot randomize

@@ -1,0 +1,14 @@
+module Base
+{
+    sound TSBAstroluxElevatorMusic
+    {
+        category = Music,
+        loop = true,
+        is3D = false,
+        clip
+        {
+            file = media/sound/TSBAstroluxElevatorMusic.mp3,
+            volume = 0.25,
+        }
+    }
+}

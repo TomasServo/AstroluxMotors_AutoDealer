@@ -1,18 +1,16 @@
 local R={}
+local lightbars=setmetatable({},{__mode="k"})
 function R.reason(script,text)
-    local bar=script.getLightbar and script:getLightbar()
-    -- LightBar Java fields are not exposed through normal Lua indexing.
-    -- Use the native field-inspection helpers used by vanilla ObjectViewer.
-    local enabled=false
-    if type(bar)=='table' then enabled=bar.enable==true
-    elseif bar and getNumClassFields and getClassField and getClassFieldVal then
-        for i=0,getNumClassFields(bar)-1 do
-            local field=getClassField(bar,i)
-            if field.getName and field:getName()=='enable' then
-                enabled=getClassFieldVal(bar,field)==true
-                break
-            end
-        end
+    -- Detached native descriptor: hasLightbar is the public API used by vanilla.
+    local enabled=lightbars[script]
+    if enabled==nil then
+        local bar=script.getLightbar and script:getLightbar()
+        if type(bar)=='table' then enabled=bar.enable==true
+        elseif BaseVehicle and getCell then
+            local probe=BaseVehicle.new(getCell());probe:setScript(script:getFullName())
+            enabled=probe:hasLightbar()
+        else enabled=false end
+        lightbars[script]=enabled
     end
     if enabled then return 'Light bar' end
     if script.getHasSiren and script:getHasSiren() then return 'Siren/service vehicle' end

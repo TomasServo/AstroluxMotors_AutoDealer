@@ -1,3 +1,5 @@
+> **0.9 beta release-candidate checkpoint:** MP fixes and the new demo are staged. See [acceptance status](docs/RELEASE-CANDIDATE-STATUS.md) and [demo installation](docs/wiki/Install-the-Demo.md). No Steam release is implied.
+
 # Astrolux Motors
 
 A standalone Project Zomboid Build 42 dealership with an Astrolux glass showroom, vehicle sales and trade-ins. **Pre-release testing candidate; multiplayer and final launch acceptance are pending.**

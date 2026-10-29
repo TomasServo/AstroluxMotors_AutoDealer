@@ -1,0 +1,225 @@
+[h1]ASTROLUX MOTORS | Auto Dealer — 0.9 Beta[/h1]
+[b]Your keys to freedom.[/b]
+
+[b]0.9 Beta — Single-player and multiplayer testers wanted![/b]
+[i]Multiplayer is experimental and unverified. Use a fresh test world or dedicated test server.[/i]
+
+Welcome to [b]Astrolux Motors[/b]—where the road to survival begins.
+
+Astrolux Motors brings a dedicated dealership experience to your town.
+
+Find your next vehicle, or build a dealership around your economy.
+
+[h2]THE ASTROLUX EXPERIENCE[/h2]
+[b]A dealership built to stand out.[/b]
+
+[list]
+[*]Glass-fronted showroom.
+[*]Sliding ground-floor entrances.
+[*]Integrated twelve-bay display tower with interior visibility controls.
+[*]Gunmetal sales kiosks with recessed controls, vent details and Astrolux branding.
+[*]Power-aware kiosk screens with a black power-off display.
+[*]Configurable vehicle offers and delivery areas.
+[*]Branded showroom details, clothing and furnishings.
+[*]Showroom music choices with personal playback and volume controls.
+[/list]
+
+[i]The tower's displayed vehicle imagery does not represent driveable vehicles supplied with the mod. Inventory-driven tower displays remain future work.[/i]
+
+[h2]SHOP. CHOOSE. DRIVE.[/h2]
+[b]Find the vehicle that fits your survival strategy.[/b]
+
+[list]
+[*][b]Browse Inventory[/b] — Explore the dealership's configured vehicle catalog.
+[*][b]Choose Your Finish[/b] — Select available colors and compatible existing designs.
+[*][b]Review Your Quote[/b] — Check the purchase price before confirming.
+[*][b]Complete Your Purchase[/b] — Pay with supported cash carried by your character.
+[*][b]Take Delivery[/b] — Receive your vehicle in a designated delivery area and its key in your inventory.
+[*][b]Trade In[/b] — Request an appraisal for an eligible supported vehicle and review the offered payout before accepting.
+[/list]
+
+No banking mod is required for supported carried-cash purchases.
+
+[b]Vehicle appraisal[/b]
+Trade-in appraisal supports reviewed vehicle profiles and compatible equipment mappings. Supported installed accessories can appear as separate appraisal values. Eligibility, equipment recognition and valuation depend on the vehicle and its integration; universal support for every vehicle or accessory is not promised.
+
+[h2]BUILT FOR CUSTOM WORLDS[/h2]
+[b]Your dealership. Your inventory. Your economy.[/b]
+
+World owners configure the vehicles offered for sale, their prices and where purchases are delivered.
+
+[list]
+[*]Configurable vehicle catalogs and sales offers.
+[*]Owner-defined vehicle pricing.
+[*]Model, variant and available color/design pricing controls.
+[*]Dynamic demand pricing or static pricing.
+[*]Delivery areas defined using two corners.
+[*]Selectable vehicle delivery direction.
+[*]Optional banking integration through a documented adapter interface.
+[/list]
+
+Use dynamic demand pricing for changing prices, or static pricing for predictable costs.
+
+[b]Optional banking[/b]
+A compatible bank bridge must be supplied and configured separately. The adapter interface does not provide a ready-to-use connection to every banking mod.
+
+[b]Native building behavior[/b]
+Showroom windows and doors retain native breakable behavior. Astrolux does not bundle a Java protection component. Owners who need protected premises should configure their server's safe-zone system and verify what it protects.
+
+[h2]GETTING STARTED[/h2]
+[b]For world owners and administrators[/b]
+
+In a supported test setup, place an Astrolux Motors Sales Kiosk, configure the available vehicles and prices, then define a clear delivery area and direction. Test a purchase and delivery before making the dealership available to other players.
+
+[b]Showroom setup — candidate awaiting in-game testing[/b]
+A public-placement candidate has been prepared for fresh worlds. It provides an explicit single-player sandbox setup option and a separate experimental multiplayer admin-placement option, without requiring the author's save, a special world name or personal coordinates.
+
+This candidate is staged and offline-tested; installation, fresh-world gameplay and multiplayer acceptance are still pending. It is not yet confirmed as part of the public Workshop package. The currently installed setup retains test-world restrictions. Use setup instructions matching the package supplied for your test.
+
+An optional demonstration-map package is also being prepared. Its fresh-user setup and multiplayer behavior are still awaiting in-game acceptance.
+
+[b]For players[/b]
+[list]
+[*]Visit a configured Astrolux Motors Sales Kiosk.
+[*]Browse the available vehicles.
+[*]Choose a vehicle and an available finish.
+[*]Review the quote and confirm your purchase.
+[*]Collect your vehicle and key when delivery completes.
+[/list]
+
+[i]Vehicle availability, finish options and payment methods depend on the world's configuration and compatible installed content.[/i]
+
+[h2]VEHICLE COMPATIBILITY[/h2]
+Astrolux uses supported vehicle definitions from the active game world. Owners can configure offers for compatible enabled vehicles.
+
+[list]
+[*]Third-party vehicle packs are not included.
+[*]Vehicles shown in screenshots may require separate mods.
+[*]Available colors and designs depend on the vehicle and installed content.
+[*]Some vehicles and equipment systems require additional configuration or integration.
+[*]Compatibility with every vehicle mod is not guaranteed. Test each vehicle before adding it to an active dealership.
+[/list]
+
+[h2]DEVELOPMENT STATUS & REQUIREMENTS[/h2]
+[b]0.9 Beta | Project Zomboid Build 42[/b]
+
+[b]Checked with PZ Mod Checker. Developed with AI assistance.[/b]
+
+AI tools assist with development, troubleshooting and documentation. Development also includes automated regression checks and hands-on in-game testing.
+
+Recorded single-player testing includes showroom and door interaction, vehicle purchase/delivery, and a supported equipped-vehicle trade-in with the expected payout, vehicle removal and duplicate-payout prevention. Current kiosk artwork uses the Astrolux sign’s original lettering, with a gunmetal cabinet and a black power-off screen.
+
+PZ Mod Checker checks and automated tests are part of the review process; they do not certify the mod or establish compatibility with every game build, vehicle pack or server. Multiplayer, broader vehicle compatibility and some save/reload and damaged-accessory cases still need in-game verification.
+
+Test in a disposable world and back up established saves before installing or updating. Features may change during development.
+
+[h2]FREQUENTLY ASKED QUESTIONS[/h2]
+[b]Do I need a banking mod?[/b]
+No. Supported purchases work with carried cash. Bank payments require a separately supplied compatible integration.
+
+[b]Can I customize my purchase?[/b]
+You can select available colors and compatible existing designs. Choices vary by vehicle and installed content.
+
+[b]Can owners control prices?[/b]
+Yes. Owners configure vehicle offers and pricing, with static or dynamic demand pricing.
+
+[b]Can I trade in my current vehicle?[/b]
+Eligible supported vehicles can be appraised through the trade-in interface. Review the appraisal before accepting. Vehicle and accessory support depends on the available profiles and mappings.
+
+[b]Can I make a compatibility harness?[/b]
+Yes. Independently written small connection mods are permitted under the harness terms below. They must require the original Astrolux Motors mod and must not bundle or reproduce its code or assets.
+
+[b]Where do purchased vehicles appear?[/b]
+In the configured delivery area, facing the selected direction. Keep the area clear and large enough for the vehicle. A purchase awaiting delivery is not a reason to buy it again; check the order's status first.
+
+[b]Can I place the showroom in a fresh world?[/b]
+A public setup candidate is prepared, but its live acceptance is pending. Confirm that your test package includes it and follow its matching setup guide. The candidate supports one active showroom per world; placement checks for a clear site and requires confirmation.
+
+[b]Is multiplayer verified?[/b]
+Multiplayer is experimental and unverified in 0.9 Beta. Multiplayer testers are welcome; please use a dedicated test server rather than an established world.
+
+[h2]BUG REPORTS & FEEDBACK[/h2]
+[b]Single-player and multiplayer mod testers wanted![/b]
+
+Help test Astrolux Motors in single-player worlds and multiplayer servers. Feedback is especially welcome on purchases, vehicle delivery, trade-ins, pricing, showroom interaction, save/reload behavior and compatibility with other vehicle mods.
+
+For multiplayer testing, please also check admin-only placement, ordinary-player permission limits, simultaneous purchases, vehicle/key ownership, late joining, reconnects and server restarts. Use a fresh dedicated test server with matching mod files on every client. Multiplayer is experimental and unverified; the tester call does not imply established multiplayer support.
+
+Astrolux Motors is under active development and testing. Detailed reports help identify problems and improve the dealership experience.
+
+When reporting a problem, please include:
+
+[list]
+[*]Your Project Zomboid build and Astrolux version.
+[*]Whether the issue occurred in single-player or multiplayer.
+[*]Relevant vehicle mods and optional integrations.
+[*]Steps to reproduce the issue, including what you expected and what happened.
+[*]The relevant console error, if one appeared.
+[*]Screenshots of the kiosk, order status or delivery area where useful.
+[/list]
+
+For a purchase problem, include whether cash was deducted, whether a vehicle appeared and whether you received its key. Remove private information from logs before sharing them.
+
+[h2]TRY THE APPROVED SHOWROOM — SINGLE-PLAYER DEMO[/h2]
+Explore the approved furnished Astrolux showroom on its 80×80 demonstration lot. Choose either the automatic demo or the optional saved-world download.
+
+[b]Automatic demo — no ZIP extraction or separate program[/b]
+[list]
+[*]Subscribe to Astrolux Motors Auto Dealer and let Steam finish downloading it.
+[*]Open Project Zomboid’s Mods menu and enable [b]Astrolux Motors Auto Dealer[/b] and [b]Astrolux Test Lot (Single Player Preview)[/b]. The test-lot mod is required for this demo.
+[*]Return to the main menu and allow the game to reload its Lua files. Restart the game if prompted.
+[*]Choose [b]New Game → Challenges → Astrolux Motors Auto Dealer Demo[/b], then create your character.
+[*]The approved showroom is placed automatically once the area loads. No debug mode, manual tower paste or external installer is required.
+[*]After quitting normally, use [b]Load[/b] to continue that world. Starting the challenge again creates a separate new world.
+[/list]
+Automatic sliding doors and mannequin outfit locks start enabled. Reloading preserves the existing world; it does not rebuild a tower you removed or reset your changes.
+
+[b]Optional: install the frozen single-player save[/b]
+The accompanying [b]Astrolux Motors Auto Dealer.zip[/b] is the preserved approved save. Exit the game, extract the ZIP to a temporary folder, and copy [b]Saves/Sandbox/Astrolux Motors Auto Dealer[/b] into your own [b]Zomboid/Saves/Sandbox[/b] folder. On a standard Windows installation this is [b]C:\Users\YOUR-NAME\Zomboid\Saves\Sandbox[/b]. Use your configured profile folder if you launch with a custom cachedir.
+
+Keep the folder structure intact. Do not overwrite an existing save with the same name; keep a backup or give the imported folder a different name. Enable the two matching Astrolux mods, then select [b]Load → Astrolux Motors Auto Dealer[/b]. Workshop users should use the Workshop-provided mods rather than installing a duplicate local copy from the archive.
+
+[b]If the demo is missing:[/b] confirm both mods are enabled, downloads are complete and the installed game meets the mod’s version requirement. This candidate targets Build 42.21.0 or later within the supported Build 42 release line; later updates still require compatibility verification. This is a single-player demo, not an automatic multiplayer server installer.
+
+[h2]DISCLAIMER[/h2]
+Astrolux Motors is a community-created mod for Project Zomboid. It is not affiliated with, endorsed by or sponsored by The Indie Stone.
+
+Astrolux Motors is a fictional in-game dealership created for entertainment. It is not affiliated with, endorsed by or sponsored by any real-world automotive manufacturer, vehicle retailer or dealership. Real-world names or marks appearing in separately installed vehicle mods remain the property of their respective owners.
+
+This is the 0.9 Beta testing release. Multiplayer is experimental and unverified. Features and configuration may change, and compatibility with every game update, vehicle mod, multiplayer setup or third-party integration is not guaranteed. Back up your saves and test in a disposable world before using the mod in an established save.
+
+Vehicles shown in screenshots or videos may come from separately installed mods. Those vehicle packs are not included with Astrolux Motors and remain subject to their creators' requirements and permissions.
+
+[h2]CREDITS[/h2]
+[b]Astrolux Motors[/b] — TomasServo.
+[b]Development[/b] — AI-assisted development, troubleshooting and documentation.
+[b]Validation tools[/b] — PZ Mod Checker and project regression checks.
+[b]Project Zomboid[/b] — The Indie Stone.
+
+Third-party vehicles shown in screenshots belong to their respective creators and may require separately installed mods.
+
+[h2]COPYRIGHT & PERMISSIONS[/h2]
+© 2026 TomasServo. All rights reserved for original Astrolux Motors code and assets owned by the author.
+
+Project Zomboid and its associated game assets belong to The Indie Stone. Third-party code, artwork, vehicles and other assets remain the property of their respective owners and are governed by their applicable licenses and permissions.
+
+[b]No copying, reproduction or redistribution.[/b]
+Do not copy, reproduce, reupload, redistribute, repackage or bundle original Astrolux Motors code or assets, in whole or in part, without the author's express permission, except where an applicable license expressly permits it. This includes modified reuploads, mod packs containing Astrolux files, and replacement mods incorporating Astrolux content.
+
+[b]Small connection mods (harnesses) are allowed.[/b]
+You may create and distribute independently written compatibility harnesses that connect Astrolux Motors to another mod through its exposed interfaces or registration contracts, subject to these conditions:
+
+[list]
+[*]The harness requires users to obtain and enable the original Astrolux Motors mod separately.
+[*]It contains your own connection code and does not copy, bundle or reproduce Astrolux Motors code, artwork, audio or other assets.
+[*]It connects to Astrolux rather than redistributing a modified version or replacing its core implementation.
+[*]Its description credits Astrolux Motors and clearly identifies the harness as an independent integration, without implying official endorsement.
+[*]It respects the licenses and permissions of every other mod it connects to.
+[/list]
+
+You may refer to the Astrolux Motors name and the interface identifiers needed to describe and implement the connection. This limited permission covers qualifying harnesses only; it does not permit reproduction of the mod or grant rights to third-party content. Contact the author for uses outside these terms.
+
+[b]Mod ID:[/b] PZ_TSB_AstroluxStructure
+
+[b]ASTROLUX MOTORS[/b]
+[i]Your keys to freedom.[/i]

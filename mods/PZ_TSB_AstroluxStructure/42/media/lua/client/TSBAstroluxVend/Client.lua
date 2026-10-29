@@ -1,3 +1,4 @@
+require 'TSBAstroluxStructure/ReleaseWorldMenu'
 local Menus=require 'TSBAstroluxVend/ContextMenu'
 require 'ISUI/ISModalDialog'
 require 'ISUI/ISRichTextPanel'
@@ -27,7 +28,7 @@ local function send(p,command,args)
 end
 local function argsFor(obj)
     local sq=obj:getSquare()
-    return {x=sq:getX(),y=sq:getY(),z=sq:getZ(),index=obj:getObjectIndex()}
+    return {x=sq:getX(),y=sq:getY(),z=sq:getZ(),index=obj:getObjectIndex(),kioskId=obj:getModData().TSBAstroluxVend}
 end
 local function request(self,command)
     local a={};for k,v in pairs(self.location) do a[k]=v end
@@ -38,6 +39,7 @@ local function request(self,command)
     a.offer=offer and offer.id;a.token=self.quote and self.quote.token
     a.tradeToken=self.tradeQuote and self.tradeQuote.token
     a.tradeVehicles=TradeSelection.ids(self)
+    if command=='zoneNumber'then a.deliveryNumber=self.zoneNumber:isSelected(1)end
     if command=='zoneBorder'then a.deliveryBorder=self.zoneBorder:isSelected(1)end
     if command=='tradeQuote' or command=='tradeAccept'then self.tradeAccept:setEnable(false);self.tradeDecline:setEnable(false)end
     a.search=self.query or '';a.page=self.page or 1
@@ -59,7 +61,7 @@ function Client.receive(data)
     end
     if data.areaSaved then
         if panel then
-            panel.spawnArea=data.spawnArea;panel.deliveryBorder=data.deliveryBorder==true;panel.message=data.message;panel.quote=nil;panel.confirm:setEnable(false)
+            panel.displayNumber=data.displayNumber or panel.displayNumber;panel.deliveryNumber=data.deliveryNumber~=false;panel.spawnArea=data.spawnArea;panel.deliveryBorder=data.deliveryBorder==true;panel.message=data.message;panel.quote=nil;panel.confirm:setEnable(false)
             panel.tradeQuote=nil;panel.tradeRows:clear();panel.tradeAccept:setEnable(false);panel.tradeDecline:setEnable(false)
             panel:updateZone()
         elseif requester then requester:Say(data.message)end
@@ -82,12 +84,13 @@ function Client.receive(data)
     if data.quote and data.quote.equipmentLabel and data.quote.equipmentLabel~='' then panel.message=(panel.message or '')..' Accessories: '..data.quote.equipmentLabel end
     panel.quote=data.quote
     panel.confirm:setEnable(data.ok and data.quote~=nil)
-    if data.quote then panel.confirm:setTitle('Confirm purchase — $'..data.quote.price)
-    else panel.confirm:setTitle('Confirm purchase') end
+    if data.quote then panel.confirm:setTitle('Confirm Purchase â€” $'..data.quote.price)
+    else panel.confirm:setTitle('Confirm Purchase') end
     if not data.ok then TradeSelection.invalidate(panel);return end
+    if not Access.allowed(panel.player)or data.adminAllowed==false then data.adminPricing=nil end
     panel.adminPricing=data.adminPricing
-    if not Access.allowed(panel.player)then data.adminPricing=nil end
     panel.adminButton:setVisible(data.adminPricing~=nil)
+    panel.zoneButton:setVisible(data.adminPricing~=nil)
     panel.simple=data.simple;panel.bankAvailable=data.bankAvailable;panel.bankBalance=data.bankBalance;panel.bankBalances=data.bankBalances or {}
     local selected=panel.paymentIDs[panel.payment.selected]
     panel.paymentIDs=data.paymentMethods or {'cash'};panel.payment:clear()
@@ -102,13 +105,15 @@ function Client.receive(data)
     panel.balance=data.balance
     panel.page=data.page or 1;panel.pages=data.pages or 1;panel.total=data.total or 0
     local area=data.spawnArea
-    panel.spawnArea=area;panel.deliveryBorder=data.deliveryBorder==true;panel.zoneTerminal=data.terminal;panel:updateZone()
+    panel.adminPricing=data.adminPricing
+    panel.displayNumber=data.displayNumber or panel.displayNumber;panel.deliveryNumber=data.deliveryNumber~=false;panel.spawnArea=area;panel.deliveryBorder=data.deliveryBorder==true;panel.zoneTerminal=data.terminal;panel:updateZone()
     panel.areaRotation=area and (area.heading=='E' or area.heading=='W') and 1 or 0
     panel.areaText=area and ('Spawn area: '..area.x1..', '..area.y1..' to '..area.x2..', '..area.y2..' | Faces '..area.heading) or 'Spawn area: not configured'
     local old=panel.offers and panel.offers[panel.selection.selected]
     panel.offers=data.offers;panel.selection:clear()
     for i,o in ipairs(data.offers) do
-        local translated=o.script and getTextOrNull('IGUI_VehicleName'..(o.script:match('%.(.+)$') or o.script))
+        local model=o.modelScript or o.script
+        local translated=model and getTextOrNull('IGUI_VehicleName'..(model:match('%.(.+)$') or model))
         panel.selection:addOption((translated or o.name)..' - $'..o.price..(o.available==false and ' (too large)' or ''))
         if old and old.id==o.id then panel.selection.selected=i end
     end
@@ -189,37 +194,6 @@ Events.OnFillWorldObjectContextMenu.Add(function(playerNum,context,objects,test)
             end
         end
     end
-    if isAdmin and ground and selectedTerminal then
-        local adminMenu=Menus.section(context,'Administration')
-        local sub=Menus.submenu(adminMenu,'Set delivery area')
-        local advanced=Menus.submenu(Menus.submenu(adminMenu,'Advanced'),'Set delivery area by coordinates')
-        local terminalID=selectedTerminal
-        for _,heading in ipairs(Areas.directions) do
-            local direction=heading
-            sub:addOption('Vehicles face '..direction,p,function()
-                local Cursor=require 'TSBAstroluxVend/AreaCursor'
-                requester=p
-                if panel then panel:close();panel=nil end
-                Cursor:start(p,direction,function(ax,ay,bx,by)
-                    send(p,'areaSet',{terminal=terminalID,ax=ax,ay=ay,bx=bx,by=by,heading=direction,confirmed=true})
-                end)
-            end)
-            advanced:addOption('Vehicles face '..direction,p,function()
-                requester=p
-                local modal=ISTextBox:new(100,100,620,230,
-                    'Enter two opposite corner tiles: x1, y1, x2, y2. No size or kiosk-distance limit. Vehicles face '..direction,
-                    '',nil,function(_,button)
-                        if button.internal~='OK' then return end
-                        local text=button.parent.entry:getText()
-                        local values={}
-                        for value in text:gmatch('[^,%s]+') do values[#values+1]=tonumber(value) or false end
-                        if #values~=4 then p:Say('Enter four whole tile coordinates separated by commas.');return end
-                        local area,why=Areas.rectangle(values[1],values[2],values[3],values[4],direction)
-                        if not area then p:Say(why);return end
-                        send(p,'areaSet',{terminal=terminalID,ax=values[1],ay=values[2],bx=values[3],by=values[4],heading=direction,confirmed=true})
-                    end,p:getPlayerNum())
-                modal:initialise();modal:addToUIManager()
-            end)
-        end
-    end
+    -- Delivery-zone creation/editing is available in the kiosk only.
+
 end)

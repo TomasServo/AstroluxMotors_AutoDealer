@@ -32,6 +32,7 @@ function M.reconcile(a,b,previous)
     elseif av~=previous then desired=av else desired=bv end
     -- Opening a linked pair cannot bypass the other leaf's lock.
     if desired and ((not av and a:isLocked())or(not bv and b:isLocked()))then desired=false end
+    if not desired and (IsoDoor.isDoorObstructed(a)or IsoDoor.isDoorObstructed(b))then return previous end
     local changed={}
     local ok=pcall(function()
         for _,o in ipairs({a,b})do
@@ -57,7 +58,7 @@ local function track(sq)
 end
 if Events then Events.LoadGridsquare.Add(track)
 Events.OnTick.Add(function()
-    if isServer() or not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return end
+    if not isServer() and #require('TSBAstroluxStructure/ReleaseSites').all()==0 and not (tostring(getWorld():getWorld()):match('^AstroluxStructureLab') or require('AstroluxBayTest/TestWorld').testMap() or require('AstroluxBayTest/TestWorld').corner()) then return end
     local now=getTimestampMs();if now-last<100 then return end;last=now
     -- Catch newly migrated/placed leaves as well as squares loaded from saves.
     local function scan(p)

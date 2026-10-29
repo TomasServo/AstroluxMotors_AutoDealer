@@ -3,11 +3,17 @@ local E=require 'TSBAstroluxStructure/Entrances'
 local C={}
 local lastClick={}
 function C.click(object,player,x,y)
+    -- A picked Astrolux sign takes precedence over the projected doorway plane.
+    -- Fall through to vanilla doClickLightSwitch and its normal timed action.
+    if object and instanceof(object,'IsoLightSwitch') then
+        local sprite=object:getSprite();local name=sprite and sprite:getName()
+        if type(name)=='string' and name:match('^TSBAstroluxMotorsSign_[0-3]$') then return false end
+    end
     if not player or player:isDead() or player:getZ()~=0 or player:isAiming()
         or player:isIgnoreContextKey() or not player:getCurrentSquare() then return false end
     local speed=UIManager.getSpeedControls()
     if speed and speed:getCurrentGameSpeed()==0 then return false end
-    if not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return false end
+    if not (tostring(getWorld():getWorld()):match('^AstroluxStructureLab') or require('AstroluxBayTest/TestWorld').testMap() or require('AstroluxBayTest/TestWorld').corner()) then return false end
     local r=require('TSBAstroluxStructure/Records').near(player:getX(),player:getY())
     if not r or r.status~='ready' or not r.slidingDoorsRevision then return false end
     -- Project the entire doorway plane, including its empty center at handle

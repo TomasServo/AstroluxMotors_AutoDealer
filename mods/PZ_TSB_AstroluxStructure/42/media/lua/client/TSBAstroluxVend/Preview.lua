@@ -17,11 +17,13 @@ function P.new(scene)
         if offer and offer.script==self.script and self.camperTop==camperTop and self.equipmentKey==key then return end
         self:clear();scene:setVisible(false)
         if not offer then self.status='No vehicles on this page.';return end
+        local previewNote
         local ok,err=pcall(function()
             local script=getScriptManager():getVehicle(offer.script)
             if not script or not script:getModel() then error('Missing client model')end
             local resolved,why=StockPreview.resolve(script,camperTop,equipment)
             if not resolved then self.status=why;return false end
+            previewNote=why
             self.loaded=true
             scene.javaObject:fromLua1('createVehicle','astroluxPreview')
             scene.javaObject:fromLua2('setVehicleScript','astroluxPreview',resolved)
@@ -31,7 +33,7 @@ function P.new(scene)
             scene.javaObject:fromLua1('setZoom',math.max(0,math.min(2,math.floor(4-math.max(offer.rx or 3,offer.ry or 4)/3))))
         end)
         if ok and err==false then self:clear()
-        elseif ok then self.script=offer.script;self.camperTop=camperTop;self.equipmentKey=key;scene:setVisible(true);self.status='Scroll to zoom; drag to pan.'
+        elseif ok then self.script=offer.script;self.camperTop=camperTop;self.equipmentKey=key;scene:setVisible(true);self.status=previewNote or 'Scroll to zoom; drag to pan.'
         else self:clear();self.status='Preview error; see console log.';print('[AstroluxPreview] '..tostring(err)) end
     end
     return self

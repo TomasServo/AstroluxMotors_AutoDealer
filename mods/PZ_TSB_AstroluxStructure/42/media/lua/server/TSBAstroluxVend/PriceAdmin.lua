@@ -4,10 +4,11 @@ local Equipment=require 'TSBAstroluxVend/Equipment'
 local Families=require 'TSBAstroluxVend/VehicleFamilies'
 local Groups=require 'TSBAstroluxVend/AdminVehicleGroups'
 local Demand=require 'TSBAstroluxVend/Demand'
+local Protection=require 'TSBAstroluxVend/ProtectionPolicy'
 local A={}
 function A.view(settings)
     settings=settings or {}
-    return {allowHotwiredBuybacks=settings.allowHotwiredBuybacks~=false,requireBuybackKey=settings.requireBuybackKey~=false,excludeBuybackBattery=settings.excludeBuybackBattery~=false,minimumBuybackParts=settings.minimumBuybackParts or 75,buybacksEnabled=settings.buybacksEnabled==true or (settings.buybacksEnabled==nil and C.tradeInsEnabled==true),buybackPercent=settings.buybackPercent or 50,damagePercent=settings.damagePercent or 100,accessories=settings.accessories or {},revision=settings.revision or 0,normal=settings.normal or C.vehicleClasses[1].price,
+    return {partRoleDefaults=settings.partRoleDefaults or {},partRoles=settings.partRoles or {},paintPrices=settings.paintPrices or {},allowHotwiredBuybacks=settings.allowHotwiredBuybacks~=false,requireBuybackKey=settings.requireBuybackKey~=false,excludeBuybackBattery=settings.excludeBuybackBattery~=false,minimumBuybackParts=settings.minimumBuybackParts or 75,buybacksEnabled=settings.buybacksEnabled==true or (settings.buybacksEnabled==nil and C.tradeInsEnabled==true),buybackPercent=settings.buybackPercent or 50,damagePercent=settings.damagePercent or 100,accessories=settings.accessories or {},revision=settings.revision or 0,normal=settings.normal or C.vehicleClasses[1].price,
         heavy=settings.heavy or C.vehicleClasses[2].price,sports=settings.sports or C.vehicleClasses[3].price,
         demandIncrease=Demand.policy(settings).increase,demandRecovery=Demand.policy(settings).recovery,addonBuffs=settings.addonBuffs~=false,camperTop=settings.camperTop or C.camperTopPrice,dynamic=settings.dynamic~=false,siren=0,specialPaint=settings.specialPaint or C.specialPaintPrice,modelPrices=settings.modelPrices or {},vehicles=settings.vehicles or {},enabled=settings.enabled or {}}
 end
@@ -22,7 +23,20 @@ function A.edit(settings,args,catalog)
     if args.revision~=next.revision then error('Prices changed. Refresh the terminal and reopen pricing.',0)end
     local vehicles={};for k,v in pairs(next.vehicles)do vehicles[k]=v end;next.vehicles=vehicles
     local enabled={};for k,v in pairs(next.enabled)do enabled[k]=v end;next.enabled=enabled
-    if args.action=='modelPrice' or args.action=='variantPrice' or args.action=='resetVariant' then
+    if args.action=='partRole' then
+        local roles,defaults=require('TSBAstroluxVend/AppraisalPartRoles').edit(settings,args,getScriptManager())
+        if not roles then error(defaults,0)end
+        next.partRoles=roles;next.partRoleDefaults=defaults
+    elseif args.action=='colorPrice' or args.action=='resetColorPrice'then
+        if type(args.script)~='string' or not catalog.installable[args.script]then error('Choose an installed vehicle variation.',0)end
+        local found=false
+        for _,o in ipairs(require('TSBAstroluxVend/Paint').options(getScriptManager():getVehicle(args.script),settings))do if o.id==args.paint then found=true end end
+        if not found then error('Choose an available color or design.',0)end
+        local all={};for k,v in pairs(next.paintPrices)do all[k]=v end
+        local per={};for k,v in pairs(all[args.script] or {})do per[k]=v end
+        if args.action=='resetColorPrice'then per[args.paint]=nil else per[args.paint]=amount(args.price,0)end
+        all[args.script]=per;next.paintPrices=all
+    elseif args.action=='modelPrice' or args.action=='variantPrice' or args.action=='resetVariant' then
         if type(args.script)~='string' or not catalog.installable[args.script]then error('Choose an installed vehicle variation.',0)end
         local modelPrices={};for k,v in pairs(next.modelPrices)do modelPrices[k]=v end;next.modelPrices=modelPrices
         if args.action=='modelPrice'then
@@ -37,8 +51,10 @@ function A.edit(settings,args,catalog)
         elseif args.action=='variantPrice'then vehicles[args.script]=amount(args.price,1)
         else vehicles[args.script]=nil end
     elseif args.action=='accessory' and Families.target(args.accessory)then
+        local protection=Protection.read(args)
+        if protection.protectionOverride then error('Factory configurations retain native protection.',0)end
         local target=Families.target(args.accessory)
-        if not Families.member(args.script,target,'configuration') or not catalog.installable[args.script] or not catalog.installable[target]then error('Choose an installed factory configuration.',0)end
+        if not Families.member(args.script,target) or not catalog.installable[args.script] or not catalog.installable[target]then error('Choose an installed factory configuration.',0)end
         if type(args.enabled)~='boolean' or type(args.buffEnabled)~='boolean'then error('Choose configuration availability.',0)end
         if args.buffEnabled or amount(args.capacityBonus,0)~=0 then error('Factory configurations retain native stats; no extra storage buff is added.',0)end
         local policies={};for k,v in pairs(next.accessories)do policies[k]=v end
@@ -49,11 +65,13 @@ function A.edit(settings,args,catalog)
         if type(args.script)~='string' or not catalog.installable[args.script] then error('Choose a compatible installed accessory.',0)end
         Equipment.list(getScriptManager():getVehicle(args.script))
         if not Equipment.byID[args.accessory] or not Equipment.compatible(getScriptManager():getVehicle(args.script),Equipment.byID[args.accessory])then error('Accessory is incompatible with this vehicle.',0)end
+        local protection=Protection.read(args)
+        if protection.protectionOverride and not Equipment.byID[args.accessory].protectionParts then error('This accessory has no reviewed protection override adapter.',0)end
         if amount(args.capacityBonus,0)>0 and not Equipment.capacityPart(getScriptManager():getVehicle(args.script))then error('This vehicle has no supported native bed for an added storage bonus.',0)end
         if type(args.enabled)~='boolean' or type(args.buffEnabled)~='boolean'then error('Choose accessory availability and buff state.',0)end
         local policies={};for k,v in pairs(next.accessories)do policies[k]=v end
         local per={};for k,v in pairs(policies[args.script] or {})do per[k]=v end
-        per[args.accessory]={enabled=args.enabled,price=amount(args.accessoryPrice,0),buffEnabled=args.buffEnabled,capacityBonus=amount(args.capacityBonus,0)}
+        per[args.accessory]={enabled=args.enabled,price=amount(args.accessoryPrice,0),buffEnabled=args.buffEnabled,capacityBonus=amount(args.capacityBonus,0),protectionOverride=protection.protectionOverride,durabilityPercent=protection.durabilityPercent,protectionPercent=protection.protectionPercent}
         policies[args.script]=per;next.accessories=policies
         local sum=0;local script=getScriptManager():getVehicle(args.script)
         for _,d in ipairs(Equipment.list(script))do if Equipment.compatible(script,d)then

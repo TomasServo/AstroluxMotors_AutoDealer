@@ -78,7 +78,9 @@ function S.choose(db,t,own,scriptName,soft)
     local function reject(message)if soft then return nil,message end;error(message,0)end
     local area=t.spawnArea
     if not area then return reject('An owner must designate a vehicle spawn area first.') end
-    local rx,ry=A.measure(getScriptManager():getVehicle(scriptName),area.heading)
+    local script=getScriptManager():getVehicle(scriptName)
+    local rx,ry=A.measure(script,area.heading)
+    local function shape(p)return A.footprint(script,area.heading,p.x+.5,p.y+.5)end
     -- Snapshot global reservations and actual parked cars once per selection.
     -- Every quote, buy and dispatch obtains a new snapshot; nothing caches a bay.
     local blockers=S.obstacles(db,own)
@@ -89,30 +91,20 @@ function S.choose(db,t,own,scriptName,soft)
         -- Recompute physical bounds after reload in case an enabled vehicle
         -- mod changed dimensions; never trust a smaller saved footprint.
         rx,ry=math.max(rx,stored.rx or rx),math.max(ry,stored.ry or ry)
-        local p={x=stored.x,y=stored.y,rx=rx,ry=ry,heading=area.heading,areaRevision=area.revision}
+        local p={x=stored.x,y=stored.y,rx=rx,ry=ry,heading=area.heading,areaRevision=area.revision,gap=area.gap or 0,rowGap=area.rowGap}
+        p.footprint=shape(p)
         if not A.contains(area,p) or not S.clear(db,p,own,blockers) then
             if own.status=='queued' then
-                local ready=A.find(area,rx,ry,S.regions(),function(q) return S.clear(db,q,own,blockers) end)
+                local ready=A.find(area,rx,ry,S.regions(),function(q) return S.clear(db,q,own,blockers) end,shape)
                 if ready then return ready end
             end
             error('Delivery queued: waiting for a clear, loaded space in the selected area.',0)
         end
         return p
     end
-    local p,why=A.find(area,rx,ry,S.regions(),function(candidate) return S.clear(db,candidate,own,blockers) end)
+    local p,why=A.find(area,rx,ry,S.regions(),function(candidate) return S.clear(db,candidate,own,blockers) end,shape)
     if p then return p end
-    -- Loaded obstructions were checked above. Reserve only unstreamed space;
-    -- never charge for a known blocked, fully loaded delivery area.
-    for _,r in ipairs(S.regions()) do
-        blockers[#blockers+1]={x=(r.x1+r.x2)/2,y=(r.y1+r.y2)/2,rx=(r.x2-r.x1)/2,ry=(r.y2-r.y1)/2}
-    end
-    local reserved=A.reserve(area,rx,ry,blockers)
-    if not reserved then
-        return reject(tostring(why)..' Required clear footprint: '..(rx*2+1)..' x '..(ry*2+1)..
-            ' tiles ('..area.heading..'). Selected area: '..(area.x2-area.x1+1)..' x '..(area.y2-area.y1+1)..
-            '. Move parked vehicles away from the delivery area or select a larger clear rectangle.')
-    end
-    return reserved
+    return reject('Delivery area must be clear and loaded. No order placed. '..tostring(why))
 end
 function S.create(order,player)
     local p=order.placement;local script=getScriptManager():getVehicle(order.script)

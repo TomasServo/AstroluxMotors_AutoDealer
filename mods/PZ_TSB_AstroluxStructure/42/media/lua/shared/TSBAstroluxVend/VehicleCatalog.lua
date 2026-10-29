@@ -45,12 +45,17 @@ function V.new(manager,settings,demandOffer)
         if ok and offer then self.nativeOffers[offer.script]=offer end
         if not ok then self.rejected=self.rejected+1 end
     end
-    -- An offered variation remains purchasable when its base model is hidden.
+    -- One visible model row; preserve exact offer IDs for requests and existing orders.
+    local representatives={}
     for _,offer in pairs(self.nativeOffers)do
         local base=Families.canonical(offer.script)
-        if base==offer.script or not self.nativeOffers[base]then
-            self.offers[#self.offers+1]=offer;self.byID[offer.id]=offer
-        end
+        self.byID[offer.id]=offer
+        local current=representatives[base]
+        if not current or offer.script==base or (current.script~=base and offer.script<current.script)then representatives[base]=offer end
+    end
+    for base,offer in pairs(representatives)do
+        offer.modelScript=base
+        self.offers[#self.offers+1]=offer
     end
     table.sort(self.installedScripts)
     table.sort(self.offers,function(a,b)return a.script<b.script end)
@@ -65,6 +70,7 @@ function V.new(manager,settings,demandOffer)
         target=target or base.script
         if target==base.script then return base end
         local member=Families.member(base.script,target)
+        if not member and Families.canonical(base.script)==Families.canonical(target) then member=Families.members[target] end
         local native=member and self.nativeOffers[target]
         if not native then error('Vehicle configuration is unavailable in this catalog.',0)end
         local result={};for k,v in pairs(demandOffer and demandOffer(native) or native)do result[k]=v end
@@ -98,10 +104,14 @@ function V.new(manager,settings,demandOffer)
     end
     function self:configurations(offer)
         local out={}
-        for target,d in pairs(Families.members)do
-            if d.base==offer.script and d.kind=='configuration' and self.nativeOffers[target] and Families.policy(settings,offer.script,target).enabled then
-                local variant=self:variant(offer.id,target)
-                variant.label=d.label;out[#out+1]=variant
+        for target,native in pairs(self.nativeOffers)do
+            local d=Families.member(offer.script,target)
+            if target~=offer.script and Families.canonical(target)==Families.canonical(offer.script) then
+                d=d or Families.members[target]
+                if d and d.kind~='paint' and (d.kind~='configuration' or Families.policy(settings,offer.script,target).enabled)then
+                    local variant=self:variant(offer.id,target)
+                    variant.label=d.label;out[#out+1]=variant
+                end
             end
         end
         table.sort(out,function(a,b)return a.script<b.script end)
@@ -112,14 +122,18 @@ function V.new(manager,settings,demandOffer)
         page=finite(page) and math.max(1,math.floor(page)) or 1
         local matches={}
         for _,offer in ipairs(self.offers)do
-            if query=='' or string.find(string.lower(offer.name..' '..offer.script),query,1,true) then matches[#matches+1]=offer end
+            local hit=query=='' or string.find(string.lower(offer.name..' '..offer.script..' '..(self.scriptLabels[offer.modelScript] or '')),query,1,true)
+            if not hit then for target,native in pairs(self.nativeOffers)do
+                if Families.canonical(target)==Families.canonical(offer.script) and string.find(string.lower(native.name..' '..target..' '..(self.scriptLabels[target] or '')),query,1,true)then hit=true;break end
+            end end
+            if hit then matches[#matches+1]=offer end
         end
         local pages=math.max(1,math.ceil(#matches/C.pageSize));page=math.min(page,pages)
         local result={}
         for i=(page-1)*C.pageSize+1,math.min(#matches,page*C.pageSize)do
             local o=matches[i]
             if demandOffer then o=demandOffer(o)end
-            result[#result+1]={id=o.id,script=o.script,name=o.name,price=o.price,basePrice=o.basePrice,pricing=o.pricing,rx=o.rx,ry=o.ry,available=o.available}
+            result[#result+1]={id=o.id,script=o.script,name=o.name,modelScript=o.modelScript,price=o.price,basePrice=o.basePrice,pricing=o.pricing,rx=o.rx,ry=o.ry,available=o.available}
         end
         return result,page,pages,#matches
     end

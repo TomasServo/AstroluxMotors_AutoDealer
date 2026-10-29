@@ -60,7 +60,7 @@ local function track(sq)
 end
 Events.LoadGridsquare.Add(track)
 Events.OnTick.Add(function()
-    if not tostring(getWorld():getWorld()):match('^AstroluxStructureLab') then return end
+    if #require('TSBAstroluxStructure/ReleaseSites').all()==0 and not (tostring(getWorld():getWorld()):match('^AstroluxStructureLab') or require('AstroluxBayTest/TestWorld').testMap() or require('AstroluxBayTest/TestWorld').corner()) then return end
     local now=getTimestampMs();if now-last<25 then return end;last=now
     if now-lastScan>=2000 then
         lastScan=now
