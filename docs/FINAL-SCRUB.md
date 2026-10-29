@@ -1,0 +1,32 @@
+# Pre-Workshop scrub — 2026-10-29
+
+Status: HOLD for Workshop publication. No Workshop upload performed.
+
+## Passed
+
+- All 274 runtime Lua files parse under Lua 5.1.
+- Every declared texture pack and tile definition exists.
+- Static scan found no missing Astrolux require targets.
+- Bundled ZIP integrity passed; all 532 saved-world files match the frozen source byte for byte.
+- Five targeted regression scripts pass: deletion resume/token replay prevention, client cleanup, terrain restoration, power authorization/persistence, nearby deletion and mannequin authorization.
+- Targeted credential-pattern scan found no matches in mods, docs or candidate tests. This is not an exhaustive security certification.
+- The three reported fluid-container whitespace warnings do not apply: these calls retrieve attached containers rather than looking up container script names.
+
+## Corrected in this scrub
+
+- Main mod and optional map version metadata now identify 0.9-beta.
+- Removed obsolete test-world-only placement claim from main mod metadata.
+- Workshop text distinguishes tested MP features from broader untested multiplayer behavior.
+- Added the GitHub save download link; clarified the save-only archive and tested game version.
+- Added portable targeted tests. The deletion-resume test now supplies the server-mode mock required by the current handler.
+
+No gameplay Lua, frozen save, running client or server was changed during this scrub.
+
+## Outstanding release gates
+
+1. Test New Game -> Challenges -> Astrolux Motors Auto Dealer Demo in normal non-debug mode, then save/reload. Also load the preserved save with the final runtime.
+2. DemoReady.lua still accepts only AstroluxTestWorld_80x80_20261028. Its delivery-default and starter-cash path does not run in the new challenge. Decide and implement the intended demo defaults before accepting that workflow; this is not evidence that manual kiosk setup or purchases fail.
+3. Review the legacy suite's 15 failing scripts. The five targeted passes do not supersede those failures. See LEGACY-TEST-RESULTS.json.
+4. Confirm mixed grass/pavement restoration in game; the ownership-aware restoration regression passes.
+
+Steam Overlay opening remains deferred by the user until after 0.9 beta. The existing copy-link fallback remains available.

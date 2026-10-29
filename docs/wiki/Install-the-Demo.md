@@ -15,7 +15,7 @@ No external program, ZIP extraction, debug mode or manual paste is required for 
 
 ## Optional frozen save
 
-Use the accompanying **Astrolux Motors Auto Dealer.zip** when you want the actual preserved save rather than a newly generated demo world.
+Use [Astrolux Motors Auto Dealer.zip](../../bundled-saves/Astrolux%20Motors%20Auto%20Dealer.zip) when you want the actual preserved save rather than a newly generated demo world.
 
 1. Exit Project Zomboid.
 2. Extract the archive to a temporary folder.

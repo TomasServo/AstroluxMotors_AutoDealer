@@ -1,9 +1,9 @@
 name=Astrolux Test Lot (Single Player Preview)
 id=PZ_TSB_AstroluxTestMap
 author=TomasServo
-modversion=0.1.0-test
+modversion=0.9-beta
 versionMin=42.21.0
 require=PZ_TSB_AstroluxStructure
-description=Separate fresh-world test lot with straight and 45-degree parking. Single-player preview; multiplayer setup is not enabled. Requires the matching staged Astrolux integration. No Hilux, damnlib or banking dependency.
+description=Optional 80x80 Astrolux demonstration lot and single-player showroom challenge. Requires Astrolux Motors Auto Dealer. Enabling this mod does not import a saved world or automatically build a showroom on multiplayer servers.
 pack=TSBAstroluxTestParking
 tiledef=TSBAstroluxTestParking 7998

@@ -2,7 +2,7 @@
 [b]Your keys to freedom.[/b]
 
 [b]0.9 Beta — Single-player and multiplayer testers wanted![/b]
-[i]Multiplayer is experimental and unverified. Use a fresh test world or dedicated test server.[/i]
+[i]Multiplayer is experimental. Use a fresh test world or dedicated test server.[/i]
 
 Welcome to [b]Astrolux Motors[/b]—where the road to survival begins.
 
@@ -109,7 +109,7 @@ AI tools assist with development, troubleshooting and documentation. Development
 
 Recorded single-player testing includes showroom and door interaction, vehicle purchase/delivery, and a supported equipped-vehicle trade-in with the expected payout, vehicle removal and duplicate-payout prevention. Current kiosk artwork uses the Astrolux sign’s original lettering, with a gunmetal cabinet and a black power-off screen.
 
-PZ Mod Checker checks and automated tests are part of the review process; they do not certify the mod or establish compatibility with every game build, vehicle pack or server. Multiplayer, broader vehicle compatibility and some save/reload and damaged-accessory cases still need in-game verification.
+PZ Mod Checker checks and automated tests are part of the review process; they do not certify the mod or establish compatibility with every game build, vehicle pack or server. Targeted multiplayer tests passed for placement/deletion, complete furnishings, mannequin locks, power persistence and ordinary-player menu permissions. Broader multiplayer commerce, vehicle compatibility and damaged-accessory cases still need verification.
 
 Test in a disposable world and back up established saves before installing or updating. Features may change during development.
 
@@ -136,14 +136,14 @@ In the configured delivery area, facing the selected direction. Keep the area cl
 A public setup candidate is prepared, but its live acceptance is pending. Confirm that your test package includes it and follow its matching setup guide. The candidate supports one active showroom per world; placement checks for a clear site and requires confirmation.
 
 [b]Is multiplayer verified?[/b]
-Multiplayer is experimental and unverified in 0.9 Beta. Multiplayer testers are welcome; please use a dedicated test server rather than an established world.
+Multiplayer is experimental in 0.9 Beta. Multiplayer testers are welcome; please use a dedicated test server rather than an established world.
 
 [h2]BUG REPORTS & FEEDBACK[/h2]
 [b]Single-player and multiplayer mod testers wanted![/b]
 
 Help test Astrolux Motors in single-player worlds and multiplayer servers. Feedback is especially welcome on purchases, vehicle delivery, trade-ins, pricing, showroom interaction, save/reload behavior and compatibility with other vehicle mods.
 
-For multiplayer testing, please also check admin-only placement, ordinary-player permission limits, simultaneous purchases, vehicle/key ownership, late joining, reconnects and server restarts. Use a fresh dedicated test server with matching mod files on every client. Multiplayer is experimental and unverified; the tester call does not imply established multiplayer support.
+For multiplayer testing, please also check admin-only placement, ordinary-player permission limits, simultaneous purchases, vehicle/key ownership, late joining, reconnects and server restarts. Use a fresh dedicated test server with matching mod files on every client. Multiplayer is experimental; the tester call does not imply established multiplayer support.
 
 Astrolux Motors is under active development and testing. Detailed reports help identify problems and improve the dealership experience.
 
@@ -175,18 +175,18 @@ Explore the approved furnished Astrolux showroom on its 80×80 demonstration lot
 Automatic sliding doors and mannequin outfit locks start enabled. Reloading preserves the existing world; it does not rebuild a tower you removed or reset your changes.
 
 [b]Optional: install the frozen single-player save[/b]
-The accompanying [b]Astrolux Motors Auto Dealer.zip[/b] is the preserved approved save. Exit the game, extract the ZIP to a temporary folder, and copy [b]Saves/Sandbox/Astrolux Motors Auto Dealer[/b] into your own [b]Zomboid/Saves/Sandbox[/b] folder. On a standard Windows installation this is [b]C:\Users\YOUR-NAME\Zomboid\Saves\Sandbox[/b]. Use your configured profile folder if you launch with a custom cachedir.
+[url=https://github.com/TomasServo/AstroluxMotors_AutoDealer/raw/refs/heads/codex/astrolux-0.9-beta-rc/bundled-saves/Astrolux%20Motors%20Auto%20Dealer.zip]Download Astrolux Motors Auto Dealer.zip[/url] is the preserved approved save. Exit the game, extract the ZIP to a temporary folder, and copy [b]Saves/Sandbox/Astrolux Motors Auto Dealer[/b] into your own [b]Zomboid/Saves/Sandbox[/b] folder. On a standard Windows installation this is [b]C:\Users\YOUR-NAME\Zomboid\Saves\Sandbox[/b]. Use your configured profile folder if you launch with a custom cachedir.
 
-Keep the folder structure intact. Do not overwrite an existing save with the same name; keep a backup or give the imported folder a different name. Enable the two matching Astrolux mods, then select [b]Load → Astrolux Motors Auto Dealer[/b]. Workshop users should use the Workshop-provided mods rather than installing a duplicate local copy from the archive.
+Keep the folder structure intact. Do not overwrite an existing save with the same name; keep a backup or give the imported folder a different name. Enable the two matching Astrolux mods, then select [b]Load → Astrolux Motors Auto Dealer[/b]. Workshop users should use the Workshop-provided mods and avoid duplicate local mod installations.
 
-[b]If the demo is missing:[/b] confirm both mods are enabled, downloads are complete and the installed game meets the mod’s version requirement. This candidate targets Build 42.21.0 or later within the supported Build 42 release line; later updates still require compatibility verification. This is a single-player demo, not an automatic multiplayer server installer.
+[b]If the demo is missing:[/b] confirm both mods are enabled, downloads are complete and the installed game meets the mod’s version requirement. Tested game build: 42.21.0. Later updates require compatibility verification. This is a single-player demo, not an automatic multiplayer server installer.
 
 [h2]DISCLAIMER[/h2]
 Astrolux Motors is a community-created mod for Project Zomboid. It is not affiliated with, endorsed by or sponsored by The Indie Stone.
 
 Astrolux Motors is a fictional in-game dealership created for entertainment. It is not affiliated with, endorsed by or sponsored by any real-world automotive manufacturer, vehicle retailer or dealership. Real-world names or marks appearing in separately installed vehicle mods remain the property of their respective owners.
 
-This is the 0.9 Beta testing release. Multiplayer is experimental and unverified. Features and configuration may change, and compatibility with every game update, vehicle mod, multiplayer setup or third-party integration is not guaranteed. Back up your saves and test in a disposable world before using the mod in an established save.
+This is the 0.9 Beta testing release. Multiplayer is experimental. Features and configuration may change, and compatibility with every game update, vehicle mod, multiplayer setup or third-party integration is not guaranteed. Back up your saves and test in a disposable world before using the mod in an established save.
 
 Vehicles shown in screenshots or videos may come from separately installed mods. Those vehicle packs are not included with Astrolux Motors and remain subject to their creators' requirements and permissions.
 

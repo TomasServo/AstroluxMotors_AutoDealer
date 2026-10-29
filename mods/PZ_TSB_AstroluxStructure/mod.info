@@ -1,9 +1,9 @@
 name=Astrolux Motors Auto Dealer
 id=PZ_TSB_AstroluxStructure
 author=TomasServo
-modversion=0.6.6-test-price
+modversion=0.9-beta
 versionMin=42.21.0
-description=Astrolux Motors Auto Dealer development candidate: dealership and integrated twelve-bay tower. Tower placement remains restricted to the existing test world pending release audit. Existing mod ID retained for save compatibility.
+description=Astrolux Motors Auto Dealer 0.9 Beta: furnished dealership tower, vehicle sales and trade-ins. Single-player placement and administrator-only multiplayer placement. Multiplayer remains experimental. Back up existing saves.
 
 pack=TSBAstroluxDisplay
 tiledef=TSBAstroluxDisplay 7981

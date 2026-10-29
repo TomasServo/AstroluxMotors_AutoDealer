@@ -1,2 +1,2 @@
-Draft only. Do not publish until the demo passes a native fresh-world test and the remaining multiplayer release gates pass.
-Before publication: verify the final mod display names, New Game menu path, actual Workshop archive location or release download link, supported game build, and fresh-save/reload behavior. Add the real save download link to both documents.
+Workshop publication remains on hold. See FINAL-SCRUB.md for the completed checks and outstanding gates.
+The optional save download is linked in the Workshop draft and wiki instructions.
