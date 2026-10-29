@@ -1,3 +1,4 @@
+package.path='mods/PZ_TSB_AstroluxStructure/42/media/lua/shared/?.lua;mods/PZ_TSB_AstroluxStructure/42/media/lua/client/?.lua;mods/PZ_TSB_AstroluxStructure/42/media/lua/server/?.lua;'..package.path
 local base='mods/PZ_TSB_AstroluxStructure/42/media/lua/'
 assert(loadfile(base..'client/TSBAstroluxVend/AdminPricing.lua'));assert(loadfile(base..'server/TSBAstroluxVend/Server.lua'))
 local installed='mods/PZ_TSB_AstroluxStructure/42/media/lua/shared/TSBAstroluxVend/'

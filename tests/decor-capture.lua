@@ -1,9 +1,10 @@
 package.path='mods/PZ_TSB_AstroluxStructure/42/media/lua/server/?.lua;'..package.path
+package.preload['Moveables/ISMoveableSpriteProps']=function()return {}end
 local callbacks={}
 Events={OnGameStart={Add=function(fn)callbacks.start=fn end},OnTick={Add=function(fn)callbacks.tick=fn end}}
 local D=require 'TSBAstroluxStructure/DecorCapture'
 local function obj(name,md,movable)
-    return {getModData=function()return md or {}end,getObjectName=function()return 'IsoThumpable'end,getRenderYOffset=function()return 34 end,
+    return {transmitModData=function()end,getModData=function()return md or {}end,getObjectName=function()return 'IsoThumpable'end,getRenderYOffset=function()return 34 end,
         getChildSprites=function()return nil end,getSprite=function()return {getName=function()return name end,
         getProperties=function()return {has=function(_,key)return (key=='IsMoveAble' and movable) or key=='Facing' end,get=function()return 'N'end}end}end}
 end
@@ -33,7 +34,7 @@ function getFileWriter(name,create,append)
     assert(name==D.filename and create and not append)
     return {write=function(_,s)output=s end,close=function()end}
 end
-assert(D.write(profile));local decoded=assert(load(output))()
+assert(D.write(profile));local decoded=assert((loadstring or load)(output))()
 assert(#decoded.objects==2 and decoded.objects[2].sprite=='TSBAstroluxKiosk_2')
 missing=true;assert(not D.survey(record,cell));missing=false
 contents={floor,wall};assert(not D.survey(record,cell));contents={floor,lamp,kiosk,wall}
@@ -45,15 +46,14 @@ function getWorld()return {getWorld=function()return 'AstroluxStructureLab'end}e
 function getCell()return cell end
 function getSpecificPlayer()return nil end
 ModData={getOrCreate=function(key)return key=='TSBAstroluxStructure.Lab.v1' and {tower=record} or defaults end}
-callbacks.start();now=6000;callbacks.tick();assert(defaults.profile and defaults.sourceTower==record.id)
-local original=defaults.profile;contents={floor,lamp};now=9000;callbacks.tick();assert(defaults.profile==original)
+assert(not callbacks.start and not callbacks.tick,'No automatic capture hooks');assert(D.capture(record));assert(defaults.profile and defaults.sourceTower==record.id)
+local original=defaults.profile;contents={floor,lamp};now=9000;assert(defaults.profile==original)
 local nativeWriter=getFileWriter
 defaults.profile=nil
 function getFileWriter()return nil end
-assert(not D.capture());assert(defaults.profile,'Keep captured layout in ModData even if export cannot be opened')
-local kept=defaults.profile
-getFileWriter=nativeWriter;assert(D.capture()==kept,'Retry export without replacing the captured layout')
-print('PASS: decoration survey records relative furniture layout, exports reloadable default, excludes shell/private state and captures only once')
+assert(not D.capture());assert(not defaults.profile,'Failed export must not install a partial capture')
+getFileWriter=nativeWriter;assert(D.capture(record));assert(#defaults.profile.objects==1,'Explicit retry captures current layout')
+print('PASS: decoration survey records relative furniture layout, exports reloadable default, excludes shell/private state and requires explicit capture; failed export retains previous state')
 local saved=dofile('mods/PZ_TSB_AstroluxStructure/42/media/lua/shared/TSBAstroluxStructure/DefaultFurnishings.lua')
 assert(saved.width==8 and saved.height==8 and #saved.objects==19)
 local kiosks,coffee,cactus,lamp=0,0,false,false

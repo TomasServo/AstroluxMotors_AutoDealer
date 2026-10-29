@@ -28,7 +28,7 @@ local cell={getGridSquare=function(_,x,y,z) return squares[key(x,y,z)] end}
 function getCell() return cell end
 function getSprite(name) return {getName=function() return name end} end
 function instanceof(o,t) return o.kind==t end
-IsoDoor={new=function(_,sq,sprite,north)
+IsoDoor={isDoorObstructed=function(o)return o.obstructed==true end,new=function(_,sq,sprite,north)
     local o={kind='IsoDoor',sq=sq,sprite=sprite,north=north,md={},index=-1,open=false}
     function o:getSprite() return self.sprite end
     function o:setSprite(v) self.sprite=v end

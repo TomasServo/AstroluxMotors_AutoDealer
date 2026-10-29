@@ -1,30 +1,186 @@
 {
-  "luaSyntaxFiles": 274,
-  "legacyTests": {
-    "tests\\clear-walls.lua": "pass",
-    "tests\\decor-capture.lua": "...ua/server/TSBAstroluxStructure/InventorySnapshot.lua:2: module 'Moveables/ISMoveableSpriteProps' not found:",
-    "tests\\flooring.lua": "pass",
-    "tests\\furnishings.lua": "pass",
-    "tests\\menu.lua": "...re/42/media/lua/client/TSBAstroluxStructure/Menu.lua:1: module 'TSBAstroluxVend/ContextMenu' not found:",
-    "tests\\showroom-sink.lua": "pass",
-    "tests\\sliding-doors.lua": "...dia/lua/server/TSBAstroluxStructure/SlidingDoors.lua:35: attempt to call field 'isDoorObstructed' (a nil value)",
-    "tests\\structure.lua": "pass",
-    "tests\\vending\\admin-access.lua": "[string \"<python>\"]:10: non-debug single player denied",
-    "tests\\vending\\areas.lua": "pass",
-    "tests\\vending\\audio-controls.lua": "[string \"<python>\"]:14: assertion failed!",
-    "tests\\vending\\cash-fixture.lua": "pass",
-    "tests\\vending\\catalog.lua": "...media/lua/shared/TSBAstroluxVend/VehicleFamilies.lua:9: module 'TSBAstroluxVend/NativeVehicleVariants' not found:",
-    "tests\\vending\\client-startup.lua": "...ia/lua/client/TSBAstroluxStructure/ReleaseClient.lua:11: attempt to call global 'getSpecificPlayer' (a nil value)",
-    "tests\\vending\\delivery-payment.lua": "...cture/42/media/lua/shared/TSBAstroluxVend/Domain.lua:32: attempt to call field 'requireFunds' (a nil value)",
-    "tests\\vending\\demand.lua": "...e/42/media/lua/server/TSBAstroluxVend/PriceAdmin.lua:7: module 'TSBAstroluxVend/ProtectionPolicy' not found:",
-    "tests\\vending\\eight-directions.lua": "...e/42/media/lua/client/TSBAstroluxVend/AreaCursor.lua:2: module 'ISUI/ISButton' not found:",
-    "tests\\vending\\furniture.lua": "pass",
-    "tests\\vending\\payments.lua": "pass",
-    "tests\\vending\\personal.lua": "[string \"<python>\"]:19: assertion failed!",
-    "tests\\vending\\sales-flow.lua": "[string \"<python>\"]:53: [string \"<python>\"]:22: assertion failed!",
-    "tests\\vending\\server-areas.lua": "pass",
-    "tests\\vending\\trade-batch.lua": "[string \"<python>\"]:54: assertion failed!",
-    "tests\\vending\\trade-list.lua": "[string \"<python>\"]:24: assertion failed!",
-    "tests\\visibility.lua": "...media/lua/client/TSBAstroluxStructure/Visibility.lua:42: attempt to call method 'getSquare' (a nil value)"
+  "tests/clear-walls.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: 24 transparent panes, eight open entrance tiles, locks/health/data preserved, no duplicate migration and insertion rollback"
+    ]
+  },
+  "tests/decor-capture.lua": {
+    "status": "pass",
+    "output": [
+      "[Astrolux decorations] Recorded 2 objects as default: TSBAstroluxShowroomDefault.txt",
+      "[Astrolux decorations] Recorded 1 objects as default: TSBAstroluxShowroomDefault.txt",
+      "PASS: decoration survey records relative furniture layout, exports reloadable default, excludes shell/private state and requires explicit capture; failed export retains previous state",
+      "PASS: captured default plus requested sink retains coffee-cabinet role, fresh kiosks, tabletop offsets and object order without private state"
+    ]
+  },
+  "tests/flooring.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: 28 dark border tiles, 36 gray inner tiles, native floor identity/content preserved, player edits retained and failed paint rolled back",
+      "[Astrolux floor] Ground square not loaded at 100, 200",
+      "[Astrolux floor] Dark gray square-tile border and gray square-tile center applied.",
+      "PASS: native floor creation and restore, deferred startup loading retries once ready, completed player floor edits preserved",
+      "PASS: mixed new/existing floor failure restores terrain without orphan tiles"
+    ]
+  },
+  "tests/furnishings.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: all 19 native furnishing entries and offsets, fresh kiosks, tabletop ordering, no inventory/identity copies, collision rejection and post-insertion rollback"
+    ]
+  },
+  "tests/menu.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: right-click menu, location-sensitive placement/removal, confirmation and readable refusal dialogs"
+    ]
+  },
+  "tests/showroom-sink.lua": {
+    "status": "pass",
+    "output": [
+      "[Astrolux sink] Native chrome sink added opposite the coffee maker.",
+      "PASS: native sink on opposite counter, correct facing and default update, no object replacement/duplicates, uncertain placement held"
+    ]
+  },
+  "tests/sliding-doors.lua": {
+    "status": "pass",
+    "output": [
+      "[Astrolux doors] Doorway-center click handler attached.",
+      "PASS: eight native sliding leaves, four center hit areas, locks, occupancy, native refusal rollback, repeat install, native click coexistence"
+    ]
+  },
+  "tests/structure.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: perimeter, floors, centered openings, lab isolation, obstruction checks, revalidation, duplicate prevention, cleanup and injected failures",
+      "PASS: expected rejection is non-throwing, exact blocker coordinates, player margin and footprint guards",
+      "PASS: conversion preserves ground and ceiling, removes native upper stories, adds 404 pieces once, rejects occupied sites and rolls back failures",
+      "PASS: furnished paste retains original showroom, registers separate copies, rejects overlaps and rolls back failed copy including doors"
+    ]
+  },
+  "tests/vending/admin-access.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: Lua syntax; non-debug/debug single player; multiplayer admin, moderator and client-debug boundaries; nil player denied"
+    ]
+  },
+  "tests/vending/areas.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: unrestricted remote rectangles and reservation geometry"
+    ]
+  },
+  "tests/vending/audio-controls.lua": {
+    "status": "pass",
+    "output": [
+      "PASS audio defaults, percent validation, mute/disable, exact percent sync, purchase volume, live music volume and stop without restarting loop",
+      "PASS actual music/purchase pause, automatic playback suppressed while paused, Play restarts, menu closure preserves playback state"
+    ]
+  },
+  "tests/vending/catalog.lua": {
+    "status": "pass",
+    "output": [
+      "PASS generic trade catalog: vanilla wood variant, grouped mod variant, normal mod car, per-variant price/demand, config surcharge, hidden parent, disabled/unknown/wreck/config rejection; server Lua parses"
+    ]
+  },
+  "tests/vending/client-startup.lua": {
+    "status": "pass",
+    "output": [
+      "[Astrolux placement] Client menu v4 loaded (non-debug supported).",
+      "PASS: client modules load before native handlers, kiosk hook attaches later, reverse drag confirms corners, right-click/Escape cancel"
+    ]
+  },
+  "tests/vending/delivery-payment.lua": {
+    "status": "pass",
+    "output": [
+      "PASS vehicle/key exist before cash removal; exact change, receipt and duplicate protection",
+      "PASS unloaded quote and changed zone rejected before effects; fresh quote succeeds",
+      "PASS insufficient funds never create an order; replenishment requires fresh quote",
+      "PASS partial native failure takes no cash, held without respawn",
+      "PASS post-spawn debit failure preserves cash and holds vehicle/order for inspection",
+      "PASS legacy prepaid queue never charged twice",
+      "PASS unloaded bank purchase rejected unpaid; native spawn follows committed bank transaction",
+      "PASS all delivery-payment regression checks and server syntax"
+    ]
+  },
+  "tests/vending/demand.lua": {
+    "status": "pass",
+    "output": [
+      "PASS demand controls: legacy compatibility, fractional increase/recovery, ten-dollar example, old-rate settlement, no below-base/upper cap, clock rewind, static/zero, single delivery counting, invalid/stale edits and Lua syntax"
+    ]
+  },
+  "tests/vending/eight-directions.lua": {
+    "status": "pass",
+    "output": [
+      "[AstroluxCamper] order=N selected=nil item=none",
+      "[AstroluxCamper] order=NE selected=nil item=none",
+      "[AstroluxCamper] order=E selected=nil item=none",
+      "[AstroluxCamper] order=SE selected=nil item=none",
+      "[AstroluxCamper] order=S selected=nil item=none",
+      "[AstroluxCamper] order=SW selected=nil item=none",
+      "[AstroluxCamper] order=W selected=nil item=none",
+      "[AstroluxCamper] order=NW selected=nil item=none",
+      "PASS eight headings: selection/validation, cardinal compatibility, rotated clearance and fit, direction-specific arrow artwork, exact native enum/angle routing, vehicle identity and key issuance"
+    ]
+  },
+  "tests/vending/furniture.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: native furniture hooks retain kiosk identity/setup through packed reload, block pending/forced pickup and duplicate placement"
+    ]
+  },
+  "tests/vending/payments.lua": {
+    "status": "pass",
+    "output": [
+      "PASS loose cash and replay",
+      "PASS bundle value, change and nested inventory",
+      "PASS favorite and equipped currency excluded",
+      "PASS callback failure restores exact objects and order",
+      "PASS native removal and change failures restore cash",
+      "PASS uncertain rollback and interrupted payments remain held",
+      "PASS notification failure cannot repeat committed payment",
+      "7 standalone Astrolux payment checks passed"
+    ]
+  },
+  "tests/vending/personal.lua": {
+    "status": "pass",
+    "output": [
+      "PASS personal audio: syntax, local persistence/reload, identity isolation, personal fractions/defaults/reset, invalid values, personal/world mute, purchase gain, inside-only music, zero mute and mute-only UI inheritance"
+    ]
+  },
+  "tests/vending/sales-flow.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: kiosk quote/cash purchase validates remote zone and power, delivers immediately once, preserves balance through reload, never auto-dispatches legacy orders"
+    ]
+  },
+  "tests/vending/server-areas.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: server remote/huge area configuration without streaming or proximity, admin authorization, quote invalidation and paid-order protection"
+    ]
+  },
+  "tests/vending/trade-batch.lua": {
+    "status": "pass",
+    "output": [
+      "PASS server batch: itemized totals; explicit ID snapshot; new arrivals excluded; replay/move/engine/condition/price/expiry/revision/capacity/create rejection before removal; interruption holds and paid-item accounting; disabled/ineligible listing",
+      "PASS selector: nothing preselected; Trade In All selects only eligible cars without trading; appraisal routing; per-car/part itemization; refresh reset; individual toggle"
+    ]
+  },
+  "tests/vending/trade-list.lua": {
+    "status": "pass",
+    "output": [
+      "PASS repeated listing: unsupported profile, cargo, disabled/held buybacks return reasons with profile lookup failures contained; supported car remains appraisable"
+    ]
+  },
+  "tests/visibility.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: visibility works without querying unexposed renderer cache objects",
+      "PASS: all 64 owned ceiling tiles follow shell visibility; ground floors, foreign objects and altered tiles untouched",
+      "PASS: all 404 slices hide/restore together, full doorway tiles, native-reset recovery, exterior culling, viewer isolation and glass untouched",
+      "PASS: separate showroom cutaway states follow independent footprint boundaries"
+    ]
   }
 }

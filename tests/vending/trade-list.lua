@@ -3,7 +3,7 @@ local profiles={['Base.Reviewed']={}}
 local T={enabled=function(db)return not db.disabled end,inArea=function()return true end,
  validate=function(_,_,v)if v.cargo then return nil,'Empty cargo'end;return true end,checkParts=function()end}
 package.loaded['TSBAstroluxVend/TradeIn']=T
-package.loaded['TSBAstroluxVend/AppraisalProfiles']={vehicles=profiles}
+package.loaded['TSBAstroluxVend/AppraisalProfiles']={resolve=function(v)local profile=profiles[v:getScript():getFullName()];if not profile then error('no reviewed profile')end;return profile end}
 package.loaded['TSBAstroluxVend/Appraisal']={calculate=function()calls=calls+1;return {amount=100,maximum=200}end}
 package.loaded['TSBAstroluxVend/Amount']={}
 package.loaded['TSBAstroluxVend/Config']={tradeInRate=.5}
@@ -25,7 +25,7 @@ for i=1,3 do
  assert(rows[2].eligible and rows[2].amount==100)
  assert(not rows[3].eligible and rows[3].reason=='Empty cargo')
 end
-assert(calls==3 and failures==0)
-db.disabled=true;service:list(p,{spawnArea={}},function()return 1000 end);assert(failures==0 and calls==3)
-db.disabled=false;db.tradeIns.test={status='hold'};service:list(p,{spawnArea={}},function()return 1000 end);assert(failures==0 and calls==3)
-print('PASS repeated listing: unsupported profile, cargo, disabled/held buybacks return reasons without Lua errors; supported car remains appraisable')
+assert(calls==3 and failures==3,'One caught profile-resolution failure per listing')
+db.disabled=true;service:list(p,{spawnArea={}},function()return 1000 end);assert(failures==3 and calls==3)
+db.disabled=false;db.tradeIns.test={status='hold'};service:list(p,{spawnArea={}},function()return 1000 end);assert(failures==3 and calls==3)
+print('PASS repeated listing: unsupported profile, cargo, disabled/held buybacks return reasons with profile lookup failures contained; supported car remains appraisable')

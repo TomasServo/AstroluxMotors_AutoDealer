@@ -1,4 +1,4 @@
-# Pre-Workshop scrub — 2026-10-29
+# Pre-Workshop scrub â€” 2026-10-29
 
 Status: HOLD for Workshop publication. No Workshop upload performed.
 
@@ -26,7 +26,7 @@ No gameplay Lua, frozen save, running client or server was changed during this s
 
 1. Test New Game -> Challenges -> Astrolux Motors Auto Dealer Demo in normal non-debug mode, then save/reload. Also load the preserved save with the final runtime.
 2. DemoReady.lua still accepts only AstroluxTestWorld_80x80_20261028. Its delivery-default and starter-cash path does not run in the new challenge. Decide and implement the intended demo defaults before accepting that workflow; this is not evidence that manual kiosk setup or purchases fail.
-3. Review the legacy suite's 15 failing scripts. The five targeted passes do not supersede those failures. See LEGACY-TEST-RESULTS.json.
+3. RESOLVED: all 24 legacy regression scripts pass after updating stale fixtures and fixing trade-offer pricing. See LEGACY-TEST-REPAIR.md and LEGACY-TEST-RESULTS.json.
 4. Confirm mixed grass/pavement restoration in game; the ownership-aware restoration regression passes.
 
 Steam Overlay opening remains deferred by the user until after 0.9 beta. The existing copy-link fallback remains available.

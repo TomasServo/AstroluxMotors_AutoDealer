@@ -1,4 +1,4 @@
-package.loaded['TSBAstroluxVend/AppraisalProfiles']={vehicles=setmetatable({},{__index=function()return {}end})}
+package.loaded['TSBAstroluxVend/AppraisalProfiles']={resolve=function()return {}end}
 local base='mods/PZ_TSB_AstroluxStructure/42/media/lua/'
 local installed='mods/PZ_TSB_AstroluxStructure/42/media/lua/'
 package.loaded['TSBAstroluxVend/Amount']=dofile(installed..'shared/TSBAstroluxVend/Amount.lua')
@@ -44,7 +44,7 @@ local function setup()
  function adapter.now()return adapter.time end
  function adapter.create(kind)
   if adapter.failCreate then return nil end
-  return {kind=kind,getActualWeight=function()return 1 end,getContainer=function(s)return s.container end}
+  local md={};return {getModData=function()return md end,kind=kind,getActualWeight=function()return 1 end,getContainer=function(s)return s.container end}
  end
  function adapter.notify()end
  local function retail(v)return v.price or v.cash*2 end
@@ -64,7 +64,8 @@ for _,mode in ipairs({'moved','engine','condition','price','expired','revision',
  local revision=0
  if mode=='moved'then cars[2].inside=false elseif mode=='engine'then cars[2].engine=true elseif mode=='condition'then cars[2].condition=90 elseif mode=='price'then cars[2].price=999
  elseif mode=='expired'then adapter.time=61 elseif mode=='revision'then revision=1 elseif mode=='capacity'then inv.capacity=2 elseif mode=='create'then adapter.failCreate=true end
- assert(not pcall(s.accept,s,p,terminal,q.token,retail,revision),mode)
+ local ok,result,reason=pcall(s.accept,s,p,terminal,q.token,retail,revision)
+ if mode=='capacity'then assert(ok and result==nil and reason:find('capacity'),mode)else assert(not ok,mode)end
  assert(not cars[1].removed and not cars[2].removed and #inv.items==0,mode..' must fail before any removal/payment')
 end
 s,db,p,inv,adapter,retail=setup();q=s:quote(p,terminal,cars,retail,0);cars[2].failRemove=true
@@ -84,6 +85,7 @@ print('PASS server batch: itemized totals; explicit ID snapshot; new arrivals ex
 for _,name in ipairs({'ISUI/ISScrollingListBox','ISUI/ISTickBox'})do package.preload[name]=function()return {}end end
 local function widget()
  local w={items={},selected=0}
+ function w:setBackgroundRGBA()end;function w:setBackgroundColorMouseOverRGBA()end;function w:setBorderRGBA()end
  function w:initialise()end;function w:instantiate()end
  function w:addOption()end
  function w:setSelected(_,v)self.checked=v end;function w:isSelected()return self.checked end

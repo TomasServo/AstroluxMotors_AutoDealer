@@ -1,3 +1,4 @@
+package.path='mods/PZ_TSB_AstroluxStructure/42/media/lua/shared/?.lua;mods/PZ_TSB_AstroluxStructure/42/media/lua/client/?.lua;mods/PZ_TSB_AstroluxStructure/42/media/lua/server/?.lua;'..package.path
 local base='mods/PZ_TSB_AstroluxStructure/42/media/lua/'
 assert(loadfile(base..'server/TSBAstroluxVend/Server.lua'))
 local installed='mods/PZ_TSB_AstroluxStructure/42/media/lua/shared/'
@@ -19,10 +20,12 @@ local manager={getAllVehicleScripts=function()return {size=function()return #scr
 local settings={prices={['Base.CarStationWagon2']=24000,['Mod.WagonWood']=28000},accessories={['Mod.Wagon']={['configuration:Mod.WagonPassenger']={price=500,enabled=true}}}}
 local function demand(offer)local r={};for k,v in pairs(offer)do r[k]=v end;r.price=r.price+100;return r end
 local catalog=V.new(manager,settings,demand)
-assert(not catalog.byID['Base.CarStationWagon2'],'wood variant folded from visible rows')
+for _,row in ipairs(catalog.offers)do assert(row.script~='Base.CarStationWagon2','wood variant folded from visible rows')end
+assert(catalog.byID['Base.CarStationWagon2'],'Exact variant IDs remain addressable')
 local wood=catalog:tradeOffer('Base.CarStationWagon2');assert(wood and wood.script=='Base.CarStationWagon2'and wood.price==24100,'folded vanilla variant uses its own price')
 assert(catalog:tradeOffer('Mod.WagonWood').price==28100,'folded mod variant generic')
-assert(catalog:tradeOffer('Mod.Other').script=='Mod.Other','unrelated enabled mod vehicle')
+assert(catalog:tradeOffer('Mod.Other').script=='Mod.Other' and catalog:tradeOffer('Mod.Other').price==20100,'direct native offer includes demand')
+assert(catalog:tradeOffer('Mod.WagonPassenger').price==20600 and catalog.nativeOffers['Mod.WagonPassenger'].price==20000,'repeated lookups never compound demand or mutate base price')
 assert(catalog:tradeOffer('Mod.WagonPassenger').price==20600,'configuration surcharge retained')
 assert(not catalog:tradeOffer('Unknown.Car')and not catalog:tradeOffer('Base.CarStationWagonSmashedRear'))
 settings.enabled={['Base.CarStationWagon2']=false};assert(not V.new(manager,settings):tradeOffer('Base.CarStationWagon2'),'owner disabled variant rejected')

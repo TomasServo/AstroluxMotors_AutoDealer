@@ -19,15 +19,19 @@ end
 assert(not A.rectangle(0,0,10,10,'NNW'))
 local thin=assert(A.rectangle(0,0,4,8,'N'));local rx,ry=A.measure(script,'N');assert(A.find(thin,rx,ry,{{x1=0,y1=0,x2=4,y2=8}},function()return true end))
 thin.heading='NE';rx,ry=A.measure(script,'NE');assert(not A.find(thin,rx,ry,{{x1=0,y1=0,x2=4,y2=8}},function()return true end),'diagonal cannot use unrotated narrow footprint')
-for _,name in ipairs({'ISUI/ISPanel','ISUI/ISModalRichText'})do package.preload[name]=function()return {}end end
+for _,name in ipairs({'ISUI/ISPanel','ISUI/ISModalRichText','ISUI/ISButton'})do package.preload[name]=function()return {}end end
 ISPanel={derive=function()return {}end};Events={OnKeyPressed={Add=function()end}};UIFont={Small=1}
 function getPlayerScreenLeft()return 0 end;function getPlayerScreenTop()return 0 end
 function isoToScreenX(_,x)return x end;function isoToScreenY(_,x,y)return y end
+function getTexture()return {}end
 local Cursor=dofile(base..'client/TSBAstroluxVend/AreaCursor.lua')
 for _,d in ipairs(A.directions)do
- local lines={};local cursor={player=0,drawText=function()end,drawLine=function(_,texture,x1,y1,x2,y2)lines[#lines+1]={x2-x1,y2-y1}end}
- Cursor.drawFacingArrow(cursor,{x1=0,y1=0,x2=20,y2=20,heading=d});assert(#lines==3)
- local v=A.vectors[d];assert(math.abs(lines[1][1]-6*v[1])<.000001 and math.abs(lines[1][2]-6*v[2])<.000001,'arrow points in selected direction')
+ local drawn
+ local cursor={player=0,drawText=function()end,drawTextureScaled=function(_,texture,x,y,w,h)drawn={texture=texture,w=w,h=h}end}
+ function getTexture(path)return path end
+ Cursor.drawFacingArrow(cursor,{x1=0,y1=0,x2=20,y2=20,heading=d})
+ assert(drawn.texture=='media/textures/TSBAstroluxFacing'..d..'.png' and drawn.w==88 and drawn.h==88,'correct facing artwork')
+
 end
 function isClient()return false end;function isServer()return false end
 package.loaded['TSBAstroluxVend/DeliveryBorderPlan']={}
@@ -54,4 +58,4 @@ for _,d in ipairs(A.directions)do
  selected=IsoDirections[d];local order={id=d,script='Test.Car',placement={x=5,y=5,heading=d}}
  Spawn.create(order,player);assert(math.abs(vehicle.yaw-(math.deg(selected:toAngle())+180)%360)<.000001 and order.keyIssued and order.vehicleId==12)
 end
-print('PASS eight headings: selection/validation, cardinal compatibility, rotated clearance and fit, normalized arrows, exact native enum/angle routing, vehicle identity and key issuance')
+print('PASS eight headings: selection/validation, cardinal compatibility, rotated clearance and fit, direction-specific arrow artwork, exact native enum/angle routing, vehicle identity and key issuance')

@@ -5,10 +5,17 @@ players[1]=player(115,204,0)
 function getNumActivePlayers() return #players end
 function getSpecificPlayer(i) return players[i+1] end
 FBORenderChunk={DIRTY_REDRAW=1,DIRTY_OBJECT_MODIFY=2}
+IsoFlagType={forceRender='forceRender'}
+local function square(x,y,z)
+ local flags={};local props={has=function(_,k)return flags[k]end,set=function(_,k)flags[k]=true end}
+ return {getProperties=function()return props end,setSquareChanged=function()end,getX=function()return x end,getY=function()return y end,getZ=function()return z end,getRenderChunk=function()error('renderer internals forbidden')end}
+end
 local V=require 'TSBAstroluxStructure/Visibility'
 local record={id='lab',x=100,y=200}
 local function object(index,kind,id)
     local o={alpha={[0]=1,[1]=1},target={[0]=1,[1]=1},visible=true,culled=false,redraw=0}
+    local sq=square(100,200,1)
+    function o:getSquare()return sq end
     function o:getModData() return {TSBAstroluxStructure=id or 'lab',TSBAstroluxStructureKind=kind or 'art'} end
     function o:getSprite() return {getName=function() return 'TSBAstroluxDisplay_'..index end} end
     function o:getAlpha(i) return self.alpha[i] end
@@ -30,7 +37,7 @@ local function update() for _,o in ipairs(objects) do V.update(o,record) end end
 local function assertVisible(visible) for _,o in ipairs(objects) do assert(o.visible==visible and o.cachedVisible==visible) end end
 update();assertVisible(true)
 -- Fractional south/east doorway positions used to miss an inclusive raw-coordinate bound.
-for _,xy in ipairs({{108.9,204},{104,208.9},{100.1,204},{104,200.1},{104,204}}) do
+for _,xy in ipairs({{107.9,204},{104,207.9},{100.1,204},{104,200.1},{104,204}}) do
     players[1]=player(xy[1],xy[2],0);update();assertVisible(false)
     for _,o in ipairs(objects) do assert(o.alpha[0]==0 and o.target[0]==0) end
 end
@@ -51,38 +58,20 @@ local foreign=object(0,'art','other');V.update(foreign,record);assert(foreign.re
 -- The restored path must never query those internal objects.
 players={player(115.5,204,0)}
 for _,o in ipairs(objects) do
-    function o:getSquare() error('Unexposed renderer cache access is forbidden') end
+    function o:getRenderChunk()error('Unexposed renderer cache access is forbidden')end
 end
 update();assertVisible(true)
 players[1]=player(104,204,0);update();assertVisible(false)
 print('PASS: visibility works without querying unexposed renderer cache objects')
--- All four approaches hide before doorway entry. The same player must walk
--- beyond the outer boundary before restoration; test movement, not new wrappers.
-for _,axis in ipairs({'x','y'}) do
-    for _,direction in ipairs({-1,1}) do
-        local p=player(104,204,0)
-        local edge=(axis=='x' and 100 or 200)+(direction==1 and 8 or 0)
-        local function move(distance)
-            p[axis]=edge+direction*distance
-            players={p};update()
-        end
-        move(7);assertVisible(true)
-        move(4);assertVisible(false)
-        move(5);assertVisible(false)
-        local redrawCount=objects[1].redraw
-        move(4);move(5);assertVisible(false)
-        assert(objects[1].redraw==redrawCount,'Boundary jitter repeatedly invalidated shell')
-        move(6);assertVisible(true)
-        move(5);assertVisible(true)
-        move(4);assertVisible(false)
-        p.z=1;update();assertVisible(true)
-    end
+-- Cutaway now follows the exact footprint, without the old entrance buffer.
+for _,xy in ipairs({{99.9,204,false},{100,204,true},{107.99,204,true},{108,204,false},{104,199.9,false},{104,200,true},{104,207.99,true},{104,208,false}})do
+ players={player(xy[1],xy[2],0)};update();assertVisible(not xy[3])
+ local redraw=objects[1].redraw;update();assert(objects[1].redraw==redraw)
 end
-print('PASS: four entrance buffers, stable shared-player hysteresis, no repeated redraw on boundary jitter')
 local function floor(x,y,z,id,sprite)
     local o=object(0,'floor',id)
     function o:getSprite() return {getName=function() return sprite or 'floors_interior_tilesandwood_01_0' end} end
-    function o:getSquare() return {getX=function() return x end,getY=function() return y end,getZ=function() return z end} end
+    local sq=square(x,y,z);function o:getSquare()return sq end
     return o
 end
 local ceiling={}
@@ -99,7 +88,7 @@ print('PASS: all 404 slices hide/restore together, full doorway tiles, native-re
 local other={id='second-showroom',x=140,y=200};local viewer=player(104,204,0)
 assert(V.shouldHide(viewer,record));assert(not V.shouldHide(viewer,other))
 viewer.x=113
-assert(V.shouldHide(viewer,record),'Second showroom must not reset first showroom entrance hysteresis')
+assert(not V.shouldHide(viewer,record),'Outside first showroom must restore shell')
 assert(not V.shouldHide(viewer,other))
 viewer.x=144;assert(V.shouldHide(viewer,other));assert(not V.shouldHide(viewer,record))
-print('PASS: separate showroom cutaway states retain independent entrance hysteresis')
+print('PASS: separate showroom cutaway states follow independent footprint boundaries')

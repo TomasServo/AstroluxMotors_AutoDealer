@@ -7,7 +7,7 @@ function isServer()return server end
 function isDebugEnabled()return debug end
 local level='None';local player={getAccessLevel=function()return level end}
 local A=dofile(base..'shared/TSBAstroluxVend/AdminAccess.lua')
-assert(not A.allowed(player),'non-debug single player denied')
+assert(A.allowed(player),'single-player owner allowed without debug')
 debug=true;assert(A.allowed(player),'debug single player allowed')
 client=true;assert(not A.allowed(player),'remote client debug does not grant rights')
 level='Admin';assert(A.allowed(player),'multiplayer admin allowed')

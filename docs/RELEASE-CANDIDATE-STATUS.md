@@ -1,4 +1,4 @@
-# 0.9 beta release candidate — 2026-10-29
+# 0.9 beta release candidate â€” 2026-10-29
 
 This is a development checkpoint, not a published 0.9 beta release.
 
@@ -15,7 +15,7 @@ Automatic doors default to enabled for new towers; existing explicit settings ar
 
 ## Pending before release
 
-- Native fresh-world test of the new 80×80 SP demo, then save/reload.
+- Native fresh-world test of the new 80Ã—80 SP demo, then save/reload.
 - Preserved save tested with this final runtime.
 - Live mixed grass/pavement terrain-restoration confirmation (mocked regression passes).
 - Final packaging/version metadata and Workshop description review.
@@ -31,4 +31,4 @@ The checkpoint excludes server credentials, player connection profiles, diagnost
 
 ## Automated validation
 
-All 274 runtime Lua files parse under Lua 5.1. The legacy suite run under Lupa has 10 passing and 15 failing scripts; see LEGACY-TEST-RESULTS.json. Failures include missing game mocks/modules and assertions requiring investigation. This is not a clean full-suite pass and remains a release gate. Portable targeted deletion and terrain tests are in tests/rc (Python with lupa installed).
+All 274 runtime Lua files parse. The 24 legacy regression scripts now pass under both Lua 5.1 (Lupa) and the project's Fengari runner; the shared cash fixture is exercised by payment suites. The five targeted release-candidate scripts also pass. See LEGACY-TEST-RESULTS.json and LEGACY-TEST-REPAIR.md. Live demo/save/terrain acceptance remains outstanding.

@@ -88,11 +88,11 @@ function V.new(manager,settings,demandOffer)
     function self:tradeOffer(scriptName)
         local native=self.nativeOffers[scriptName]
         if not native then return nil end
-        local direct=self.byID[native.id]
-        if direct and direct.script==scriptName then return direct end
         local parent=self.nativeOffers[Families.canonical(scriptName)]
-        if not parent then return nil end
-        return self:variant(parent.id,scriptName)
+        -- Exact IDs are retained in byID, but trade offers still need current
+        -- demand pricing and the family's configuration policy/surcharge.
+        if parent and parent.script~=scriptName then return self:variant(parent.id,scriptName)end
+        return self:resolve(native.id)
     end
     function self:paintVariants(offer)
         local out={}
