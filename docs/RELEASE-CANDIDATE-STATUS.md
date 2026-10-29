@@ -6,6 +6,7 @@ This is a development checkpoint, not a published 0.9 beta release.
 
 - Paste and delete work; both halves of rugs and couches are present.
 - Post-deletion debris cleared after authoritative client reconciliation.
+- Mixed-terrain restoration in multiplayer passed user testing (2026-10-29).
 - Mannequin outfit locks work; new towers default to locked.
 - Municipal power off/on and persistence work.
 - Ordinary players cannot see the Delivery Zone tab after the permissions fix.
@@ -17,7 +18,6 @@ Automatic doors default to enabled for new towers; existing explicit settings ar
 
 - Native fresh-world test of the new 80Ã—80 SP demo, then save/reload.
 - Preserved save tested with this final runtime.
-- Live mixed grass/pavement terrain-restoration confirmation (mocked regression passes).
 - Final packaging/version metadata and Workshop description review.
 - Steam Overlay opening is explicitly deferred until after 0.9 beta.
 
@@ -31,4 +31,4 @@ The checkpoint excludes server credentials, player connection profiles, diagnost
 
 ## Automated validation
 
-All 274 runtime Lua files parse. The 24 legacy regression scripts now pass under both Lua 5.1 (Lupa) and the project's Fengari runner; the shared cash fixture is exercised by payment suites. The five targeted release-candidate scripts also pass. See LEGACY-TEST-RESULTS.json and LEGACY-TEST-REPAIR.md. Live demo/save/terrain acceptance remains outstanding.
+All 274 runtime Lua files parse. The 24 legacy regression scripts now pass under both Lua 5.1 (Lupa) and the project's Fengari runner; the shared cash fixture is exercised by payment suites. The five targeted release-candidate scripts also pass. See LEGACY-TEST-RESULTS.json and LEGACY-TEST-REPAIR.md. Live demo/save acceptance remains outstanding.

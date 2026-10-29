@@ -27,6 +27,6 @@ No gameplay Lua, frozen save, running client or server was changed during this s
 1. Test New Game -> Challenges -> Astrolux Motors Auto Dealer Demo in normal non-debug mode, then save/reload. Also load the preserved save with the final runtime.
 2. DemoReady.lua still accepts only AstroluxTestWorld_80x80_20261028. Its delivery-default and starter-cash path does not run in the new challenge. Decide and implement the intended demo defaults before accepting that workflow; this is not evidence that manual kiosk setup or purchases fail.
 3. RESOLVED: all 24 legacy regression scripts pass after updating stale fixtures and fixing trade-offer pricing. See LEGACY-TEST-REPAIR.md and LEGACY-TEST-RESULTS.json.
-4. Confirm mixed grass/pavement restoration in game; the ownership-aware restoration regression passes.
+4. RESOLVED: user confirmed mixed-terrain restoration works in multiplayer on 2026-10-29; the ownership-aware restoration regression also passes.
 
 Steam Overlay opening remains deferred by the user until after 0.9 beta. The existing copy-link fallback remains available.
