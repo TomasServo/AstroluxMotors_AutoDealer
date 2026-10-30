@@ -1,22 +1,34 @@
-[h2]TRY THE APPROVED SHOWROOM — SINGLE-PLAYER DEMO[/h2]
-Explore the approved furnished Astrolux showroom on its 80×80 demonstration lot. Choose either the automatic demo or the optional saved-world download.
+[h2]ASTROLUX MOTORS AUTO DEALER - SINGLE-PLAYER CHALLENGE[/h2]
+Explore the furnished Astrolux showroom on its 80 x 80 demonstration lot. Start a new Challenge or import the current bundled saved world.
 
-[b]Automatic demo — no ZIP extraction or separate program[/b]
+[b]Automatic Challenge[/b]
 [list]
-[*]Subscribe to Astrolux Motors Auto Dealer and let Steam finish downloading it.
-[*]Open Project Zomboid’s Mods menu and enable [b]Astrolux Motors Auto Dealer[/b] and [b]Astrolux Test Lot (Single Player Preview)[/b]. The test-lot mod is required for this demo.
-[*]Return to the main menu and allow the game to reload its Lua files. Restart the game if prompted.
-[*]Open [b]New Game → Choose Mods[/b]. Confirm both Astrolux mods are checked for this new world, click [b]Accept[/b] and let Lua reload.
-[*]Select [b]Challenges[/b], click [b]Next[/b], choose [b]Astrolux Motors Auto Dealer Demo[/b], then create your character.
-[*]The approved showroom is placed automatically once the area loads. No debug mode, manual tower paste or external installer is required.
-[*]After quitting normally, use [b]Load[/b] to continue that world. Starting the challenge again creates a separate new world.
+[*]Enable [b]Astrolux Motors Auto Dealer[/b] and [b]Astrolux Test Lot (Single Player Preview)[/b]. Both are required for this Challenge. Allow the game to reload its Lua files or restart when prompted.
+[*]Open [b]New Game -> Choose Mods[/b], confirm both Astrolux mods are selected for the new world, click [b]Accept[/b] and allow Lua to reload.
+[*]Choose [b]Challenges -> Astrolux Motors Auto Dealer[/b] and create your character.
+[*]The showroom is placed automatically once when the area loads. No ZIP extraction, debug mode, manual paste or external installer is required.
+[*]Quit normally to save. Use [b]Load[/b] to continue; starting the Challenge again creates a different world.
 [/list]
-Automatic sliding doors and mannequin outfit locks start enabled. Reloading preserves the existing world; it does not rebuild a tower you removed or reset your changes.
+Reloading preserves your world and does not create a duplicate showroom.
 
-[b]Optional: install the frozen single-player save[/b]
-[url=https://github.com/TomasServo/AstroluxMotors_AutoDealer/raw/refs/heads/codex/astrolux-0.9-beta-rc/bundled-saves/Astrolux%20Motors%20Auto%20Dealer.zip]Download Astrolux Motors Auto Dealer.zip[/url] is the preserved approved save. Exit the game, extract the ZIP to a temporary folder, and copy [b]Saves/Sandbox/Astrolux Motors Auto Dealer[/b] into your own [b]Zomboid/Saves/Sandbox[/b] folder. On a standard Windows installation this is [b]C:\Users\YOUR-NAME\Zomboid\Saves\Sandbox[/b]. Use your configured profile folder if you launch with a custom cachedir.
+[b]Optional bundled saved world[/b]
+[url=https://github.com/TomasServo/AstroluxMotors_AutoDealer/raw/refs/tags/v0.9-beta/bundled-saves/Astrolux%20Motors%20Auto%20Dealer.zip]Download Astrolux Motors Auto Dealer.zip[/url]
+Use [b]Astrolux Motors Auto Dealer.zip[/b] from this release's bundled-saves directory. This is the current working world tested with the accompanying mods, rather than the older frozen prototype. Both matching mods are required; the save ZIP alone does not install them.
 
-Keep the folder structure intact. Do not overwrite an existing save with the same name; keep a backup or give the imported folder a different name. Enable the two matching Astrolux mods, then select [b]Load → Astrolux Motors Auto Dealer[/b]. Workshop users should use the Workshop-provided mods and avoid duplicate local mod installations.
+Exit the game, extract the save ZIP to a temporary folder, and copy its Saves directory into your game profile. The final folder structure must be:
+[code]Saves/Astrolux Motors Auto Dealer/Astrolux Motors Auto Dealer/<save files>[/code]
+On a standard Windows installation this is inside [b]C:\Users\YOUR-NAME\Zomboid[/b]. Use your configured profile directory if you launch with a custom cachedir.
 
-[b]If the demo is missing:[/b] return to [b]Choose Mods[/b], enable both Astrolux mods and click [b]Accept[/b]. Enabling only the dealership mod does not add the demo challenge. Confirm downloads are complete and the installed game meets the mod’s version requirement. Tested game build: 42.21.0. Later updates require compatibility verification. This is a single-player demo, not an automatic multiplayer server installer.
+Keep both named directory levels. Do not move the world to Sandbox, add an extra nested Saves directory, merge worlds or overwrite an existing save. Back up an existing same-name world outside the Saves directory before importing. Enable both matching mods and choose [b]Load -> Astrolux Motors Auto Dealer[/b]. Avoid duplicate local and Workshop installations of the same mods.
 
+[b]0.9 beta notes[/b]
+[list]
+[*]Tested game build: [b]42.21.0[/b]. Later game updates require compatibility checks.
+[*]Personal Showroom Music defaults to [b]25%[/b]; existing saved personal preferences remain.
+[*]The green tabletop lamp is removed. Native furniture fading remains.
+[*]Faint pavement shading at diagonal corners is a known visual issue; its correction is deferred.
+[*]The Challenge and supplied saved world are for single-player. Multiplayer remains experimental; the new diagonal-glass and corner-cabinet movement guards are single-player.
+[/list]
+
+[b]Troubleshooting[/b]
+If the Challenge is missing, enable both mods for the new world and reload or restart. If the save is missing, check the exact folder nesting and active profile. Use matching release versions for both mods. Preserve console.txt when reporting a startup error.

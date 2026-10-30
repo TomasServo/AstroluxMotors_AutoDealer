@@ -16,7 +16,7 @@ package.loaded['TSBAstroluxVend/ClipVolume']={set=function(name,v)volume=v end}
 package.loaded['TSBAstroluxStructure/Electricity']={showroom=function()return true end}
 
 local Audio=dofile('mods/PZ_TSB_AstroluxStructure/42/media/lua/shared/TSBAstroluxVend/AudioSettings.lua')
-assert(Audio.volume('purchaseVolume')==1 and Audio.volume('musicVolume')==.5)
+assert(Audio.volume('purchaseVolume')==1 and Audio.volume('musicVolume')==1 and Audio.volume('doorVolume')==1)
 db.audio=Audio.edit({purchaseSound=true,showroomMusic=true,purchaseVolume=29,musicVolume=15})
 Audio.playPurchase();assert(played==1 and volume==.29)
 Audio.publish();assert(network[Audio.key].purchaseVolume==29)
@@ -29,7 +29,7 @@ package.loaded['TSBAstroluxStructure/Records']={all=function()return {{x=10,y=20
 function getNumActivePlayers()return 1 end
 function getSpecificPlayer()return {isDead=function()return false end,getZ=function()return 0 end,getUsername=function()return 'audio-test'end,getPlayerNum=function()return 0 end,getX=function()return 11 end,getY=function()return 21 end}end
 local M=dofile('mods/PZ_TSB_AstroluxStructure/42/media/lua/client/TSBAstroluxStructure/ShowroomMusic.lua')
-M.update();assert(math.abs(volume-.15*.09)<.000001);local count=played;db.audio.musicVolume=65;M.update();assert(math.abs(volume-.65*.09)<.000001 and played==count)
+M.update();assert(math.abs(volume-(.15*.25))<.000001);local count=played;db.audio.musicVolume=65;M.update();assert(math.abs(volume-(.65*.25))<.000001 and played==count)
 db.audio.showroomMusic=false;M.update();assert(stopped and not M.sound)
 print('PASS audio defaults, percent validation, mute/disable, exact percent sync, purchase volume, live music volume and stop without restarting loop')
 

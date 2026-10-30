@@ -11,6 +11,9 @@ local function blocking(o,owner)
  if not f or f.tower~=owner then return false end
  local sp=o:getSprite();local name=sp and sp:getName()
  if not name or name:find('furniture_tables_low_',1,true) then return false end
+ -- These native couch seats need open approach/exit edges for seating.
+ local couch=tonumber(name:match('^furniture_seating_indoor_03_(%d+)$'))
+ if couch and couch>=132 and couch<=135 then return false end
  -- canReachTo treats collision edges as walls. Keep native loot access to
  -- mannequins/counters; kiosk UI uses its own authorized interaction path.
  if instanceof(o,'IsoMannequin') then return false end
@@ -29,13 +32,19 @@ function M.sync(s)
   squares[dx..':'..dy]=sq
  end end
  for dx=0,12 do for dy=0,12 do
-  local sq=squares[dx..':'..dy];local list=sq:getObjects();local blocks,door=false,false
+  local sq=squares[dx..':'..dy];local list=sq:getObjects();local blocks,door,lamp=false,false,false
   for i=0,list:size()-1 do
    local o=list:get(i)
    blocks=blocks or blocking(o,s.recordId)
    door=door or instanceof(o,'IsoDoor')
+   -- A tabletop lamp uses native reachability, just like container inventory.
+   -- Never surround its supporting table with artificial walls.
+   if instanceof(o,'IsoLightSwitch') and o:getCanBeModified() then
+    local sp=o:getSprite();local name=sp and sp:getName()
+    lamp=lamp or (name and not name:match('^TSBAstrolux'))
+   end
   end
-  if blocks and not door then
+  if blocks and not door and not lamp then
    local clear=sq:getMovingObjects():size()==0 and sq:getStaticMovingObjects():size()==0
    for _,v in ipairs(offsets) do
     local key=dx..':'..dy..':'..v[1]..':'..v[2]..':'..v[3]

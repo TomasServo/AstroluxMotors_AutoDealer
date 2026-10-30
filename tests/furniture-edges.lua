@@ -67,3 +67,13 @@ a.objects[1]=counter;E.sync(s);assert(added==8,'Native container access must rem
 a.objects[1]=kiosk;E.sync(s);assert(added==12)
 a.objects[1]=counter;E.sync(s);assert(removed==12,'Existing container boundaries are removed on reconciliation')
 print('PASS: furniture boundaries, ownership, occupancy, reload, movement and doorway cleanup')
+
+local support=object(a,'furniture_tables_high_01_16','IsoThumpable','tower')
+a.objects[1]=support;E.sync(s);local before=removed
+local lamp=object(a,'lighting_indoor_02_33','IsoLightSwitch','tower')
+function lamp:getCanBeModified()return true end
+table.insert(a.objects,lamp);E.sync(s)
+assert(removed==before+4,'Remove existing supporting-table edges so native lamp interaction is reachable')
+local oldAdded=added;E.sync(s);assert(added==oldAdded,'Lamp access remains open after repeated reconciliation')
+assert(a.objects[1]==support and a.objects[2]==lamp,'Keep original lamp and table')
+print('PASS: tabletop lamp access removes existing helper barriers without replacing fixtures')

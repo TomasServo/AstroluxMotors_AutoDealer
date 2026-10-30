@@ -1,6 +1,6 @@
 -- Client preferences live in Zomboid/Lua, outside world/server ModData.
 local P={cache={}}
-function P.defaultVolume(key)return key=='musicVolume' and 0.09 or 1 end
+function P.defaultVolume(key)return key=='musicVolume' and .25 or 1 end
 local function valid(n)return type(n)=='number' and n==n and n>=0 and n<=100 and n==math.floor(n)end
 function P.file(player)
  player=player or getSpecificPlayer(0)

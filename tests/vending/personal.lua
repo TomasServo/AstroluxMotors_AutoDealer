@@ -20,13 +20,13 @@ package.loaded['TSBAstroluxVend/PersonalAudioSettings']=P
 assert(P.volume(alice,'purchaseVolume',.15)==1)
 assert(P.save(alice,{musicVolume=35,mutePurchase=true}))
 assert(P.volume(alice,'musicVolume',.1)==.35 and P.muted(alice,'purchaseSound'))
-assert(P.volume(bob,'musicVolume',.1)==.09 and not P.muted(bob,'purchaseSound'),'other player unchanged')
+assert(P.volume(bob,'musicVolume',.1)==.25 and not P.muted(bob,'purchaseSound'),'other player unchanged')
 assert(P.volume(alice,'purchaseVolume',.25)==1,'unset personal purchase volume remains 100 percent of world volume')
 local Reload=dofile(base..'client/TSBAstroluxVend/PersonalAudioSettings.lua')
 assert(Reload.volume(alice,'musicVolume',.1)==.35 and Reload.muted(alice,'purchaseSound'),'disk reload')
 assert(not P.save(alice,{musicVolume=101}) and not P.save(alice,{purchaseVolume=2.5}))
 assert(P.file(alice)~=P.file(player('Alice',1)),'local slots isolated')
-assert(P.save(alice,{}));assert(P.volume(alice,'musicVolume',.1)==.09 and not P.muted(alice,'purchaseSound'),'reset restores personal defaults')
+assert(P.save(alice,{}));assert(P.volume(alice,'musicVolume',.1)==.25 and not P.muted(alice,'purchaseSound'),'reset restores personal defaults')
 local db={audio={purchaseSound=true,showroomMusic=true,purchaseVolume=15,musicVolume=10}}
 function isClient()return false end
 function isServer()return false end

@@ -1,0 +1,34 @@
+Astrolux Motors Auto Dealer 0.9 Beta
+Tested with Project Zomboid Build 42.21.0.
+
+This release includes the furnished showroom Challenge and matching saved
+world, vehicle sales and trade-ins, configurable delivery areas, automatic
+entrances, mannequin controls and personal showroom audio settings.
+
+Final corrections:
+- Align single-player movement with intact diagonal glass while preserving
+  access to the furniture and the original native window collision.
+- Restore corner-cabinet collision while keeping storage usable.
+- Preserve native couch sitting, standing and exit; correct table overlap.
+- Remove the green tabletop lamp and refresh furniture helper lighting.
+- Default personal Showroom Music to 25%, preserving admin levels and saved
+  personal preferences.
+- Correct the Challenge title and description for Build 42.21.
+- Supply the latest working save under Astrolux Motors Auto Dealer.
+
+Validation: fresh Challenge placement, all four corners and entrances,
+furniture access, both couches, tables, cabinet storage, lamp removal and
+save/reload passed. Thirty regression suites and five targeted suites passed;
+282 Lua files parsed. The runtime contains 446 files; the bundled world has
+472 files matching the accepted Load-menu copy.
+
+Known beta limitations:
+- Faint pavement shading remains at diagonal corners; its fix is deferred.
+- Native furniture visibility fading remains.
+- Multiplayer remains experimental. The new diagonal-glass and corner-
+  cabinet movement guards are single-player.
+- Steam overlay integration remains deferred; the copy-link fallback remains.
+
+Use the two matching mods for the Challenge and bundled world. Follow
+INSTALLATION.txt and retain the exact save folder nesting. The archive is
+not a Build 41 save. Later game updates require compatibility verification.

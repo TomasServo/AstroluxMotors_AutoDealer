@@ -50,7 +50,7 @@ function M.refresh(o)
  -- Keep the diffuser's RGB ratio; ordinary portable panels retain their output.
  local tag=o:getModData().TSBAstroluxCeilingV1
  if type(tag)=='string' and tag:match('^panel[1-5]$') then
-  color={color[1]*1.5,color[2]*1.5,color[3]*1.5}
+  color={color[1]*1.65,color[2]*1.65,color[3]*1.65}
  end
  local changed=false
  if math.abs(o:getPrimaryR()-color[1])>0.001 then o:setPrimaryR(color[1]);changed=true end

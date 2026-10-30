@@ -1,8 +1,27 @@
 # Changelog
 
+## 0.9 Beta - 2026-10-30
+
+Final corrections:
+- Align single-player movement with intact diagonal glass while preserving
+  access to the furniture and the original native window collision.
+- Restore corner-cabinet collision while keeping storage usable.
+- Preserve native couch sitting, standing and exit; correct table overlap.
+- Remove the green tabletop lamp and refresh furniture helper lighting.
+- Default personal Showroom Music to 25%, preserving admin levels and saved
+  personal preferences.
+- Correct the Challenge title and description for Build 42.21.
+- Supply the latest working save under Astrolux Motors Auto Dealer.
+
+Validation: fresh placement, furniture and collision checks, personal audio,
+and save/reload passed. Thirty regression suites and five targeted suites pass.
+
+See [release notes](docs/RELEASE-0.9-BETA.txt) and [installation](docs/wiki/Install-the-Demo.md).
+
+
 This file groups development checkpoints into launch-facing milestones. Git commit history is retained.
 
-## 0.9 beta candidate — final demo corrections (2026-10-29)
+## 0.9 beta candidate â€” final demo corrections (2026-10-29)
 
 - Initialize the approved Challenges showroom with two delivery areas and $25,000 once per character.
 - Use release mannequin controls in non-debug single-player; preserve native inventory access.
@@ -32,7 +51,7 @@ This file groups development checkpoints into launch-facing milestones. Git comm
 - Improved client initialization, deferred native handlers, administrator checks, variant/catalog handling and trade-in eligibility feedback.
 - Expanded offline regression coverage for payments, queued delivery, headings, menu startup, appraisals, catalog variants, demand and personal audio.
 
-## Preserved foundations — 2026-10-22
+## Preserved foundations â€” 2026-10-22
 
 - Native transparent ground floor and centered sliding entrances beneath the approved car-display tower; approved roof cleanup retained.
 - Full decorative tower cutaway, valid depth coverage and native gray flooring with a dark border.

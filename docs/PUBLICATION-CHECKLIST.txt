@@ -1,2 +1,1 @@
-Workshop publication remains on hold. See FINAL-SCRUB.md for the completed checks and outstanding gates.
-The optional save download is linked in the Workshop draft and wiki instructions.
+Release authorized by the user on 2026-10-30. See RELEASE-0.9-BETA.txt for the final accepted scope and known limitations.

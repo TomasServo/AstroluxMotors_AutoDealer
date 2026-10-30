@@ -28,7 +28,8 @@ function M.refresh(o)
  local sq=o:getSquare();local cell=getCell();local a=active[o]
  if a and(a.cell~=cell or a.square~=sq)then clear(o);a=nil end
  if not a then
-  local radius=6
+  -- Extend the five showroom panels to cover perimeter furnishings.
+  local radius=8
   if not Ceiling.isPanel(o)then
    local lights=o:getLights();if lights:size()>0 then radius=lights:get(0):getRadius()end
   end

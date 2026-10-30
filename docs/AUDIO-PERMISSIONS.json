@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-30",
+  "permissionRecord": "Project owner confirmed third-party audio used with permission",
+  "independentlyVerified": false,
+  "assets": {
+    "package/mods/PZ_TSB_AstroluxStructure/42/media/sound/TSBAstroluxShowroomMusic.mp3": "ff2f4b696b3183c3773a949f98c3d5dacfcfec59e5ee30d59ea568f7e0d62494",
+    "package/mods/PZ_TSB_AstroluxStructure/42/media/sound/TSBAstroluxElevatorMusic.mp3": "ca3d896b4c78d0a63510c8e2e60edea17fbee40d18d5d7ee9bb327b8e0eb96fc",
+    "package/mods/PZ_TSB_AstroluxStructure/42/media/sound/TSBAstroluxPurchase.wav": "54c0b5aad13b5bb58989ef0ef91c0d26d8637237a0137e46a225cdd8f78f3874",
+    "package/mods/PZ_TSB_AstroluxStructure/42/media/sound/TSBAstroluxSlidingDoorCycle.wav": "138e10ab318c6320901a8051f487512d1f7aae00ce115a4d514cae5dbb4b96f1"
+  }
+}

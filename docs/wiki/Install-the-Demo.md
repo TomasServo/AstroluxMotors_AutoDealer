@@ -1,39 +1,61 @@
-# Install the Astrolux Motors Auto Dealer demo
+# Install Astrolux Motors Auto Dealer
 
-The demo recreates the approved furnished showroom on the existing 80×80 Astrolux lot. The original approved single-player save is also retained as an optional download.
+[Download the release](https://github.com/TomasServo/AstroluxMotors_AutoDealer/releases/tag/v0.9-beta) or the [matching saved world](https://github.com/TomasServo/AstroluxMotors_AutoDealer/raw/refs/tags/v0.9-beta/bundled-saves/Astrolux%20Motors%20Auto%20Dealer.zip).
 
-## Automatic demo
+```text
+ASTROLUX MOTORS AUTO DEALER - SINGLE-PLAYER CHALLENGE AND SAVED WORLD
 
-1. Subscribe to the Astrolux Motors Auto Dealer Workshop item and wait for Steam to finish downloading.
-2. In the game’s **Mods** menu enable **Astrolux Motors Auto Dealer** (`PZ_TSB_AstroluxStructure`) and **Astrolux Test Lot (Single Player Preview)** (`PZ_TSB_AstroluxTestMap`).
-3. Return to the main menu and let Lua reload. Restart if prompted.
-4. Open **New Game → Choose Mods**, check both Astrolux mods, click **Accept** and allow Lua to reload. Select **Challenges → Next → Astrolux Motors Auto Dealer Demo** and create a character.
-5. Wait for the starting area to load. The approved showroom is constructed once, automatically.
-6. Quit normally to save. Use **Load** to resume; do not start another challenge to continue the same world.
+Tested with Project Zomboid Build 42.21.0. Use the matching 0.9 beta mods:
+- Astrolux Motors Auto Dealer (PZ_TSB_AstroluxStructure)
+- Astrolux Test Lot (Single Player Preview) (PZ_TSB_AstroluxTestMap)
 
-No external program, ZIP extraction, debug mode or manual paste is required for this route. The initial mannequin outfits are locked and automatic sliding doors are enabled. Reloading does not rebuild a deleted tower or reset your changes.
+The Test Lot is required for this Challenge and the bundled saved world.
+Enable both mods and restart or reload the game's Lua files when prompted.
+Avoid duplicate local and Workshop installations of the same mod IDs.
 
-## Optional frozen save
+Create a new Challenge
+1. Open New Game and Choose Mods. Confirm both Astrolux mods are enabled for
+   the new world, accept the selection and allow Lua to reload.
+2. Choose Challenges, then Astrolux Motors Auto Dealer.
+3. Create your character and wait for the starting area to load. The furnished
+   showroom is placed automatically once on the 80 x 80 demonstration lot.
+4. Quit normally to save, then use Load to resume. Starting the Challenge again
+   creates a different world.
 
-Use [Astrolux Motors Auto Dealer.zip](../../bundled-saves/Astrolux%20Motors%20Auto%20Dealer.zip) when you want the actual preserved save rather than a newly generated demo world.
+No save extraction, debug mode or manual tower paste is needed for this route.
+Reloading preserves your world rather than placing a second showroom.
 
-1. Exit Project Zomboid.
-2. Extract the archive to a temporary folder.
-3. Copy `Saves/Sandbox/Astrolux Motors Auto Dealer` into your own `Zomboid/Saves/Sandbox` directory.
-4. Verify the final structure is `Zomboid/Saves/Sandbox/Astrolux Motors Auto Dealer/<save files>`, without an extra nested `Saves` folder.
-5. Keep existing worlds intact. If that destination already exists, back it up or choose a different imported folder name; do not merge two saves.
-6. Enable both matching Astrolux mods and use **Load → Astrolux Motors Auto Dealer**. If you changed the folder name, select that name instead.
+Import the bundled saved world
+Use bundled-saves/Astrolux Motors Auto Dealer.zip from this release. It is
+the current tested world and contains the latest accepted layout and fixes.
+The save ZIP alone does not install the two required mods.
 
-Typical Windows destination: `C:\Users\YOUR-NAME\Zomboid\Saves\Sandbox`. A custom `-cachedir` launcher uses its own profile directory instead. On other systems use the `Zomboid/Saves/Sandbox` directory belonging to your game profile.
+1. Exit Project Zomboid and keep a backup of any existing world with this name.
+2. Extract the save ZIP to a temporary folder.
+3. Copy its Saves directory into your game profile, preserving this full path:
+   Saves/Astrolux Motors Auto Dealer/Astrolux Motors Auto Dealer/<save files>
+4. On a standard Windows installation the final path is:
+   C:\Users\YOUR-NAME\Zomboid\Saves\Astrolux Motors Auto Dealer\Astrolux Motors Auto Dealer\<save files>
+   A custom cachedir uses that profile instead. On other systems use your
+   game profile's Saves directory, keeping both named directory levels.
+5. Do not merge saves, overwrite an existing world, move this save under
+   Sandbox, or add another nested Saves directory. Resolve an existing-name
+   conflict by backing up that existing world outside the Saves directory.
+6. Enable both matching mods and select Load -> Astrolux Motors Auto Dealer.
 
-The archive contains only the preserved saved world; use the matching runtime from this checkpoint or the published Workshop release. Workshop subscribers should use the matching Workshop mods, avoiding duplicate local installations of the same mod IDs. Copying only the saved-world folder does not enable its mods automatically.
+Known 0.9 beta behavior
+- Native furniture visibility fading remains.
+- Faint pavement shading may be visible at diagonal showroom corners. This
+  visual issue is documented and its correction is deferred.
+- The green tabletop lamp has been removed.
+- Personal Showroom Music defaults to 25%; existing personal choices remain.
+- These Challenge and saved-world instructions are for single-player.
+  Enabling the Test Lot on a multiplayer server does not import this world
+  or automatically construct a showroom. Multiplayer remains experimental.
 
-## Troubleshooting
-
-- **Demo not listed:** enable both mods, finish Steam downloads and reload/restart the game.
-- **Save not listed:** check the folder nesting and the profile used by your launcher.
-- **Missing-mod warning:** verify the two mod IDs above and use the release’s matching versions.
-- **Setup stopped:** retain the console log and report the error. Do not repeatedly paste over a partially constructed showroom.
-- **Version compatibility:** the current candidate requires Build 42.21.0. Later Build 42 updates need compatibility checks; this is not a Build 41 save.
-
-This workflow is for single-player. Enabling the demo mod on a multiplayer server does not automatically import the saved world or create a showroom.
+If the Challenge is missing, confirm both mods are enabled for the new world
+and reload/restart when prompted. If the saved world is missing, check the
+profile and exact folder nesting. For missing-mod warnings, use the matching
+release versions. Retain console.txt when reporting a startup error. Later
+game updates require compatibility verification; this is not a Build 41 save.
+```

@@ -1,3 +1,5 @@
+> Historical development record. The final 2026-10-30 release supersedes pending checks and rejected candidates below. See [0.9 Beta release notes](RELEASE-0.9-BETA.txt).
+
 # 0.9 beta release candidate â€” 2026-10-29
 
 This is a development checkpoint, not a published 0.9 beta release.

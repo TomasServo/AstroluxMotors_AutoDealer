@@ -8,4 +8,4 @@ Play/Pause controls operate actual local playback. Play starts playback again; i
 
 Before launch, listen at low and high settings, test zero/mute, leave/re-enter the showroom, close/reopen the menu, pause/play both sounds, and verify music repeats. Test separate clients and native audio settings. Offline tests validate control/state logic, not perceived loudness or native playback.
 
-The supplied audio assets remain unchanged. Record their distribution permissions and provenance before Workshop publication.
+The supplied audio assets remain unchanged. The project owner confirmed third-party audio is used with permission on 2026-10-30; see AUDIO-PERMISSIONS.json.

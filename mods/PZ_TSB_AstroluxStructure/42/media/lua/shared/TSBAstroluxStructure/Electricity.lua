@@ -4,8 +4,8 @@ function E.square(sq)
  if not sq then return false end
  -- Generator range, running state and sandbox rules remain native.
  if sq:haveElectricity()then return true end
- if not sq:hasGridPower()then return false end
- if sq:getRoom()~=nil then return true end
+ local grid=sq:hasGridPower()
+ if grid and sq:getRoom()~=nil then return true end
  -- Pasted showrooms have no compiled map room. Only owned tiles belonging
  -- to a live, ready release tower may consume active grid power here.
  local floor=sq:getFloor();local owner=floor and floor:getModData().TSBAstroluxFlooring
@@ -16,7 +16,20 @@ function E.square(sq)
   local eligible=r.releaseTower or (r.combinedSize==12
    and require('AstroluxBayTest/TestWorld').testMap())
   if r.id==owner and eligible and r.status=='ready'
-   and sq:getX()>=r.x and sq:getX()<r.x+12 and sq:getY()>=r.y and sq:getY()<r.y+12 then return true end
+   and sq:getX()>=r.x and sq:getX()<r.x+12 and sq:getY()>=r.y and sq:getY()<r.y+12 then
+   if grid then return true end
+   -- Native user-built rooms reject grid power even before the blackout.
+   -- Keep the installed dealer connected only while its exterior grid is live.
+   if not sq:isUserDefinedRoom() or sq:isDerelict() then return false end
+   local cell=getCell();if not cell then return false end
+   for n=0,11 do
+    for _,v in ipairs({{r.x-1,r.y+n},{r.x+12,r.y+n},{r.x+n,r.y-1},{r.x+n,r.y+12}})do
+     local outside=cell:getGridSquare(v[1],v[2],0)
+     if outside and not outside:isInARoom() and outside:hasGridPower()then return true end
+    end
+   end
+   return false
+  end
  end
  return false
 end

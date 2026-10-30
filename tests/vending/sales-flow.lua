@@ -23,7 +23,7 @@ local stores={['TSBAstroluxVend.State.v1']=db};ModData={getOrCreate=function(key
 local fixtureData={TSBAstroluxVend='one'}
 local fixture={getModData=function() return fixtureData end,transmitModData=function() end,getSprite=function() return {getName=function() return 'TSBAstroluxKiosk_0' end} end}
 local powered=true
-local sq={haveElectricity=function()return powered end,hasGridPower=function()return false end,getObjects=function() return {size=function() return 1 end,get=function() return fixture end} end}
+local sq={getFloor=function()return nil end,haveElectricity=function()return powered end,hasGridPower=function()return false end,getObjects=function() return {size=function() return 1 end,get=function() return fixture end} end}
 function getCell() return {getVehicles=function()return {iterator=function()return {hasNext=function()return false end}end}end,getGridSquare=function(_,x,y,z) assert(x==10 and y==20 and z==0);return sq end} end
 function getScriptManager() return {getVehicle=function() return {getFullName=function()return "Base.CarNormal"end,getPartCount=function()return 0 end} end} end
 package.loaded['TSBAstroluxVend/VehicleCatalog']={new=function()

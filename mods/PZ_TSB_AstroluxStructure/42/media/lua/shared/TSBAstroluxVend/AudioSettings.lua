@@ -7,7 +7,7 @@ function A.track() local n=A.settings().musicTrack;return (n==1 or n==2) and n o
 function A.playbackTrack(player) return require('TSBAstroluxVend/PersonalAudioSettings').track(player,A.track()) end
 function A.enabled(key)return A.settings()[key]~=false end
 function A.volume(key)
-    local defaults={purchaseVolume=100,musicVolume=50,doorVolume=100}
+    local defaults={purchaseVolume=100,musicVolume=100,doorVolume=100}
     local n=A.settings()[key]
     return (type(n)=='number' and n>=0 and n<=100 and n or defaults[key] or 0)/100
 end
