@@ -168,7 +168,8 @@ Explore the approved furnished Astrolux showroom on its 80×80 demonstration lot
 [*]Subscribe to Astrolux Motors Auto Dealer and let Steam finish downloading it.
 [*]Open Project Zomboid’s Mods menu and enable [b]Astrolux Motors Auto Dealer[/b] and [b]Astrolux Test Lot (Single Player Preview)[/b]. The test-lot mod is required for this demo.
 [*]Return to the main menu and allow the game to reload its Lua files. Restart the game if prompted.
-[*]Choose [b]New Game → Challenges → Astrolux Motors Auto Dealer Demo[/b], then create your character.
+[*]Open [b]New Game → Choose Mods[/b]. Confirm both Astrolux mods are checked for this new world, click [b]Accept[/b] and let Lua reload.
+[*]Select [b]Challenges[/b], click [b]Next[/b], choose [b]Astrolux Motors Auto Dealer Demo[/b], then create your character.
 [*]The approved showroom is placed automatically once the area loads. No debug mode, manual tower paste or external installer is required.
 [*]After quitting normally, use [b]Load[/b] to continue that world. Starting the challenge again creates a separate new world.
 [/list]
@@ -179,7 +180,7 @@ Automatic sliding doors and mannequin outfit locks start enabled. Reloading pres
 
 Keep the folder structure intact. Do not overwrite an existing save with the same name; keep a backup or give the imported folder a different name. Enable the two matching Astrolux mods, then select [b]Load → Astrolux Motors Auto Dealer[/b]. Workshop users should use the Workshop-provided mods and avoid duplicate local mod installations.
 
-[b]If the demo is missing:[/b] confirm both mods are enabled, downloads are complete and the installed game meets the mod’s version requirement. Tested game build: 42.21.0. Later updates require compatibility verification. This is a single-player demo, not an automatic multiplayer server installer.
+[b]If the demo is missing:[/b] return to [b]Choose Mods[/b], enable both Astrolux mods and click [b]Accept[/b]. Enabling only the dealership mod does not add the demo challenge. Confirm downloads are complete and the installed game meets the mod’s version requirement. Tested game build: 42.21.0. Later updates require compatibility verification. This is a single-player demo, not an automatic multiplayer server installer.
 
 [h2]DISCLAIMER[/h2]
 Astrolux Motors is a community-created mod for Project Zomboid. It is not affiliated with, endorsed by or sponsored by The Indie Stone.

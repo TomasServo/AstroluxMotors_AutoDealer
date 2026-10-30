@@ -7,7 +7,7 @@ The demo recreates the approved furnished showroom on the existing 80×80 Astrol
 1. Subscribe to the Astrolux Motors Auto Dealer Workshop item and wait for Steam to finish downloading.
 2. In the game’s **Mods** menu enable **Astrolux Motors Auto Dealer** (`PZ_TSB_AstroluxStructure`) and **Astrolux Test Lot (Single Player Preview)** (`PZ_TSB_AstroluxTestMap`).
 3. Return to the main menu and let Lua reload. Restart if prompted.
-4. Select **New Game → Challenges → Astrolux Motors Auto Dealer Demo** and create a character.
+4. Open **New Game → Choose Mods**, check both Astrolux mods, click **Accept** and allow Lua to reload. Select **Challenges → Next → Astrolux Motors Auto Dealer Demo** and create a character.
 5. Wait for the starting area to load. The approved showroom is constructed once, automatically.
 6. Quit normally to save. Use **Load** to resume; do not start another challenge to continue the same world.
 

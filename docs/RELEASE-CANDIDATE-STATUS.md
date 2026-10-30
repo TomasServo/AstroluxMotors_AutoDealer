@@ -14,6 +14,10 @@ This is a development checkpoint, not a published 0.9 beta release.
 
 Automatic doors default to enabled for new towers; existing explicit settings are preserved.
 
+## User-confirmed single-player acceptance
+
+- New Challenges world starts successfully (2026-10-29).
+
 ## Pending before release
 
 - Native fresh-world test of the new 80Ã—80 SP demo, then save/reload.
