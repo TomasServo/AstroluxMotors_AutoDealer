@@ -35,4 +35,4 @@ The checkpoint excludes server credentials, player connection profiles, diagnost
 
 ## Automated validation
 
-All 274 runtime Lua files parse. The 24 legacy regression scripts now pass under both Lua 5.1 (Lupa) and the project's Fengari runner; the shared cash fixture is exercised by payment suites. The five targeted release-candidate scripts also pass. See LEGACY-TEST-RESULTS.json and LEGACY-TEST-REPAIR.md. Live demo/save acceptance remains outstanding.
+All 274 runtime Lua files parse. The 25 regression scripts (including demo defaults) now pass under both Lua 5.1 (Lupa) and the project's Fengari runner; the shared cash fixture is exercised by payment suites. The five targeted release-candidate scripts also pass. See LEGACY-TEST-RESULTS.json and LEGACY-TEST-REPAIR.md. Live demo/save acceptance remains outstanding.

@@ -14,6 +14,17 @@
       "PASS: captured default plus requested sink retains coffee-cabinet role, fresh kiosks, tabletop offsets and object order without private state"
     ]
   },
+  "tests/demo-defaults.lua": {
+    "status": "pass",
+    "output": [
+      "[Astrolux Demo] Dealership powered; delivery areas configured. Starter cash available once per character.",
+      "[Astrolux Demo] Dealership powered; delivery areas configured. Starter cash available once per character.",
+      "[Astrolux Demo] Finish outstanding orders before preparing the bundled demo.",
+      "[Astrolux Demo] Dealership powered; delivery areas configured. Starter cash available once per character.",
+      "[Astrolux Test Map] Cash held: tests/demo-defaults.lua:52: uncertain native insertion",
+      "PASS demo defaults: exact challenge/record scope, relative clear zones, foreign/held/partial refusal, edited-zone persistence, power gate, $25000 once per character and safe interrupted grants"
+    ]
+  },
   "tests/flooring.lua": {
     "status": "pass",
     "output": [

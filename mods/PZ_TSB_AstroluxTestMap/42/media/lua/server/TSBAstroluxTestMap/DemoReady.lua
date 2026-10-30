@@ -10,8 +10,17 @@ local function report(text)
 end
 function M.update()
  if C.bundledDemo~=true or not W.freshLot()then return false end
- if not getWorld or getWorld():getWorld()~='AstroluxTestWorld_80x80_20261028'then return false end
- local selected=ModData.get('TSBAstroluxCombined12.v1');local record
+ -- The challenge owns one explicit tower record. Never initialize arbitrary
+ -- pasted towers merely because they share the test map or coordinates.
+ local challenge=getCore():isChallenge()and getCore():getChallengeID()=='AstroluxMotorsDemo'
+ local selected
+ if challenge then
+  selected=ModData.get('TSBAstroluxDemoScenario.v1')
+  if not selected or selected.status~='ready'then return false end
+ elseif getWorld():getWorld()=='AstroluxTestWorld_80x80_20261028'then
+  selected=ModData.get('TSBAstroluxCombined12.v1')
+ else return false end
+ local record
  for _,r in ipairs(R.all())do
   if selected and r.id==selected.recordId and r.status=='ready'and r.combinedSize==12 then record=r;break end
  end
@@ -25,14 +34,16 @@ function M.update()
  end
  if #terminals<2 then return false end
  local state=ModData.getOrCreate('TSBAstroluxTestMap.DemoReady.v1')
+ if state.done and state.recordId~=record.id then return false end
  if not state.done then
   for _,o in pairs(db.orders or{})do
    if o.status~='delivered'then report('Finish outstanding orders before preparing the bundled demo.');return false end
   end
-  -- Captured from the bundled save. Never applied to other worlds or pasted towers.
+  -- Original demo zone geometry relative to its tower, including the
+  -- approved kiosk offsets (3,0) and (8,0). Both zones are outside the shell.
   local defaults={
-   {x=123,y=135,x1=118,y1=120,x2=132,y2=130,heading='S',gap=1,rowGap=1},
-   {x=128,y=135,x1=136,y1=134,x2=145,y2=151,heading='W',gap=1,rowGap=0},
+   {x=record.x+3,y=record.y,x1=record.x-2,y1=record.y-15,x2=record.x+12,y2=record.y-5,heading='S',gap=1,rowGap=1},
+   {x=record.x+8,y=record.y,x1=record.x+16,y1=record.y-1,x2=record.x+25,y2=record.y+16,heading='W',gap=1,rowGap=0},
   }
   local prepared={}
   for _,d in ipairs(defaults)do
