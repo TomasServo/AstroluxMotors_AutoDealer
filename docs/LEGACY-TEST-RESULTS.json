@@ -59,6 +59,12 @@
       "PASS: right-click menu, location-sensitive placement/removal, confirmation and readable refusal dialogs"
     ]
   },
+  "tests/release-throttle.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: release throttle replies with failure in SP/MP, preserves pending state, allows sites and retry at 250ms"
+    ]
+  },
   "tests/showroom-sink.lua": {
     "status": "pass",
     "output": [

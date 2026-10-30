@@ -43,7 +43,10 @@ function M.handle(p,command,args)
  args=type(args)=='table' and args or {}
  if command=='sites'then reply(p,'sites',M.snapshot());return end
  local actor=tostring(p:getUsername());local now=getTimestampMs()
- if M.last[actor]and now>=M.last[actor]and now-M.last[actor]<250 then return end
+ if M.last[actor]and now>=M.last[actor]and now-M.last[actor]<250 then
+  reply(p,'result',{ok=false,message='Please wait a moment, then try again.'})
+  return false
+ end
  M.last[actor]=now
  local ok,why=pcall(function()
   assert(Access.allowed(p),'Administrator access required')
