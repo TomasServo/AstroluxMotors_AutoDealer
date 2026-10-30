@@ -40,4 +40,8 @@ The checkpoint excludes server credentials, player connection profiles, diagnost
 
 ## Automated validation
 
-All 275 runtime Lua files parse. The 27 regression scripts (including demo defaults) now pass under both Lua 5.1 (Lupa) and the project's Fengari runner; the shared cash fixture is exercised by payment suites. The five targeted release-candidate scripts also pass. See LEGACY-TEST-RESULTS.json and LEGACY-TEST-REPAIR.md. Live demo/save acceptance remains outstanding.
+All 275 runtime Lua files parse. The 28 regression scripts (including demo defaults) now pass under both Lua 5.1 (Lupa) and the project's Fengari runner; the shared cash fixture is exercised by payment suites. The five targeted release-candidate scripts also pass. See LEGACY-TEST-RESULTS.json and LEGACY-TEST-REPAIR.md. Live demo/save acceptance remains outstanding.
+
+## Independent audit follow-up
+
+The audit of 87f800d identified silent 250 ms release-command throttling. Commit e71cf50 returns an explicit failure/retry message without consuming pending state. The new SP/MP regression verifies rejection, state preservation, site requests and retry at the threshold. All 28 scripts pass in Lua 5.1 and Fengari; all five Python RC scripts were rerun successfully here using the existing Lupa runtime. Cursor did not independently rerun those Python checks.
