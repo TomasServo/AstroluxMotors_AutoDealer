@@ -25,6 +25,12 @@
       "PASS demo defaults: exact challenge/record scope, relative clear zones, foreign/held/partial refusal, edited-zone persistence, power gate, $25000 once per character and safe interrupted grants"
     ]
   },
+  "tests/display-settings.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: non-debug SP mannequin settings use release state and dispatcher; MP authorization retained"
+    ]
+  },
   "tests/flooring.lua": {
     "status": "pass",
     "output": [
@@ -39,6 +45,12 @@
     "status": "pass",
     "output": [
       "PASS: all 19 native furnishing entries and offsets, fresh kiosks, tabletop ordering, no inventory/identity copies, collision rejection and post-insertion rollback"
+    ]
+  },
+  "tests/furniture-edges.lua": {
+    "status": "pass",
+    "output": [
+      "PASS: furniture boundaries, ownership, occupancy, reload, movement and doorway cleanup"
     ]
   },
   "tests/menu.lua": {

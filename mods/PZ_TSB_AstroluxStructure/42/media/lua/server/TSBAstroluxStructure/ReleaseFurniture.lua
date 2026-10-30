@@ -94,6 +94,7 @@ function F.apply(s)
    end
   end
  end end
+ require('TSBAstroluxStructure/FurnitureEdges').sync(s)
 end
 
 -- Reconcile only existing furniture helpers. Never recreate or reposition furniture.
@@ -118,6 +119,9 @@ Events.OnTick.Add(function()
  for _,r in ipairs(require('TSBAstroluxStructure/Records').all())do
   if r.status~='deleting'then
    for dx=0,12 do for dy=0,12 do F.cleanup(getCell():getGridSquare(r.x+dx,r.y+dy,0))end end
+   if r.status=='ready' and r.releaseTower then
+    require('TSBAstroluxStructure/FurnitureEdges').sync({recordId=r.id,x=r.x,y=r.y})
+   end
   end
  end
 end)

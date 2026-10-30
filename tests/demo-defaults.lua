@@ -21,7 +21,7 @@ local function reset()
  return dofile(base..'DemoReady.lua')
 end
 local demo=reset()
-assert(demo.update());assert(a.spawnArea.x1==116 and a.spawnArea.y1==106 and a.spawnArea.x2==130 and a.spawnArea.y2==116)
+assert(demo.update());assert(a.spawnArea.x1==117 and a.spawnArea.y1==108 and a.spawnArea.x2==132 and a.spawnArea.y2==118)
 assert(b.spawnArea.x1==134 and b.spawnArea.y1==120 and b.spawnArea.x2==143 and b.spawnArea.y2==137)
 assert(a.deliveryBorder and b.deliveryBorder and not foreign.spawnArea)
 local edited={x1=150,revision=7};a.spawnArea=edited

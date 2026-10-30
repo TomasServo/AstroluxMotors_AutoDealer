@@ -2,7 +2,15 @@
 
 This file groups development checkpoints into launch-facing milestones. Git commit history is retained.
 
-## Unreleased — dealership testing candidate (2026-10-23)
+## 0.9 beta candidate — final demo corrections (2026-10-29)
+
+- Initialize the approved Challenges showroom with two delivery areas and $25,000 once per character.
+- Use release mannequin controls in non-debug single-player; preserve native inventory access.
+- Add ownership-scoped kiosk/furniture boundaries, excluding native containers and mannequins; reconcile moved/deleted furniture.
+- Default class prices to $400/$600/$1,000 with demand pricing; preserve saved overrides.
+- Retain native furniture visibility fading, accepted for beta. Steam Overlay opening remains deferred; copying the reporting link is available.
+
+## Earlier dealership testing candidate (2026-10-23)
 
 ### Shopping and administration
 

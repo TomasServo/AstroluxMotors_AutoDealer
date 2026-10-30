@@ -1,5 +1,5 @@
 local C={channel='TSBAstroluxVend',version=1}
-C.vehicleClasses={[1]={name='Normal',price=4000},[2]={name='Heavy Duty',price=6000},[3]={name='Sports',price=10000}}
+C.vehicleClasses={[1]={name='Normal',price=400},[2]={name='Heavy Duty',price=600},[3]={name='Sports',price=1000}}
 C.sirenPrice=0 -- Legacy config retained for compatibility; sirens have no surcharge.
 -- Hotel paint pilot: solid colors included; special existing skins cost extra.
 C.camperTopCapacityBonus=46 -- Added to native bed capacity while the cap is installed.

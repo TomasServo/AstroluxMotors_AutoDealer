@@ -17,12 +17,17 @@ Automatic doors default to enabled for new towers; existing explicit settings ar
 ## User-confirmed single-player acceptance
 
 - New Challenges world starts successfully (2026-10-29).
+- Both delivery zones exist; current saved rectangles approved as new-demo defaults.
+- $25,000 starter cash, purchase and trade-in passed user testing.
+- Mannequin inventory/locking and cabinet access/collision passed after corrections; kiosk collision passed.
+- Native couch/table player-visibility fading explicitly accepted for 0.9 beta. This is retained engine behavior, not a claimed rendering fix.
+- Approved base defaults: Normal $400, Heavy Duty $600, Sports $1,000; demand pricing enabled.
 
 ## Pending before release
 
-- Native fresh-world test of the new 80Ã—80 SP demo, then save/reload.
+- Final save/reload smoke test with the latest accepted runtime.
 - Preserved save tested with this final runtime.
-- Final packaging/version metadata and Workshop description review.
+- Workshop upload after final native smoke tests; packaging metadata and description reviewed.
 - Steam Overlay opening is explicitly deferred until after 0.9 beta.
 
 ## Lessons after the frozen checkpoint
@@ -35,4 +40,4 @@ The checkpoint excludes server credentials, player connection profiles, diagnost
 
 ## Automated validation
 
-All 274 runtime Lua files parse. The 25 regression scripts (including demo defaults) now pass under both Lua 5.1 (Lupa) and the project's Fengari runner; the shared cash fixture is exercised by payment suites. The five targeted release-candidate scripts also pass. See LEGACY-TEST-RESULTS.json and LEGACY-TEST-REPAIR.md. Live demo/save acceptance remains outstanding.
+All 275 runtime Lua files parse. The 27 regression scripts (including demo defaults) now pass under both Lua 5.1 (Lupa) and the project's Fengari runner; the shared cash fixture is exercised by payment suites. The five targeted release-candidate scripts also pass. See LEGACY-TEST-RESULTS.json and LEGACY-TEST-REPAIR.md. Live demo/save acceptance remains outstanding.

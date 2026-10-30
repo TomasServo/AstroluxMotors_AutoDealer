@@ -39,10 +39,10 @@ function M.update()
   for _,o in pairs(db.orders or{})do
    if o.status~='delivered'then report('Finish outstanding orders before preparing the bundled demo.');return false end
   end
-  -- Original demo zone geometry relative to its tower, including the
+  -- User-approved delivery zones captured 2026-10-29, relative to the tower,
   -- approved kiosk offsets (3,0) and (8,0). Both zones are outside the shell.
   local defaults={
-   {x=record.x+3,y=record.y,x1=record.x-2,y1=record.y-15,x2=record.x+12,y2=record.y-5,heading='S',gap=1,rowGap=1},
+   {x=record.x+3,y=record.y,x1=record.x-1,y1=record.y-13,x2=record.x+14,y2=record.y-3,heading='S',gap=1,rowGap=1},
    {x=record.x+8,y=record.y,x1=record.x+16,y1=record.y-1,x2=record.x+25,y2=record.y+16,heading='W',gap=1,rowGap=0},
   }
   local prepared={}

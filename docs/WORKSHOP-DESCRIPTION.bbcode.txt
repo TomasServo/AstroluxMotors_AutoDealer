@@ -71,12 +71,13 @@ Showroom windows and doors retain native breakable behavior. Astrolux does not b
 
 In a supported test setup, place an Astrolux Motors Sales Kiosk, configure the available vehicles and prices, then define a clear delivery area and direction. Test a purchase and delivery before making the dealership available to other players.
 
-[b]Showroom setup — candidate awaiting in-game testing[/b]
-A public-placement candidate has been prepared for fresh worlds. It provides an explicit single-player sandbox setup option and a separate experimental multiplayer admin-placement option, without requiring the author's save, a special world name or personal coordinates.
+[b]Showroom setup[/b]
+Single-player owners can place a furnished tower. In multiplayer, tower placement and deletion require administrator access. Multiplayer remains experimental; back up your world before using placement tools.
 
-This candidate is staged and offline-tested; installation, fresh-world gameplay and multiplayer acceptance are still pending. It is not yet confirmed as part of the public Workshop package. The currently installed setup retains test-world restrictions. Use setup instructions matching the package supplied for your test.
+The optional single-player demo includes the approved showroom on an 80×80 lot, two configured delivery areas and $25,000 starter cash once per character. Follow the Challenges instructions below. The preserved save is also available as an optional download.
 
-An optional demonstration-map package is also being prepared. Its fresh-user setup and multiplayer behavior are still awaiting in-game acceptance.
+[b]Native furniture visibility[/b]
+Couches and tables may become translucent when they obscure the player. This is normal Project Zomboid visibility behavior and is retained in 0.9 beta.
 
 [b]For players[/b]
 [list]

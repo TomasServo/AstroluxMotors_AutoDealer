@@ -1,6 +1,7 @@
 -- Multiplayer lock changes are authorized and persisted by the server.
 local M={}
 local R=require 'TSBAstroluxStructure/Records'
+local Release=require 'TSBAstroluxStructure/ReleaseSites'
 function M.objects(player)
  if isClient() or isServer() or not getDebug() or not player or player:isDead() or player:getZ()~=0 then return nil,'Available in the local debug showroom.' end
  local r=R.near(player:getX(),player:getY());local n=r and (r.combinedSize or 8)
@@ -15,7 +16,7 @@ function M.objects(player)
  return out
 end
 function M.status(player)
- if isClient()then
+ if isClient() or Release.near(player) then
   local r,why=require('TSBAstroluxStructure/ShowroomSettings').record(player)
   if not r then return false,why,false end
   return r.displayOutfitsLocked==true,r.displayOutfitsLocked and 'Showroom display outfits locked.' or 'Showroom display outfits unlocked.',true
@@ -27,7 +28,7 @@ function M.status(player)
  return count==#objects,tostring(count)..' of '..tostring(#objects)..' display outfits locked.',true
 end
 function M.set(player,value)
- if isClient()then
+ if isClient() or Release.near(player) then
   local r,why=require('TSBAstroluxStructure/ShowroomSettings').record(player)
   if not r then return false,why end
   require('TSBAstroluxStructure/ReleaseClient').send('setting',{id=r.id,setting='displayLocks',enabled=value==true})
