@@ -1,5 +1,7 @@
 # Astrolux Motors
 
+**[Wiki & Quick Start](https://github.com/TomasServo/AstroluxMotors_AutoDealer/wiki/Quick-Start)** — player and administrator guides, capabilities, troubleshooting and test-map setup. The wiki identifies its reviewed 0.9 beta candidate; that candidate includes changes beyond this main branch.
+
 A standalone Project Zomboid Build 42 dealership with an Astrolux glass showroom, vehicle sales and trade-ins. **Pre-release testing candidate; multiplayer and final launch acceptance are pending.**
 
 ## Features
