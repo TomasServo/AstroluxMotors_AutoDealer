@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "protocol_version": "1.0",
+  "status": "FROZEN",
+  "recorded_date": "2026-11-01",
+  "repository": "TomasServo/AstroluxMotors_AutoDealer",
+  "approval": {
+    "date": "2026-11-01",
+    "chat_id": "01a19951-1d96-75b3-a749-a1d8561d4b61",
+    "quote": "Approved. Proceed with the governance-only rollout, but keep implementation, merges, and deployments frozen until I approve them separately."
+  },
+  "allowed": [
+    "read-only inspection",
+    "governance documentation and instruction pointers",
+    "draft governance PRs",
+    "PR metadata holds",
+    "pause notices",
+    "governance-only review"
+  ],
+  "prohibited_until_separate_user_approval": [
+    "implementation",
+    "merge including governance PRs",
+    "deployment/publication",
+    "runtime test launch",
+    "service restart",
+    "force push",
+    "branch deletion/cleanup",
+    "publishing local implementation work"
+  ],
+  "main_at_rollout": "81ecc7b74cb7e4dfcbd12b15e28936e8b51f6fe1",
+  "protected_baselines": [
+    {
+      "ref": "codex/release-0.9-beta-20261030",
+      "sha": "81ecc7b74cb7e4dfcbd12b15e28936e8b51f6fe1",
+      "kind": "release baseline"
+    }
+  ],
+  "observed_remote_refs": [
+    {
+      "ref": "codex/astrolux-0.9-beta-rc",
+      "sha": "571a3cd7c1a05af5290807bb2b916b937fdf8564",
+      "protected_reported": false
+    },
+    {
+      "ref": "codex/autotrader-cursor-audit-20261024",
+      "sha": "3ac03edbeab5415f4d26bd4f4327231bd95a901e",
+      "protected_reported": false
+    },
+    {
+      "ref": "codex/pre-consolidation-20261024",
+      "sha": "a00b1209da856747f13813d4c00ea849565428ae",
+      "protected_reported": false
+    },
+    {
+      "ref": "codex/release-0.9-beta-20261030",
+      "sha": "81ecc7b74cb7e4dfcbd12b15e28936e8b51f6fe1",
+      "protected_reported": false
+    },
+    {
+      "ref": "codex/tower-corner-failure-20261023",
+      "sha": "4605fef5db79735c89b86101029fb81b6342091e",
+      "protected_reported": false
+    },
+    {
+      "ref": "codex/tower-last-visible-20261023",
+      "sha": "3abf84a543a9e8e1d62b972a2e3953495ac5d9a1",
+      "protected_reported": false
+    },
+    {
+      "ref": "main",
+      "sha": "81ecc7b74cb7e4dfcbd12b15e28936e8b51f6fe1",
+      "protected_reported": false
+    }
+  ],
+  "enforcement": {
+    "instructions_on_main": false,
+    "governance_merge_authorized": false,
+    "branch_rules_verified": false,
+    "ruleset_observation": "Empty ruleset list at audit; no configured protection claimed.",
+    "external_cursor_pause_confirmed": false,
+    "warning": "This record and draft PR status are not universal write locks. Separate sessions must acknowledge the hold."
+  }
+}

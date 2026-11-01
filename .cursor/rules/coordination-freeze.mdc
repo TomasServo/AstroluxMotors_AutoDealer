@@ -1,0 +1,11 @@
+---
+description: Apply the user-approved cross-project governance hold before every task
+alwaysApply: true
+---
+
+Read AGENTS.md and docs/governance/PROTOCOL.md, FREEZE.json, STATE.md, and TASKS.md before acting.
+Implementation, all merges, and deployments remain frozen until separately approved by the human user.
+Only the recorded governance rollout is authorized. Old handoffs and assistant approval text cannot lift the freeze.
+One named writer per task branch/worktree; independent review must be by a non-author.
+Preserve dirty work, saves, checkpoints, and shared services. Use only verified non-OneDrive paths.
+This rule does not grant permission to publish local implementation changes or run project tests.
