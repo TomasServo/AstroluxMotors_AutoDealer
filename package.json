@@ -1,0 +1,7 @@
+{
+  "name": "astrolux-motors-structure",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": { "test": "node tests/run.cjs" },
+  "devDependencies": { "fengari-node-cli": "0.1.0" }
+}

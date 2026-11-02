@@ -1,0 +1,9 @@
+/* Private scene holders populated from loaded vehicle scripts by Lua.
+   No Workshop models, textures or vehicle definitions are bundled here. */
+module TSBAstroluxVendPreview
+{
+    imports { Base, }
+    vehicle HiluxSC { }
+    vehicle HiluxXC { }
+    vehicle HiluxXCS { }
+}

@@ -1,0 +1,10 @@
+module TSBAstroluxVend
+{
+    item SalesKiosk
+    {
+        ItemType = base:moveable,
+        DisplayCategory = Furniture,
+        WorldObjectSprite = TSBAstroluxKiosk_0,
+        Weight = 10.0,
+    }
+}
