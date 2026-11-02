@@ -1,7 +1,22 @@
 # Shared coordination protocol
-Version: 1.0 | Approved: 2026-11-01 | Scope: Lyra, Atomic.fm, The Space Bar, Kentucky B&B, Astrolux Motors.
+Version: 1.1 | Coordination-release amendment: 2026-11-01 | Scope: Lyra, Atomic.fm, The Space Bar, Kentucky B&B, Astrolux Motors.
 
-## Authority and current hold
+## Current coordination-release amendment
+
+Authority: current user request in Codex chat 01a19acb-239b-7e81-922b-d6d6a43c5b9e, continuing user request "coordination project is done, lift the freezes please" in chat 6ae82389-5d58-83e9-a639-890e303bb140.
+The current user explicitly authorizes removing only coordination-related development holds across Lyra AI, Atomic.fm, Kentucky B&B/TSB Hotel, Astrolux Motors Auto Works, TSB Economy/server infrastructure, and website migrations.
+
+Effective decision: the coordination setup prerequisite and its blanket implementation pause are lifted for those named workstreams. Development and permitted isolated verification may resume within already approved scope, under a named owner and independent review. This is not approval of unapproved designs or unrestricted tests. Record this decision rather than asking the user to reconfirm it merely because older records disagree.
+
+Preserved: validated/frozen baselines and evidence; dirty/local-only work; one-owner handoffs; task-specific test restrictions; independent exact-revision review; passing required checks; explicit per-merge approval; installation/permissions/architecture approval; deployment approval with exact environment/artifact, backup, rollback and acceptance; no forced merges, destructive resets, force pushes, reference deletion or unreviewed production changes. No dispatcher or execution-approval flag is enabled. PR draft/review holds remain until their actual acceptance gates are met.
+
+Astrolux Motors Auto Dealer is a separate release line outside this named development release. Its existing freeze remains. Its protocol copy is synchronized only to avoid shared-policy divergence.
+
+The user decision is effective independently of transcription. These documentation PRs are propagation records, not merge authorization. Until reviewed and explicitly merged, main and existing checkouts retain older text. External-session acknowledgment and technical enforcement are not claimed. Read this current decision before treating historical freeze wording as current.
+
+Website sequence remains Lyra -> Atomic.fm -> TheSpaceBar.pro, validating each stage before dependent work. The inspected October 31 migration runbook reports web cutovers already completed; do not repeat them. Evidence: C:/Users/heroe/Documents/Codex/2026-10-31/referenced-chatgpt-conversation-this-is-an-3/outputs/migration-runbook.txt. Its AWS topology is HISTORICAL: the user explicitly corrected this in the current chat, "AWS is obsolete now." AWS is not an active architecture requirement or a prerequisite for resuming development. Current Ubuntu ingress, stream/report data ownership and rollback mapping must be verified before operational changes; this documentation inspection does not prove physical AWS shutdown or resource deletion. Preserve current streams, authentication, authoritative data, backups and rollback without assuming the obsolete AWS topology. No DNS/routing change, service shutdown, cloud-resource deletion or database migration is authorized by this release.
+
+## Historical governance-only authorization (superseded only within the amendment's scope)
 The human user approved a governance-only rollout in Codex chat 01a19951-1d96-75b3-a749-a1d8561d4b61:
 "Approved. Proceed with the governance-only rollout, but keep implementation, merges, and deployments frozen until I approve them separately."
 
@@ -68,7 +83,7 @@ Report at start, material blocker, handoff, and completion. During an ongoing ch
 Report project/task; owner/reviewer; state/date; repository/branch/full SHA; completed work; evidence/limitations; dirty work; dependencies/blockers; next permitted action; approval needed.
 A paused external session is confirmed only by acknowledgment or direct observation. Record unknowns honestly.
 
-## Governance completion
+## Historical governance-rollout completion instructions
 Prepare documentation-only PRs and independently review them without merging. Preserve the current implementation freeze.
 Reconcile conflicting state records, classify stale planning PRs without deleting them, and document missing repository/deployment mappings.
 After the governance review, present exact PR heads and unresolved enforcement/acknowledgment limitations to the user. Resume implementation only on a separate approved task.
